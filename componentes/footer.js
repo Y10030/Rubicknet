@@ -29,8 +29,8 @@ class MiFooter extends HTMLElement {
         <h4>Contacto</h4>
         <p>(55) 68 11 52 10</p>
 		<p>(55) 96 02 32 63</p>
-        <p>rubicknetreporta@gmail.com</p>
-        <p>Lunes a viernes, 9:00 a 20:00 h</p>
+        <p>informes@rubicknet.com</p>
+        <p>Lunes a viernes, 9:00 a 21:00 h</p>
       </div>
     </div>
     <div class="footer-bottom">
