@@ -1,42 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
 
-  /* ---------- Menú móvil ---------- */
-  var menuToggle = document.getElementById('menu-toggle');
-  var mainNav = document.getElementById('main-nav');
-  if (menuToggle && mainNav) {
-    menuToggle.addEventListener('click', function () {
-      mainNav.classList.toggle('abierto');
-    });
-  }
-
-  /* ---------- Mega menú "Soluciones" ---------- */
-  document.querySelectorAll('.nav-item').forEach(function (item) {
-    var boton = item.querySelector('button');
-    if (!boton) return;
-
-    boton.addEventListener('click', function (e) {
-      e.preventDefault();
-      var yaAbierto = item.classList.contains('abierto');
-      document.querySelectorAll('.nav-item.abierto').forEach(function (otro) {
-        otro.classList.remove('abierto');
-      });
-      if (!yaAbierto) item.classList.add('abierto');
-    });
-
-    /* En escritorio también abre al pasar el mouse */
-    if (window.matchMedia('(min-width: 721px)').matches) {
-      item.addEventListener('mouseenter', function () { item.classList.add('abierto'); });
-      item.addEventListener('mouseleave', function () { item.classList.remove('abierto'); });
-    }
-  });
-
-  document.addEventListener('click', function (e) {
-    if (!e.target.closest('.nav-item')) {
-      document.querySelectorAll('.nav-item.abierto').forEach(function (item) {
-        item.classList.remove('abierto');
-      });
-    }
-  });
 
   /* ---------- Tabs (Internet: Hogar / Empresa) ---------- */
   document.querySelectorAll('.tabs-nav').forEach(function (nav) {
