@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contacto | Rubicknet</title>
+<meta name="description" content="Escríbenos para cotizar internet, cableado, redes, CCTV, soporte técnico o seguridad informática con Rubicknet.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="logo">Rubicknet<span>.</span></a>
+    <nav class="main-nav" id="main-nav">
+      <a href="internet.html">Internet</a>
+
+      <div class="nav-item">
+        <button type="button">Soluciones <span class="caret">&#9662;</span></button>
+        <div class="mega-menu">
+          <a href="soluciones-cableado.html"><strong>Cableado estructurado</strong><span>Redes de datos certificadas</span></a>
+          <a href="soluciones-redes.html"><strong>Redes</strong><span>Cableadas e inalámbricas</span></a>
+          <a href="soluciones-cctv.html"><strong>Vigilancia y CCTV</strong><span>Cámaras análogas e IP</span></a>
+          <a href="soluciones-soporte.html"><strong>Soporte y mantenimiento</strong><span>Preventivo y correctivo</span></a>
+          <a href="soluciones-seguridad.html"><strong>Seguridad informática</strong><span>Antivirus y firewall</span></a>
+          <div class="mega-destacado">
+            <span><strong>&#191;No sabes cuál necesitas?</strong><br><span>Cuéntanos qué te preocupa resolver.</span></span>
+            <a href="contacto.html" class="btn btn-primario" style="padding:9px 16px;">Pedir ayuda</a>
+          </div>
+        </div>
+      </div>
+
+      <a href="proyectos.html">Proyectos</a>
+      <a href="nosotros.html">Nosotros</a>
+      <a href="contacto.html" class="activo">Contacto</a>
+      <a href="contacto.html" class="btn btn-primario nav-cta">Cotizar</a>
+    </nav>
+    <button class="menu-toggle" id="menu-toggle" aria-label="Abrir menú">&#9776;</button>
+  </div>
+</header>
+
+<section class="seccion">
+  <div class="contenedor">
+    <div class="seccion-titulo">
+      <span class="eyebrow">Contacto</span>
+      <h1 style="margin-top:14px;">Cuéntanos qué necesitas</h1>
+      <p>Te contactaremos para confirmar cobertura, agendar una visita técnica o armar tu cotización.</p>
+    </div>
+
+    <div class="contacto-grid" style="margin-top:48px;">
+      <div class="contacto-info-card">
+        <span class="eyebrow claro">Datos de contacto</span>
+        <div class="dato-contacto"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h3l1.5 4.5l-2 1.5a12 12 0 0 0 6.5 6.5l1.5 -2l4.5 1.5v3c0 1 -1 2 -2 2c-8 0 -15 -7 -15 -15c0 -1 1 -2 2 -2z"/></svg><div><strong>Teléfono</strong><span>(55) 0000 0000</span></div></div><div class="dato-contacto"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 6.5l8.5 6l8.5 -6"/></svg><div><strong>Correo</strong><span>contacto@Rubicknet.com</span></div></div><div class="dato-contacto"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7 -7.5 7 -12a7 7 0 1 0 -14 0c0 4.5 7 12 7 12z"/><circle cx="12" cy="9" r="2.3"/></svg><div><strong>Dirección</strong><span>[Dirección de tu negocio], Ciudad de México</span></div></div><div class="dato-contacto"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg><div><strong>Horario</strong><span>Lunes a viernes, 9:00 a 19:00 h</span></div></div>
+        <a href="https://wa.me/5215555555555?text=Hola%2C%20quiero%20cotizar%20un%20servicio" class="btn btn-primario btn-bloque" style="margin-top:24px;" target="_blank" rel="noopener">Escríbenos por WhatsApp</a>
+      </div>
+
+      <form class="form-contacto" id="form-contacto">
+        <div class="fila-2">
+          <div class="campo"><label for="nombre">Nombre</label><input id="nombre" name="nombre" type="text" required></div>
+          <div class="campo"><label for="empresa">Empresa (opcional)</label><input id="empresa" name="empresa" type="text"></div>
+        </div>
+        <div class="fila-2">
+          <div class="campo"><label for="telefono">Teléfono</label><input id="telefono" name="telefono" type="tel" required></div>
+          <div class="campo">
+            <label for="servicio">Servicio de interés</label>
+            <select id="servicio" name="servicio">
+              <option>Internet</option>
+              <option>Cableado estructurado</option>
+              <option>Redes</option>
+              <option>Vigilancia y CCTV</option>
+              <option>Soporte y mantenimiento</option>
+              <option>Seguridad informática</option>
+            </select>
+          </div>
+        </div>
+        <div class="campo">
+          <label for="mensaje">Mensaje</label>
+          <textarea id="mensaje" name="mensaje" rows="5" placeholder="Cuéntanos brevemente qué necesitas"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primario btn-bloque">Enviar mensaje</button>
+        <p class="aviso-contacto" id="aviso-contacto"></p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="contenedor">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-logo">Rubicknet</div>
+        <p>Internet, cableado, vigilancia y soporte técnico para hogares y empresas.</p>
+        <p>[Dirección de tu negocio], Ciudad de México</p>
+      </div>
+      <div>
+        <h4>Soluciones</h4>
+        <a href="soluciones-cableado.html">Cableado estructurado</a>
+        <a href="soluciones-redes.html">Redes</a>
+        <a href="soluciones-cctv.html">Vigilancia y CCTV</a>
+        <a href="soluciones-soporte.html">Soporte y mantenimiento</a>
+        <a href="soluciones-seguridad.html">Seguridad informática</a>
+      </div>
+      <div>
+        <h4>Empresa</h4>
+        <a href="internet.html">Internet</a>
+        <a href="proyectos.html">Proyectos</a>
+        <a href="nosotros.html">Nosotros</a>
+        <a href="contacto.html">Contacto</a>
+      </div>
+      <div>
+        <h4>Contacto</h4>
+        <p>(55) 0000 0000</p>
+        <p>contacto@Rubicknet.com</p>
+        <p>Lunes a viernes, 9:00 a 19:00 h</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Rubicknet. Todos los derechos reservados.</span>
+      <span>Sitio de ejemplo generado como propuesta de diseño.</span>
+    </div>
+  </div>
+</footer>
+
+<a href="https://wa.me/5215555555555" class="whatsapp-float" target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1 -8.4 8.4a8.5 8.5 0 0 1 -4 -1l-4.4 1l1.2 -4.3a8.4 8.4 0 0 1 -1.2 -4.3a8.4 8.4 0 1 1 16.8 .2z"/><path d="M8.5 10.3c0 2.9 2.4 5.3 5.3 5.3"/></svg></a>
+
+<script src="js/main.js"></script>
+</body>
+</html>
