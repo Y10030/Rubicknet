@@ -608,6 +608,65 @@ site-header { display: block; }
 .whatsapp-float svg { width: 26px; height: 26px; }
 
 
+/* ---------- Mapas de cobertura ---------- */
+.ciudades-nav { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 28px; }
+.ciudad-btn {
+  border: 1px solid var(--line-faint); background: var(--white);
+  padding: 10px 20px; border-radius: 999px; font-size: 0.88rem; font-weight: 600;
+  color: rgba(3,8,18,0.6); cursor: pointer; transition: all 0.18s ease;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.ciudad-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+.ciudad-btn:hover { border-color: var(--blue-600); color: var(--navy-900); }
+.ciudad-btn.activo { background: var(--ink-950); color: var(--white); border-color: var(--ink-950); }
+
+.mapa-panel { display: none; margin-top: 40px; }
+.mapa-panel.activo { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 44px; align-items: center; }
+
+.mapa-media {
+  position: relative; border-radius: var(--radius-l); overflow: hidden;
+  background: var(--mist-100); border: 1px solid var(--line-faint);
+  aspect-ratio: 4/3; box-shadow: var(--shadow-card);
+}
+.mapa-media svg { width: 100%; height: 100%; display: block; }
+.mapa-tag {
+  position: absolute; top: 16px; left: 16px; z-index: 2;
+  font-family: var(--font-mono); font-size: 0.7rem; color: var(--navy-900);
+  background: var(--white); padding: 6px 12px; border-radius: 999px;
+  border: 1px solid var(--line-faint); display: flex; align-items: center; gap: 6px;
+}
+.mapa-tag::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--blue-600); box-shadow: 0 0 0 3px rgba(0,51,255,0.18); }
+.mapa-leyenda { position: absolute; bottom: 16px; left: 16px; z-index: 2; display: flex; gap: 10px; flex-wrap: wrap; }
+.mapa-leyenda span {
+  font-family: var(--font-mono); font-size: 0.68rem; color: rgba(3,8,18,0.65);
+  display: flex; align-items: center; gap: 6px;
+  background: rgba(255,255,255,0.88); padding: 5px 10px; border-radius: 999px;
+}
+.mapa-leyenda i.punto { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; display: block; }
+.mapa-leyenda i.punto.activa { background: var(--blue-600); }
+.mapa-leyenda i.punto.expansion { background: var(--lavender-400); }
+
+.zona-activa { fill: rgba(0,51,255,0.16); stroke: var(--blue-600); stroke-width: 1.6; }
+.zona-expansion { fill: rgba(151,125,255,0.12); stroke: var(--lavender-400); stroke-width: 1.6; stroke-dasharray: 5 4; }
+.pin-cobertura { fill: var(--blue-600); stroke: var(--white); stroke-width: 1.6; animation: pulsoNodo 3.4s ease-in-out infinite; }
+.pin-cobertura:nth-of-type(2n) { animation-delay: 0.5s; }
+.pin-cobertura:nth-of-type(3n) { animation-delay: 1s; }
+@media (prefers-reduced-motion: reduce) { .pin-cobertura { animation: none; } }
+
+.mapa-info h3 { margin-bottom: 6px; }
+.mapa-info .estado { font-family: var(--font-mono); font-size: 0.78rem; color: var(--blue-600); margin-bottom: 14px; display: block; }
+.mapa-info p { color: rgba(3,8,18,0.62); font-size: 0.96rem; margin-bottom: 20px; }
+.zonas-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 26px; }
+.zonas-chips span { font-size: 0.82rem; padding: 7px 14px; border-radius: 999px; background: var(--mist-100); color: var(--navy-900); font-weight: 500; }
+
+@media (max-width: 980px) {
+  .mapa-panel.activo { grid-template-columns: 1fr; gap: 28px; }
+}
+@media (max-width: 720px) {
+  .ciudades-nav { gap: 6px; }
+  .ciudad-btn { padding: 9px 16px; font-size: 0.84rem; }
+}
+
 /* =========================================================
    Responsive
    ========================================================= */

@@ -22,7 +22,7 @@
     <h1>Internet estable, con equipo de calidad.</h1>
     <p class="hero-sub">Ingresa tu colonia o código postal y te decimos si ya tenemos cobertura en tu zona.</p>
     
-        <form class="buscador-cobertura form-cobertura" action="#" method="get" style="margin-top:30px;max-width:640px;">
+        <form id="buscador" class="buscador-cobertura form-cobertura" action="#" method="get" style="margin-top:30px;max-width:640px;">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.3 -4.3"/></svg>
           <input type="text" placeholder="Ingresa tu colonia o código postal" aria-label="Colonia o código postal">
           <button type="submit" class="btn btn-primario">Consultar cobertura</button>
@@ -95,6 +95,44 @@
   </div>
 </section>
 
+<section class="seccion">
+  <div class="contenedor">
+    <div class="seccion-titulo">
+      <span class="eyebrow">Cobertura por zona</span>
+      <h2 style="margin-top:14px;">Estas son las zonas donde ya tenemos cobertura</h2>
+      <p>Selecciona una zona para ver el mapa real con la cobertura activa. Si tu colonia no aparece, usa el buscador de arriba para confirmar tu dirección exacta.</p>
+    </div>
+
+    <div class="cobertura-ciudades">
+      <div class="ciudades-nav" id="ciudades-nav">
+        <p class="cobertura-cargando" id="cobertura-cargando">Cargando zonas de cobertura…</p>
+      </div>
+
+      <div class="mapa-panel-google" id="mapa-panel-google" style="display:none;">
+        <div class="mapa-media">
+          <div id="mapa-google"></div>
+          <div id="mapa-sin-key" class="mapa-aviso" style="display:none;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.86l-8.18 14.18A1 1 0 0 0 3 19.5h18a1 1 0 0 0 .87 -1.46L13.7 3.86a1 1 0 0 0 -1.74 0z"/></svg>
+            <p><strong>API Key de Google Maps no válida o sin permisos.</strong><br>Verifica que la clave en el atributo <code>key=</code> del script de Google Maps sea correcta y tenga habilitada la API de Maps JavaScript.</p>
+          </div>
+          <span class="mapa-tag" id="mapa-tag-label">Cobertura activa</span>
+          <div class="mapa-leyenda" id="mapa-leyenda">
+            <span><i class="punto activa"></i>Cobertura activa</span>
+            <span id="leyenda-expansion" style="display:none;"><i class="punto expansion"></i>En expansión</span>
+          </div>
+        </div>
+        <div class="mapa-info">
+          <span class="estado" id="info-estado">Cobertura activa</span>
+          <h3 id="info-titulo">—</h3>
+          <p id="info-desc"></p>
+          <div class="zonas-chips" id="info-chips"></div>
+          <a href="#buscador" class="btn btn-secundario">Verificar mi dirección</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="seccion fondo-mist">
   <div class="contenedor">
     <div class="seccion-titulo">
@@ -130,6 +168,139 @@
 <script src="componentes/cta-section.js"></script>
 <cta-section></cta-section>
 <script src="js/main.js"></script>
+<script>
+/* =========================================================
+   Mapas de cobertura — Google Maps real con polígonos
+   Los datos viven en data/cobertura.json. Para agregar,
+   quitar o editar zonas, usa editor-cobertura.html (no hace
+   falta tocar este archivo nunca más).
+   ========================================================= */
+
+const ESTILO_MAPA = [
+  { elementType: "geometry", stylers: [{ color: "#eaedf8" }] },
+  { elementType: "labels.text.fill", stylers: [{ color: "#030812" }] },
+  { elementType: "labels.text.stroke", stylers: [{ color: "#ffffff" }] },
+  { featureType: "administrative", elementType: "geometry", stylers: [{ color: "#c9cde0" }] },
+  { featureType: "poi", stylers: [{ visibility: "off" }] },
+  { featureType: "road", elementType: "geometry", stylers: [{ color: "#ffffff" }] },
+  { featureType: "road", elementType: "labels", stylers: [{ visibility: "simplified" }] },
+  { featureType: "road.highway", elementType: "geometry", stylers: [{ color: "#dfe3f2" }] },
+  { featureType: "transit", stylers: [{ visibility: "off" }] },
+  { featureType: "water", elementType: "geometry", stylers: [{ color: "#c7d0f0" }] }
+];
+
+let mapaCobertura = null;
+let poligonosActivos = [];
+let ZONAS_COBERTURA = [];
+
+function pintarZona(clave) {
+  const datos = ZONAS_COBERTURA.find(function (z) { return z.clave === clave; });
+  if (!datos || !mapaCobertura) return;
+
+  document.querySelectorAll(".ciudad-btn").forEach(function (b) {
+    b.classList.toggle("activo", b.getAttribute("data-ciudad") === clave);
+  });
+
+  mapaCobertura.setCenter(datos.centro);
+  mapaCobertura.setZoom(datos.zoom || 13);
+
+  poligonosActivos.forEach(function (p) { p.setMap(null); });
+  poligonosActivos = [];
+
+  let hayExpansion = false;
+  (datos.poligonos || []).forEach(function (zona) {
+    const esActiva = zona.tipo === "activa";
+    if (!esActiva) hayExpansion = true;
+    const poly = new google.maps.Polygon({
+      paths: zona.path,
+      strokeColor: esActiva ? "#0033FF" : "#977DFF",
+      strokeOpacity: 0.9,
+      strokeWeight: 2,
+      fillColor: esActiva ? "#0033FF" : "#977DFF",
+      fillOpacity: esActiva ? 0.16 : 0.12,
+      map: mapaCobertura
+    });
+    poligonosActivos.push(poly);
+  });
+
+  document.getElementById("mapa-tag-label").textContent = datos.nombre + " · " + datos.estado;
+  document.getElementById("info-estado").textContent = datos.estado;
+  document.getElementById("info-titulo").textContent = datos.titulo;
+  document.getElementById("info-desc").textContent = datos.descripcion;
+  document.getElementById("leyenda-expansion").style.display = hayExpansion ? "inline-flex" : "none";
+
+  const chipsWrap = document.getElementById("info-chips");
+  chipsWrap.innerHTML = "";
+  (datos.zonas || []).forEach(function (zona) {
+    const chip = document.createElement("span");
+    chip.textContent = zona;
+    chipsWrap.appendChild(chip);
+  });
+}
+
+function construirBotones() {
+  const nav = document.getElementById("ciudades-nav");
+  nav.innerHTML = "";
+  ZONAS_COBERTURA.forEach(function (zona, i) {
+    const btn = document.createElement("button");
+    btn.className = "ciudad-btn" + (i === 0 ? " activo" : "");
+    btn.setAttribute("data-ciudad", zona.clave);
+    btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-7.5-7-12a7 7 0 1 1 14 0c0 4.5-7 12-7 12z"/><circle cx="12" cy="9" r="2.4"/></svg> ' + zona.nombre;
+    btn.addEventListener("click", function () { pintarZona(zona.clave); });
+    nav.appendChild(btn);
+  });
+}
+
+async function cargarCobertura() {
+  try {
+    const resp = await fetch("data/cobertura.json", { cache: "no-store" });
+    ZONAS_COBERTURA = await resp.json();
+  } catch (e) {
+    console.error("No se pudo cargar data/cobertura.json", e);
+    document.getElementById("cobertura-cargando").textContent =
+      "No se pudo cargar la información de cobertura. Verifica que el archivo data/cobertura.json exista junto a este HTML.";
+    return;
+  }
+  construirBotones();
+  document.getElementById("mapa-panel-google").style.display = "grid";
+  if (window.google && window.google.maps) {
+    inicializarMapa();
+  }
+}
+
+function inicializarMapa() {
+  if (!ZONAS_COBERTURA.length) return;
+  mapaCobertura = new google.maps.Map(document.getElementById("mapa-google"), {
+    center: ZONAS_COBERTURA[0].centro,
+    zoom: ZONAS_COBERTURA[0].zoom || 13,
+    styles: ESTILO_MAPA,
+    disableDefaultUI: true,
+    zoomControl: true
+  });
+  pintarZona(ZONAS_COBERTURA[0].clave);
+}
+
+/* Google llama esta función cuando la API key falta o es inválida,
+   en vez de tronar la página mostramos un aviso amigable. */
+window.gm_authFailure = function () {
+  const mapaDiv = document.getElementById("mapa-google");
+  const aviso = document.getElementById("mapa-sin-key");
+  if (mapaDiv) mapaDiv.style.display = "none";
+  if (aviso) aviso.style.display = "flex";
+};
+
+/* initMap es el callback que pide el script de Google Maps */
+function initMap() {
+  if (ZONAS_COBERTURA.length) {
+    inicializarMapa();
+  }
+  /* si el JSON todavía no llegó, cargarCobertura() llamará a
+     inicializarMapa() en cuanto google.maps esté listo */
+}
+
+cargarCobertura();
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB06cPUllMpB_3U3lQJS-utEcPigPLRsCQ&callback=initMap" async defer></script>
 <script src="componentes/footer.js"></script>
 
 <mi-footer></mi-footer>
