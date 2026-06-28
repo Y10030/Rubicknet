@@ -30,7 +30,7 @@ class SiteHeader extends HTMLElement {
 
           <a href="soluciones-cctv.html">
             <strong>Vigilancia Seguridad y CCTV</strong>
-            <span>Cámaras análogas e IP</span>
+            <span>Portones, Cámaras análogas e IP</span>
           </a>
 
           <a href="soluciones-soporte.html">

@@ -1,0 +1,49 @@
+<section class="seccion fondo-mist">
+  <div class="contenedor">
+    <div class="seccion-titulo">
+      <span class="eyebrow">Lo que dicen nuestros clientes</span>
+    </div>
+    <div class="testimonios-grid">
+      <div class="testimonio">
+        <span class="quote-mark">&ldquo;</span>
+        <p class="cita">Resolvieron el cableado de toda la oficina en un fin de semana, sin parar nuestras operaciones.</p>
+        <div class="autor">Gerente de operaciones &mdash; Despacho contable, CDMX</div>
+      </div>
+    
+      <div class="testimonio">
+        <span class="quote-mark">&ldquo;</span>
+        <p class="cita">Desde que instalaron las cámaras podemos revisar la bodega desde el celular en cualquier momento.</p>
+        <div class="autor">Propietario &mdash; Bodega de distribución</div>
+      </div>
+    
+      <div class="testimonio">
+        <span class="quote-mark">&ldquo;</span>
+        <p class="cita">El soporte técnico responde rápido y ya no perdemos horas de trabajo por fallas de red.</p>
+        <div class="autor">Encargado de TI &mdash; Cadena de tiendas</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+Nuestra historia 2018[Inicio real de la empresa: cómo y por qué se fundó Rubicknet].
+
+
+
+2021[Hito real: expansión de cobertura o nuevos servicios].
+
+
+
+2024[Hito real: certificaciones o alianzas relevantes].
+
+
+
+2026[Hito real: estado actual del negocio].
+
+
+
+
+
+
+
