@@ -7,11 +7,11 @@
 <meta name="description" content="Consulta cobertura de internet residencial y empresarial de Rubicknet: planes, velocidades, SLA y enlaces de respaldo.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/styles.css?v=202606290439">
 </head>
 <body>
 
-<script src="componentes/site-header.js"></script>
+<script src="componentes/site-header.js?v=202606290439"></script>
 <site-header></site-header>
 
 
@@ -27,7 +27,7 @@
           <input type="text" placeholder="Ingresa tu colonia o código postal" aria-label="Colonia o código postal">
           <button type="submit" class="btn btn-primario">Consultar cobertura</button>
         </form>
-        <p class="resultado-cobertura"></p>
+        <p class="resultado-cobertura" id="resultado-buscador"></p>
     
   </div>
 </section>
@@ -125,7 +125,8 @@
           <h3 id="info-titulo">—</h3>
           <p id="info-desc"></p>
           <div class="zonas-chips" id="info-chips"></div>
-          <a href="#buscador" class="btn btn-secundario">Verificar mi dirección</a>
+          <button type="button" id="btn-verificar-ubicacion" class="btn btn-secundario">Verificar mi dirección</button>
+          <p class="resultado-cobertura" id="resultado-ubicacion"></p>
         </div>
       </div>
     </div>
@@ -164,9 +165,9 @@
 
 <a href="https://wa.me/5568115210" class="whatsapp-float" target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1 -8.4 8.4a8.5 8.5 0 0 1 -4 -1l-4.4 1l1.2 -4.3a8.4 8.4 0 0 1 -1.2 -4.3a8.4 8.4 0 1 1 16.8 .2z"/><path d="M8.5 10.3c0 2.9 2.4 5.3 5.3 5.3"/></svg></a>
 
-<script src="componentes/cta-section.js"></script>
+<script src="componentes/cta-section.js?v=202606290439"></script>
 <cta-section></cta-section>
-<script src="js/main.js"></script>
+<script src="js/main.js?v=202606290439"></script>
 
 <!-- Leaflet — gratuito, sin API Key, sin tarjeta -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
@@ -308,8 +309,127 @@ function inicializarMapa() {
 }
 
 cargarCobertura();
+
+/* ---------- Utilidades de coincidencia de texto ---------- */
+function normalizarTexto(str) {
+  return (str || "").toString()
+    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase().trim();
+}
+
+function buscarZonaPorTexto(texto) {
+  const t = normalizarTexto(texto);
+  if (!t) return null;
+  for (const zona of ZONAS_COBERTURA) {
+    const candidatos = [zona.nombre, zona.clave].concat(zona.zonas || []);
+    for (const candidato of candidatos) {
+      const n = normalizarTexto(candidato);
+      if (n && (n.includes(t) || t.includes(n))) return zona;
+    }
+  }
+  return null;
+}
+
+/* ---------- Punto dentro de polígono (ray casting) ---------- */
+function puntoDentroPoligono(lat, lng, path) {
+  let dentro = false;
+  for (let i = 0, j = path.length - 1; i < path.length; j = i++) {
+    const xi = path[i].lat, yi = path[i].lng;
+    const xj = path[j].lat, yj = path[j].lng;
+    const cruza = ((yi > lng) !== (yj > lng)) &&
+      (lat < (xj - xi) * (lng - yi) / (yj - yi) + xi);
+    if (cruza) dentro = !dentro;
+  }
+  return dentro;
+}
+
+function buscarZonaPorCoordenadas(lat, lng) {
+  for (const zona of ZONAS_COBERTURA) {
+    for (const poligono of (zona.poligonos || [])) {
+      if (puntoDentroPoligono(lat, lng, poligono.path || [])) {
+        return { zona: zona, tipo: poligono.tipo };
+      }
+    }
+  }
+  return null;
+}
+
+function mostrarResultado(elemento, texto, variante) {
+  elemento.textContent = texto;
+  elemento.className = "resultado-cobertura mostrar" + (variante ? " resultado-cobertura--" + variante : "");
+}
+
+/* ---------- Buscador del hero (colonia o código postal) ---------- */
+const formBuscador = document.getElementById("buscador");
+if (formBuscador) {
+  formBuscador.addEventListener("submit", function (e) {
+    e.preventDefault();
+    const input = formBuscador.querySelector("input");
+    const resultado = document.getElementById("resultado-buscador");
+    const texto = input ? input.value : "";
+
+    if (!ZONAS_COBERTURA.length) {
+      mostrarResultado(resultado, "Estamos cargando la información de cobertura, intenta de nuevo en unos segundos.", null);
+      return;
+    }
+    if (!normalizarTexto(texto)) {
+      mostrarResultado(resultado, "Escribe tu colonia o código postal para consultar.", "no");
+      return;
+    }
+
+    const zona = buscarZonaPorTexto(texto);
+    if (zona) {
+      mostrarResultado(resultado, "¡Buena noticia! Ya tenemos presencia en " + zona.nombre + " (" + zona.estado + "). Te mostramos el detalle más abajo.", "si");
+      const navCiudades = document.getElementById("ciudades-nav");
+      if (navCiudades) navCiudades.scrollIntoView({ behavior: "smooth", block: "start" });
+      setTimeout(function () { pintarZona(zona.clave); }, 350);
+    } else {
+      mostrarResultado(resultado, "Por ahora no encontramos esa colonia o código postal en nuestra cobertura confirmada. Contáctanos para revisar tu caso a detalle.", "no");
+    }
+  });
+}
+
+/* ---------- Verificar por ubicación (geolocalización del navegador) ---------- */
+const btnUbicacion = document.getElementById("btn-verificar-ubicacion");
+if (btnUbicacion) {
+  btnUbicacion.addEventListener("click", function () {
+    const resultado = document.getElementById("resultado-ubicacion");
+
+    if (!navigator.geolocation) {
+      mostrarResultado(resultado, "Tu navegador no permite obtener tu ubicación. Usa el buscador de arriba con tu colonia o código postal.", "no");
+      return;
+    }
+
+    mostrarResultado(resultado, "Obteniendo tu ubicación…", null);
+    btnUbicacion.disabled = true;
+
+    navigator.geolocation.getCurrentPosition(function (pos) {
+      btnUbicacion.disabled = false;
+
+      if (!ZONAS_COBERTURA.length) {
+        mostrarResultado(resultado, "Aún estamos cargando la información de cobertura, intenta de nuevo en un momento.", null);
+        return;
+      }
+
+      const encontrado = buscarZonaPorCoordenadas(pos.coords.latitude, pos.coords.longitude);
+
+      if (encontrado && encontrado.tipo === "activa") {
+        mostrarResultado(resultado, "¡Buenas noticias! Tu ubicación está dentro de la cobertura activa de " + encontrado.zona.nombre + ".", "si");
+        pintarZona(encontrado.zona.clave);
+      } else if (encontrado) {
+        mostrarResultado(resultado, "Tu ubicación está en una zona en expansión de " + encontrado.zona.nombre + ". Pronto tendremos cobertura ahí.", "expansion");
+        pintarZona(encontrado.zona.clave);
+      } else {
+        mostrarResultado(resultado, "Por ahora no tenemos cobertura confirmada en tu ubicación exacta. Usa el buscador de arriba o contáctanos para más detalles.", "no");
+      }
+    }, function () {
+      btnUbicacion.disabled = false;
+      mostrarResultado(resultado, "No pudimos obtener tu ubicación. Revisa los permisos de ubicación en tu navegador o usa el buscador de arriba.", "no");
+    }, { enableHighAccuracy: true, timeout: 10000 });
+  });
+}
 </script>
-<script src="componentes/footer.js"></script>
+<script src="componentes/footer.js?v=202606290439"></script>
 
 <mi-footer></mi-footer>
 </body>
