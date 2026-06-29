@@ -274,7 +274,9 @@ function inicializarMapa() {
   mapaCobertura.attributionControl.setPrefix('');
   document.querySelector('.leaflet-control-attribution') && (document.querySelector('.leaflet-control-attribution').style.fontSize = '10px');
 
-  pintarZona(primera.clave);
+  mapaCobertura.whenReady(function() {
+    setTimeout(function() { pintarZona(primera.clave); }, 100);
+  });
 }
 
 cargarCobertura();

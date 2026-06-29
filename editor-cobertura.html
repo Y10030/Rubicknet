@@ -414,7 +414,8 @@ function getChips(){return[...chips];}
 
 /* ══ POLÍGONOS ══ */
 function dibujarPolisActivos() {
-  limpiarPolisActivos();
+  // Primero remover TODAS las capas existentes antes de redibujar
+  polisEnMapa.forEach(p=>{ if(p.layer && mapa.hasLayer(p.layer)) mapa.removeLayer(p.layer); p.layer=null; });
   if (!mapa) return;
   polisEnMapa.forEach(p => {
     const act = p.tipo==="activa";
@@ -430,7 +431,7 @@ function dibujarPolisActivos() {
 }
 
 function limpiarPolisActivos() {
-  polisEnMapa.forEach(p=>{ if(p.layer) mapa.removeLayer(p.layer); });
+  polisEnMapa.forEach(p=>{ if(p.layer && mapa.hasLayer(p.layer)) mapa.removeLayer(p.layer); p.layer=null; });
 }
 
 function mostrarTodasEnMapa() {
@@ -457,7 +458,13 @@ function renderPolis() {
   </div>`).join("");
 }
 
-function eliminarPoli(i){if(polisEnMapa[i]?.layer)mapa.removeLayer(polisEnMapa[i].layer);polisEnMapa.splice(i,1);dibujarPolisActivos();renderPolis();}
+function eliminarPoli(i){
+  const p=polisEnMapa[i];
+  if(p?.layer && mapa.hasLayer(p.layer)) mapa.removeLayer(p.layer);
+  polisEnMapa.splice(i,1);
+  dibujarPolisActivos();
+  renderPolis();
+}
 
 /* ══ DIBUJO CON LEAFLET ══ */
 let tempMarkers = [];
