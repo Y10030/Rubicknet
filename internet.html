@@ -175,7 +175,32 @@
 
 let mapaCobertura = null;
 let poligonosActivos = [];
+let poligonosFondo = [];
 let ZONAS_COBERTURA = [];
+
+/* Dibuja TODOS los polígonos de TODAS las zonas, en un tono tenue de fondo.
+   Se llama una sola vez al iniciar el mapa, para que siempre se vea la
+   cobertura completa aunque solo una zona esté "seleccionada". */
+function dibujarTodosLosPoligonos() {
+  poligonosFondo.forEach(function (p) { mapaCobertura.removeLayer(p); });
+  poligonosFondo = [];
+
+  ZONAS_COBERTURA.forEach(function (datos) {
+    (datos.poligonos || []).forEach(function (zona) {
+      const esActiva = zona.tipo === "activa";
+      const coords = zona.path.map(function (p) { return [p.lat, p.lng]; });
+      const poly = L.polygon(coords, {
+        color:       esActiva ? "#0033FF" : "#977DFF",
+        weight:      1.4,
+        opacity:     0.45,
+        fillColor:   esActiva ? "#0033FF" : "#977DFF",
+        fillOpacity: esActiva ? 0.07 : 0.05,
+        interactive: false
+      }).addTo(mapaCobertura);
+      poligonosFondo.push(poly);
+    });
+  });
+}
 
 function pintarZona(clave) {
   const datos = ZONAS_COBERTURA.find(function (z) { return z.clave === clave; });
@@ -187,6 +212,8 @@ function pintarZona(clave) {
 
   mapaCobertura.setView([datos.centro.lat, datos.centro.lng], datos.zoom || 13);
 
+  // Solo se limpia y redibuja el resaltado de la zona seleccionada;
+  // el resto de zonas se quedan visibles de fondo (poligonosFondo).
   poligonosActivos.forEach(function (p) { mapaCobertura.removeLayer(p); });
   poligonosActivos = [];
 
@@ -275,6 +302,7 @@ function inicializarMapa() {
   document.querySelector('.leaflet-control-attribution') && (document.querySelector('.leaflet-control-attribution').style.fontSize = '10px');
 
   mapaCobertura.whenReady(function() {
+    dibujarTodosLosPoligonos();
     setTimeout(function() { pintarZona(primera.clave); }, 100);
   });
 }

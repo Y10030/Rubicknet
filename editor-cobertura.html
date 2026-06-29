@@ -297,6 +297,7 @@ let idxActivo = null;
 let mapa = null;
 let polisEnMapa = [];   // { tipo, path[], layer }
 let dibujando = null;   // { tipo, puntos[], polyline, markers[], clickFn, keyFn }
+let fondoTodasLayers = []; // capas de fondo de mostrarTodasEnMapa(), para poder limpiarlas
 
 /* ══ INIT MAPA ══ */
 function initMapa() {
@@ -334,7 +335,7 @@ function renderLista() {
 
 /* ══ SELECCIONAR / NUEVA / CANCELAR ══ */
 function seleccionarZona(i) {
-  terminarDibujo(); limpiarPolisActivos(); idxActivo = i;
+  terminarDibujo(); limpiarPolisActivos(); limpiarFondoTodas(); idxActivo = i;
   const z = zonas[i];
   document.getElementById("f-nombre").value = z.nombre||"";
   document.getElementById("f-titulo").value = z.titulo||"";
@@ -355,7 +356,7 @@ function seleccionarZona(i) {
 }
 
 function nuevaZona() {
-  terminarDibujo(); limpiarPolisActivos(); idxActivo = null; polisEnMapa = [];
+  terminarDibujo(); limpiarPolisActivos(); limpiarFondoTodas(); idxActivo = null; polisEnMapa = [];
   ["f-nombre","f-titulo","f-clave","f-descripcion","f-lat","f-lng"].forEach(id=>document.getElementById(id).value="");
   document.getElementById("f-estado").value="Cobertura activa";
   document.getElementById("f-zoom").value=13;
@@ -436,15 +437,22 @@ function limpiarPolisActivos() {
 
 function mostrarTodasEnMapa() {
   if (!mapa) return;
+  limpiarFondoTodas();
   zonas.forEach(z=>{
     (z.poligonos||[]).forEach(p=>{
       const act=p.tipo==="activa";
-      L.polygon(p.path.map(pt=>[pt.lat,pt.lng]),{
+      const layer = L.polygon(p.path.map(pt=>[pt.lat,pt.lng]),{
         color: act?"#0033FF":"#977DFF", weight:1.5, opacity:0.6,
         fillColor: act?"#0033FF":"#977DFF", fillOpacity:0.08, interactive:false
       }).addTo(mapa);
+      fondoTodasLayers.push(layer);
     });
   });
+}
+
+function limpiarFondoTodas() {
+  fondoTodasLayers.forEach(l=>{ if (mapa && mapa.hasLayer(l)) mapa.removeLayer(l); });
+  fondoTodasLayers = [];
 }
 
 function renderPolis() {
@@ -462,8 +470,16 @@ function eliminarPoli(i){
   const p=polisEnMapa[i];
   if(p?.layer && mapa.hasLayer(p.layer)) mapa.removeLayer(p.layer);
   polisEnMapa.splice(i,1);
+  // Persistir de inmediato en la zona guardada (no solo en la copia temporal),
+  // igual que hace "Eliminar zona", para que el cambio no se revierta al
+  // cambiar de zona o exportar sin haber dado clic en "Guardar zona".
+  if (idxActivo !== null && zonas[idxActivo]) {
+    zonas[idxActivo].poligonos = polisEnMapa.map(p=>({tipo:p.tipo,path:p.path}));
+  }
   dibujarPolisActivos();
   renderPolis();
+  renderLista();
+  toast("Polígono eliminado",true);
 }
 
 /* ══ DIBUJO CON LEAFLET ══ */
