@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Editor de Cobertura · Rubicknet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+/* ── Tokens del sitio ── */
+:root {
+  --navy-900: #00033D;
+  --blue-600: #0033FF;
+  --lavender-400: #977DFF;
+  --mist-100: #EAEDF8;
+  --ink-950: #030812;
+  --white: #FFFFFF;
+  --gradient-diag: linear-gradient(135deg, #0033FF 0%, #977DFF 100%);
+  --ink-soft: rgba(234,237,248,0.72);
+  --line-faint: rgba(3,8,18,0.10);
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+  --radius-s: 10px;
+  --radius-m: 16px;
+  --radius-l: 28px;
+  --shadow-card: 0 24px 48px -28px rgba(0,3,61,0.35);
+  --container: 1180px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-body); background: var(--mist-100); color: var(--ink-950); font-size: 14px; line-height: 1.5; -webkit-font-smoothing: antialiased; min-height: 100vh; }
+h1,h2,h3,h4 { font-family: var(--font-display); font-weight: 600; line-height: 1.12; letter-spacing: -0.01em; }
+svg { display: block; }
+button { font-family: var(--font-body); }
+
+/* ── Layout ── */
+.app { display: grid; grid-template-columns: 400px 1fr; height: calc(100vh - 57px - 48px); overflow: hidden; }
+.sidebar { background: var(--white); border-right: 1px solid rgba(3,8,18,0.08); display: flex; flex-direction: column; overflow: hidden; }
+.main-area { display: flex; flex-direction: column; overflow: hidden; }
+
+/* ── Header (mismo estilo que site-header) ── */
+.site-header {
+  position: sticky; top: 0; z-index: 60;
+  background: rgba(0,3,61,0.97);
+  border-bottom: 1px solid rgba(234,237,248,0.10);
+  padding: 0 28px;
+  height: 57px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.logo { font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; color: var(--white); letter-spacing: -0.01em; }
+.logo span { color: var(--lavender-400); }
+.header-tag {
+  font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase;
+  color: rgba(185,194,255,0.7); margin-left: 14px;
+  background: rgba(151,125,255,0.15); padding: 4px 10px; border-radius: 999px;
+  border: 1px solid rgba(151,125,255,0.25);
+}
+.header-right { display: flex; gap: 10px; align-items: center; }
+
+/* ── Botones del sitio ── */
+.btn {
+  font-family: var(--font-body); font-weight: 600; font-size: 0.88rem;
+  padding: 9px 18px; border-radius: 999px;
+  display: inline-flex; align-items: center; gap: 7px;
+  border: 1px solid transparent; cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+  white-space: nowrap;
+}
+.btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+.btn-primario { background: var(--gradient-diag); color: var(--white); box-shadow: 0 10px 24px -10px rgba(0,51,255,0.5); }
+.btn-primario:hover { transform: translateY(-1px); box-shadow: 0 14px 28px -8px rgba(0,51,255,0.6); }
+.btn-secundario { background: transparent; color: var(--navy-900); border-color: rgba(0,3,61,0.18); }
+.btn-secundario:hover { border-color: var(--navy-900); }
+.btn-claro { background: transparent; color: var(--white); border-color: rgba(234,237,248,0.28); }
+.btn-claro:hover { border-color: var(--white); }
+.btn-peligro { background: transparent; color: #cc2222; border-color: #ffd5d5; }
+.btn-peligro:hover { background: #fff0f0; }
+.btn-bloque { width: 100%; justify-content: center; }
+.btn-icon {
+  width: 32px; height: 32px; padding: 0; border-radius: var(--radius-s);
+  background: var(--white); border: 1px solid var(--line-faint);
+  display: inline-flex; align-items: center; justify-content: center; cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+.btn-icon:hover { background: var(--mist-100); border-color: rgba(0,3,61,0.25); }
+.btn-icon svg { width: 14px; height: 14px; }
+
+/* ── API Key banner ── */
+.api-banner {
+  background: var(--navy-900); color: var(--white);
+  padding: 10px 28px; height: 48px;
+  display: flex; align-items: center; gap: 12px;
+  border-bottom: 1px solid rgba(234,237,248,0.08);
+}
+.api-banner svg { width: 15px; height: 15px; color: var(--lavender-400); flex-shrink: 0; }
+.api-banner label { font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-soft); white-space: nowrap; }
+.api-banner input {
+  flex: 1; max-width: 480px;
+  padding: 6px 12px;
+  background: rgba(234,237,248,0.07); border: 1px solid rgba(234,237,248,0.16);
+  border-radius: var(--radius-s); color: var(--white);
+  font-family: var(--font-mono); font-size: 0.78rem; outline: none;
+  transition: border-color 0.15s;
+}
+.api-banner input::placeholder { color: rgba(234,237,248,0.35); }
+.api-banner input:focus { border-color: rgba(151,125,255,0.6); }
+
+/* ── Sidebar header ── */
+.sidebar-head {
+  padding: 16px 18px 14px;
+  border-bottom: 1px solid var(--line-faint);
+  display: flex; align-items: center; gap: 8px;
+}
+.sidebar-head h2 { font-size: 0.92rem; font-weight: 600; flex: 1; }
+.badge {
+  background: var(--blue-600); color: var(--white);
+  font-family: var(--font-mono); font-size: 0.7rem; font-weight: 700;
+  padding: 2px 8px; border-radius: 999px;
+}
+
+/* ── Lista de zonas ── */
+.zonas-list { flex: 1; overflow-y: auto; padding: 10px; }
+.zona-item {
+  background: var(--white); border: 1px solid var(--line-faint);
+  border-radius: var(--radius-m); padding: 12px 14px; margin-bottom: 8px;
+  cursor: pointer; transition: all 0.15s;
+  display: flex; align-items: flex-start; gap: 10px;
+}
+.zona-item:hover { border-color: var(--blue-600); background: #f5f6ff; }
+.zona-item.activo { border-color: var(--blue-600); background: rgba(0,51,255,0.04); box-shadow: 0 0 0 3px rgba(0,51,255,0.08); }
+.zona-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
+.zona-dot.activa { background: var(--blue-600); box-shadow: 0 0 0 3px rgba(0,51,255,0.18); }
+.zona-dot.expansion { background: var(--lavender-400); box-shadow: 0 0 0 3px rgba(151,125,255,0.18); }
+.zona-dot.mixta { background: linear-gradient(135deg, var(--blue-600), var(--lavender-400)); }
+.zona-info { flex: 1; min-width: 0; }
+.zona-nombre { font-weight: 600; font-size: 0.88rem; }
+.zona-sub { font-family: var(--font-mono); font-size: 0.72rem; color: rgba(3,8,18,0.45); margin-top: 2px; }
+
+.empty-state { text-align: center; padding: 48px 24px; color: rgba(3,8,18,0.4); }
+.empty-state svg { width: 36px; height: 36px; margin: 0 auto 12px; opacity: 0.25; }
+.empty-state p { font-size: 0.88rem; line-height: 1.6; }
+
+/* ── Panel de formulario ── */
+.form-panel {
+  border-top: 1px solid var(--line-faint);
+  overflow-y: auto; flex-shrink: 0; max-height: 58vh;
+  padding: 18px;
+}
+.form-section-title {
+  font-family: var(--font-mono); font-size: 0.68rem; text-transform: uppercase;
+  letter-spacing: 0.08em; color: rgba(3,8,18,0.4); margin-bottom: 12px; margin-top: 18px;
+}
+.form-section-title:first-child { margin-top: 0; }
+.form-row { margin-bottom: 11px; }
+.form-row label { display: block; font-size: 0.78rem; font-weight: 600; color: rgba(3,8,18,0.6); margin-bottom: 4px; }
+.form-row input, .form-row textarea, .form-row select {
+  width: 100%; padding: 8px 12px;
+  border: 1px solid var(--line-faint); border-radius: var(--radius-s);
+  font-family: var(--font-body); font-size: 0.88rem;
+  background: var(--white); color: var(--ink-950);
+  transition: border-color 0.15s; outline: none;
+}
+.form-row input:focus, .form-row textarea:focus, .form-row select:focus { border-color: var(--blue-600); }
+.form-row textarea { resize: vertical; min-height: 60px; }
+.form-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.form-actions { display: flex; gap: 8px; margin-top: 16px; }
+.form-actions .btn { flex: 1; justify-content: center; }
+
+/* ── Chips ── */
+.chips-wrap { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+.chip {
+  font-size: 0.78rem; padding: 4px 10px; border-radius: 999px;
+  background: var(--mist-100); color: var(--navy-900); font-weight: 500;
+  border: 1px solid rgba(0,3,61,0.1);
+  display: flex; align-items: center; gap: 5px;
+}
+.chip button { background: none; border: none; cursor: pointer; color: rgba(3,8,18,0.4); font-size: 14px; line-height: 1; padding: 0; display: flex; transition: color 0.15s; }
+.chip button:hover { color: #cc2222; }
+.chip-row { display: flex; gap: 6px; }
+.chip-row input { flex: 1; }
+
+/* ── Polígonos ── */
+.poli-lista { display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px; }
+.poli-item {
+  background: var(--mist-100); border: 1px solid rgba(0,3,61,0.08);
+  border-radius: var(--radius-s); padding: 8px 12px;
+  display: flex; align-items: center; gap: 8px; font-size: 0.82rem;
+}
+.poli-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.poli-dot.activa { background: var(--blue-600); }
+.poli-dot.expansion { background: var(--lavender-400); }
+.poli-label { flex: 1; font-weight: 600; color: var(--ink-950); }
+.poli-pts { font-family: var(--font-mono); font-size: 0.7rem; color: rgba(3,8,18,0.45); }
+.add-poli-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 4px; }
+
+/* ── Mapa área ── */
+.map-bar {
+  background: var(--white); border-bottom: 1px solid var(--line-faint);
+  padding: 10px 18px; display: flex; align-items: center; gap: 10px; flex-shrink: 0;
+}
+.map-bar h3 { font-size: 0.9rem; font-weight: 600; flex: 1; }
+.map-wrap { position: relative; flex: 1; }
+#map { width: 100%; height: 100%; }
+
+/* ── Hint flotante ── */
+.map-hint {
+  position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+  background: var(--ink-950); color: var(--white);
+  font-family: var(--font-mono); font-size: 0.72rem;
+  padding: 9px 16px; border-radius: 999px;
+  pointer-events: none; opacity: 0; transition: opacity 0.3s;
+  white-space: nowrap; z-index: 10;
+  border: 1px solid rgba(234,237,248,0.1);
+}
+.map-hint.visible { opacity: 1; }
+
+/* ── Toast ── */
+.toast {
+  position: fixed; bottom: 24px; right: 24px;
+  background: var(--ink-950); color: var(--white);
+  padding: 12px 18px; border-radius: var(--radius-m);
+  font-size: 0.85rem; font-weight: 500;
+  display: flex; align-items: center; gap: 9px;
+  box-shadow: 0 20px 40px -16px rgba(0,0,0,0.4);
+  z-index: 200;
+  transform: translateY(80px); opacity: 0;
+  transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+}
+.toast.show { transform: translateY(0); opacity: 1; }
+.toast.ok { border-left: 3px solid #00C48C; }
+.toast.err { border-left: 3px solid #FF3B3B; }
+.toast svg { width: 15px; height: 15px; flex-shrink: 0; }
+
+/* ── Modales ── */
+.modal-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,3,61,0.55); z-index: 100;
+  align-items: center; justify-content: center; padding: 24px;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: var(--white); border-radius: var(--radius-l);
+  width: 100%; max-width: 680px; max-height: 85vh;
+  display: flex; flex-direction: column;
+  box-shadow: 0 40px 80px -24px rgba(0,3,61,0.5);
+}
+.modal-head {
+  padding: 18px 22px; border-bottom: 1px solid var(--line-faint);
+  display: flex; align-items: center; gap: 10px;
+}
+.modal-head h3 { font-size: 1rem; flex: 1; }
+.modal-body { flex: 1; overflow-y: auto; padding: 0; }
+.modal-foot {
+  padding: 14px 22px; border-top: 1px solid var(--line-faint);
+  display: flex; gap: 8px; justify-content: flex-end;
+}
+.json-pre {
+  font-family: var(--font-mono); font-size: 0.78rem;
+  background: var(--mist-100); padding: 20px 22px;
+  white-space: pre; color: var(--ink-950); line-height: 1.7;
+  overflow-x: auto;
+}
+.import-body { padding: 20px 22px; }
+.import-body p { font-size: 0.88rem; color: rgba(3,8,18,0.6); margin-bottom: 12px; }
+.import-body textarea {
+  width: 100%; height: 200px;
+  font-family: var(--font-mono); font-size: 0.78rem;
+  border: 1px solid var(--line-faint); border-radius: var(--radius-s);
+  padding: 12px; resize: vertical; outline: none; background: var(--mist-100);
+}
+.import-body textarea:focus { border-color: var(--blue-600); }
+
+/* ── Eyebrow (etiqueta tipo "cobertura activa") ── */
+.eyebrow-sm {
+  font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--blue-600);
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.eyebrow-sm::before { content:""; width:5px;height:5px;border-radius:50%;background:var(--blue-600);box-shadow:0 0 0 3px rgba(0,51,255,0.16); }
+</style>
+</head>
+<body>
+
+<!-- ══ HEADER ══ -->
+<header class="site-header">
+  <div style="display:flex;align-items:center;gap:10px;">
+    <span class="logo">Rubick<span>net</span></span>
+    <span class="header-tag">Editor de Cobertura</span>
+  </div>
+  <div class="header-right">
+    <button class="btn btn-claro" onclick="abrirImport()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/><polyline points="7 9 12 4 17 9"/><line x1="12" y1="4" x2="12" y2="16"/></svg>
+      Importar JSON
+    </button>
+    <button class="btn btn-primario" onclick="exportarJSON()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/><polyline points="7 11 12 16 17 11"/><line x1="12" y1="4" x2="12" y2="16"/></svg>
+      Exportar cobertura.json
+    </button>
+  </div>
+</header>
+
+<!-- ══ API KEY BANNER ══ -->
+<div class="api-banner" id="api-banner">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
+  <label>Google Maps API Key</label>
+  <input type="text" id="api-key-input" placeholder="Pega tu API Key aquí y presiona Enter o el botón →" onkeydown="if(event.key==='Enter')aplicarApiKey()">
+  <button class="btn btn-primario" style="padding:6px 14px;font-size:0.78rem;" onclick="aplicarApiKey()">Cargar mapa</button>
+</div>
+
+<!-- ══ APP LAYOUT ══ -->
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-head">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;color:var(--blue-600);flex-shrink:0;"><path d="M12 21s-7-7.5-7-12a7 7 0 1 1 14 0c0 4.5-7 12-7 12z"/><circle cx="12" cy="9" r="2.4"/></svg>
+      <h2>Zonas de cobertura</h2>
+      <span class="badge" id="badge-count">0</span>
+      <button class="btn btn-primario" style="padding:6px 12px;font-size:0.78rem;margin-left:6px;" onclick="nuevaZona()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Nueva
+      </button>
+    </div>
+
+    <div class="zonas-list" id="zonas-list">
+      <div class="empty-state">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M12 21s-7-7.5-7-12a7 7 0 1 1 14 0c0 4.5-7 12-7 12z"/><circle cx="12" cy="9" r="2.4"/></svg>
+        <p>Sin zonas aún.<br>Importa un <code>cobertura.json</code> o crea una nueva zona.</p>
+      </div>
+    </div>
+
+    <!-- FORMULARIO -->
+    <div class="form-panel" id="form-panel" style="display:none;">
+
+      <div class="form-section-title">Información general</div>
+
+      <div class="form-row">
+        <label>Nombre corto (botón en el mapa)</label>
+        <input type="text" id="f-nombre" placeholder="Ej: Tizayuca">
+      </div>
+      <div class="form-row">
+        <label>Título completo</label>
+        <input type="text" id="f-titulo" placeholder="Ej: Tizayuca, Hidalgo">
+      </div>
+      <div class="form-row">
+        <label>Clave única (sin espacios)</label>
+        <input type="text" id="f-clave" placeholder="Ej: tizayuca" oninput="this.value=this.value.toLowerCase().replace(/[\s\/]/g,'-')">
+      </div>
+      <div class="form-row">
+        <label>Estado</label>
+        <select id="f-estado">
+          <option value="Cobertura activa">Cobertura activa</option>
+          <option value="En expansión">En expansión</option>
+          <option value="Próximamente">Próximamente</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label>Descripción visible en el panel</label>
+        <textarea id="f-descripcion" placeholder="Describe brevemente el área cubierta…"></textarea>
+      </div>
+
+      <div class="form-section-title">Centro del mapa</div>
+
+      <div class="form-2col">
+        <div class="form-row">
+          <label>Latitud</label>
+          <input type="number" id="f-lat" step="0.0001" placeholder="19.8367">
+        </div>
+        <div class="form-row">
+          <label>Longitud</label>
+          <input type="number" id="f-lng" step="0.0001" placeholder="-98.9918">
+        </div>
+      </div>
+      <div class="form-row">
+        <label>Nivel de zoom (10 – 16)</label>
+        <input type="number" id="f-zoom" min="10" max="16" value="13">
+      </div>
+      <button class="btn btn-secundario btn-bloque" style="font-size:0.8rem;" onclick="centrarMapa()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
+        Ir al centro en el mapa
+      </button>
+
+      <div class="form-section-title" style="margin-top:18px;">Colonias / zonas</div>
+
+      <div class="chips-wrap" id="chips-wrap"></div>
+      <div class="chip-row">
+        <input type="text" id="chip-input" placeholder="Agregar colonia o zona…" onkeydown="if(event.key==='Enter'){event.preventDefault();agregarChip();}">
+        <button class="btn btn-secundario" style="padding:7px 12px;font-size:0.8rem;border-radius:var(--radius-s);" onclick="agregarChip()">+ Agregar</button>
+      </div>
+
+      <div class="form-section-title" style="margin-top:18px;">Polígonos en el mapa</div>
+
+      <div class="poli-lista" id="poli-lista">
+        <p style="font-size:0.8rem;color:rgba(3,8,18,0.45);">Usa los botones de abajo para dibujar polígonos directamente en el mapa haciendo clic.</p>
+      </div>
+      <div class="add-poli-btns">
+        <button class="btn btn-secundario btn-bloque" style="font-size:0.8rem;" onclick="iniciarDibujo('activa')">
+          <span style="width:8px;height:8px;border-radius:50%;background:var(--blue-600);flex-shrink:0;"></span>
+          + Zona activa
+        </button>
+        <button class="btn btn-secundario btn-bloque" style="font-size:0.8rem;color:var(--lavender-400);border-color:rgba(151,125,255,0.35);" onclick="iniciarDibujo('expansion')">
+          <span style="width:8px;height:8px;border-radius:50%;background:var(--lavender-400);flex-shrink:0;"></span>
+          + En expansión
+        </button>
+      </div>
+
+      <div class="form-actions">
+        <button class="btn btn-secundario" onclick="cancelarEdicion()">Cancelar</button>
+        <button class="btn btn-primario" onclick="guardarZona()">Guardar zona</button>
+      </div>
+      <button class="btn btn-peligro btn-bloque" style="margin-top:8px;font-size:0.82rem;" onclick="eliminarZona()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M9 6V4h6v2"/></svg>
+        Eliminar zona
+      </button>
+    </div>
+  </div>
+
+  <!-- ÁREA DEL MAPA -->
+  <div class="main-area">
+    <div class="map-bar">
+      <h3 id="map-label">Selecciona o crea una zona para empezar</h3>
+      <button class="btn btn-secundario" id="btn-stop" onclick="terminarDibujo()" style="display:none;font-size:0.8rem;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;"><polyline points="20 6 9 17 4 12"/></svg>
+        Cerrar polígono (Enter)
+      </button>
+    </div>
+    <div class="map-wrap">
+      <div id="map"></div>
+      <div class="map-hint" id="map-hint">Haz clic para agregar puntos · Enter o botón para cerrar · Esc para cancelar</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ TOAST ══ -->
+<div class="toast" id="toast">
+  <svg id="toast-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4l10 -10"/></svg>
+  <span id="toast-msg"></span>
+</div>
+
+<!-- ══ MODAL JSON ══ -->
+<div class="modal-overlay" id="modal-json">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>cobertura.json — listo para usar</h3>
+      <button class="btn-icon" onclick="document.getElementById('modal-json').classList.remove('open')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body"><pre class="json-pre" id="json-pre"></pre></div>
+    <div class="modal-foot">
+      <button class="btn btn-secundario" onclick="document.getElementById('modal-json').classList.remove('open')">Cerrar</button>
+      <button class="btn btn-secundario" onclick="copiarJSON()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        Copiar
+      </button>
+      <button class="btn btn-primario" onclick="descargarJSON()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;"><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/><polyline points="7 11 12 16 17 11"/><line x1="12" y1="4" x2="12" y2="16"/></svg>
+        Descargar cobertura.json
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL IMPORT ══ -->
+<div class="modal-overlay" id="modal-import">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>Importar cobertura.json existente</h3>
+      <button class="btn-icon" onclick="document.getElementById('modal-import').classList.remove('open')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="import-body">
+        <p>Pega el contenido de tu <code>cobertura.json</code> para seguir editándolo aquí. El archivo se carga en memoria; nada se sube a ningún servidor.</p>
+        <textarea id="import-ta" placeholder='[{"clave":"hidalgo","nombre":"Hidalgo",...}]'></textarea>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-secundario" onclick="document.getElementById('modal-import').classList.remove('open')">Cancelar</button>
+      <button class="btn btn-primario" onclick="procesarImport()">Importar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ══════════════════════════════════════════
+   ESTADO
+══════════════════════════════════════════ */
+let zonas = [];
+let idxActivo = null;
+let mapa = null;
+let polisEnMapa = [];   // { tipo, path:[], poly }
+let dibujando = null;   // { tipo, puntos[], polyline, markers[], listener }
+
+/* ══════════════════════════════════════════
+   API KEY / MAPA
+══════════════════════════════════════════ */
+function aplicarApiKey() {
+  const k = document.getElementById("api-key-input").value.trim();
+  if (!k) { toast("Pega una API Key válida", false); return; }
+  const s = document.createElement("script");
+  s.src = `https://maps.googleapis.com/maps/api/js?key=${k}&callback=initMapEditor`;
+  s.async = true; s.defer = true;
+  document.head.appendChild(s);
+  document.getElementById("api-banner").style.opacity = "0.5";
+  document.getElementById("api-banner").style.pointerEvents = "none";
+}
+
+window.initMapEditor = function () {
+  mapa = new google.maps.Map(document.getElementById("map"), {
+    center: { lat: 19.6, lng: -99.05 }, zoom: 10,
+    styles: ESTILO_MAPA,
+    disableDefaultUI: false, zoomControl: true,
+    streetViewControl: false, mapTypeControl: false, fullscreenControl: false
+  });
+  document.getElementById("api-banner").style.display = "none";
+  toast("Mapa cargado", true);
+  mostrarTodasEnMapa();
+};
+
+window.gm_authFailure = function () {
+  document.getElementById("api-banner").style.opacity = "1";
+  document.getElementById("api-banner").style.pointerEvents = "auto";
+  toast("API Key inválida o sin permisos en Google Cloud", false);
+};
+
+/* ══════════════════════════════════════════
+   RENDER LISTA
+══════════════════════════════════════════ */
+function renderLista() {
+  const el = document.getElementById("zonas-list");
+  document.getElementById("badge-count").textContent = zonas.length;
+  if (!zonas.length) {
+    el.innerHTML = `<div class="empty-state">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M12 21s-7-7.5-7-12a7 7 0 1 1 14 0c0 4.5-7 12-7 12z"/><circle cx="12" cy="9" r="2.4"/></svg>
+      <p>Sin zonas aún.<br>Importa un <code>cobertura.json</code> o crea una nueva.</p></div>`;
+    return;
+  }
+  el.innerHTML = zonas.map((z, i) => {
+    const tipos = (z.poligonos || []).map(p => p.tipo);
+    const dc = tipos.includes("activa") && tipos.includes("expansion") ? "mixta"
+      : tipos.includes("activa") ? "activa" : "expansion";
+    const np = (z.poligonos || []).length;
+    return `<div class="zona-item${idxActivo === i ? " activo" : ""}" onclick="seleccionarZona(${i})">
+      <div class="zona-dot ${dc}"></div>
+      <div class="zona-info">
+        <div class="zona-nombre">${z.nombre || "(sin nombre)"}</div>
+        <div class="zona-sub">${z.titulo || ""} · ${np} polígono${np !== 1 ? "s" : ""}</div>
+      </div>
+      <button class="btn-icon" title="Editar" onclick="event.stopPropagation();seleccionarZona(${i})">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+      </button>
+    </div>`;
+  }).join("");
+}
+
+/* ══════════════════════════════════════════
+   SELECCIONAR / NUEVA / CANCELAR
+══════════════════════════════════════════ */
+function seleccionarZona(i) {
+  terminarDibujo();
+  limpiarPolisActivos();
+  idxActivo = i;
+  const z = zonas[i];
+
+  document.getElementById("f-nombre").value = z.nombre || "";
+  document.getElementById("f-titulo").value = z.titulo || "";
+  document.getElementById("f-clave").value = z.clave || "";
+  document.getElementById("f-estado").value = z.estado || "Cobertura activa";
+  document.getElementById("f-descripcion").value = z.descripcion || "";
+  document.getElementById("f-lat").value = z.centro?.lat ?? "";
+  document.getElementById("f-lng").value = z.centro?.lng ?? "";
+  document.getElementById("f-zoom").value = z.zoom || 13;
+
+  renderChips(z.zonas || []);
+  polisEnMapa = (z.poligonos || []).map(p => ({ tipo: p.tipo, path: [...p.path], poly: null }));
+  dibujarPolisActivos();
+  renderPolis();
+
+  document.getElementById("form-panel").style.display = "block";
+  document.getElementById("map-label").textContent = z.nombre || "(sin nombre)";
+  renderLista();
+
+  if (mapa && z.centro) { mapa.setCenter(z.centro); mapa.setZoom(z.zoom || 13); }
+}
+
+function nuevaZona() {
+  terminarDibujo();
+  limpiarPolisActivos();
+  idxActivo = null;
+  polisEnMapa = [];
+  ["f-nombre","f-titulo","f-clave","f-descripcion","f-lat","f-lng"].forEach(id => document.getElementById(id).value = "");
+  document.getElementById("f-estado").value = "Cobertura activa";
+  document.getElementById("f-zoom").value = 13;
+  renderChips([]);
+  renderPolis();
+  document.getElementById("form-panel").style.display = "block";
+  document.getElementById("map-label").textContent = "Nueva zona — dibuja polígonos en el mapa";
+  renderLista();
+}
+
+function cancelarEdicion() {
+  terminarDibujo();
+  limpiarPolisActivos();
+  idxActivo = null; polisEnMapa = [];
+  document.getElementById("form-panel").style.display = "none";
+  document.getElementById("map-label").textContent = "Selecciona o crea una zona para empezar";
+  renderLista();
+  mostrarTodasEnMapa();
+}
+
+/* ══════════════════════════════════════════
+   GUARDAR / ELIMINAR
+══════════════════════════════════════════ */
+function guardarZona() {
+  terminarDibujo();
+  const nombre = document.getElementById("f-nombre").value.trim();
+  const clave  = document.getElementById("f-clave").value.trim();
+  if (!nombre || !clave) { toast("Nombre y clave son obligatorios", false); return; }
+
+  const lat  = parseFloat(document.getElementById("f-lat").value);
+  const lng  = parseFloat(document.getElementById("f-lng").value);
+  const zoom = parseInt(document.getElementById("f-zoom").value) || 13;
+
+  const z = {
+    clave, nombre,
+    titulo:      document.getElementById("f-titulo").value.trim() || nombre,
+    estado:      document.getElementById("f-estado").value,
+    centro:      !isNaN(lat) && !isNaN(lng) ? { lat, lng } : undefined,
+    zoom,
+    descripcion: document.getElementById("f-descripcion").value.trim(),
+    zonas:       getChips(),
+    poligonos:   polisEnMapa.map(p => ({ tipo: p.tipo, path: p.path }))
+  };
+  if (!z.centro) delete z.centro;
+
+  if (idxActivo === null) { zonas.push(z); idxActivo = zonas.length - 1; }
+  else zonas[idxActivo] = z;
+
+  toast(`"${nombre}" guardada`, true);
+  renderLista();
+  dibujarPolisActivos();
+}
+
+function eliminarZona() {
+  if (idxActivo === null) return;
+  const nombre = zonas[idxActivo]?.nombre || "esta zona";
+  if (!confirm(`¿Eliminar "${nombre}"? No se puede deshacer.`)) return;
+  zonas.splice(idxActivo, 1);
+  limpiarPolisActivos(); idxActivo = null; polisEnMapa = [];
+  document.getElementById("form-panel").style.display = "none";
+  document.getElementById("map-label").textContent = "Selecciona o crea una zona para empezar";
+  renderLista();
+  mostrarTodasEnMapa();
+  toast("Zona eliminada", true);
+}
+
+/* ══════════════════════════════════════════
+   CHIPS
+══════════════════════════════════════════ */
+let chips = [];
+function renderChips(arr) {
+  chips = [...arr];
+  document.getElementById("chips-wrap").innerHTML = chips.map((c, i) =>
+    `<span class="chip">${c}<button onclick="quitarChip(${i})" title="Quitar">×</button></span>`
+  ).join("");
+}
+function agregarChip() {
+  const inp = document.getElementById("chip-input");
+  const v = inp.value.trim(); if (!v) return;
+  chips.push(v); inp.value = ""; renderChips(chips);
+}
+function quitarChip(i) { chips.splice(i, 1); renderChips(chips); }
+function getChips() { return [...chips]; }
+
+/* ══════════════════════════════════════════
+   POLÍGONOS ACTIVOS
+══════════════════════════════════════════ */
+function dibujarPolisActivos() {
+  limpiarPolisActivos();
+  if (!mapa) return;
+  polisEnMapa.forEach(p => {
+    const act = p.tipo === "activa";
+    p.poly = new google.maps.Polygon({
+      paths: p.path,
+      strokeColor:  act ? "#0033FF" : "#977DFF",
+      strokeOpacity: 0.9, strokeWeight: 2,
+      fillColor:    act ? "#0033FF" : "#977DFF",
+      fillOpacity:  act ? 0.16 : 0.12,
+      map: mapa, editable: true
+    });
+    p.poly.addListener("mouseup", () => {
+      const path = p.poly.getPath();
+      p.path = [];
+      for (let j = 0; j < path.getLength(); j++) {
+        const pt = path.getAt(j);
+        p.path.push({ lat: pt.lat(), lng: pt.lng() });
+      }
+    });
+  });
+}
+
+function limpiarPolisActivos() {
+  polisEnMapa.forEach(p => { if (p.poly) p.poly.setMap(null); });
+}
+
+function mostrarTodasEnMapa() {
+  if (!mapa) return;
+  zonas.forEach(z => {
+    (z.poligonos || []).forEach(p => {
+      const act = p.tipo === "activa";
+      new google.maps.Polygon({
+        paths: p.path,
+        strokeColor: act ? "#0033FF" : "#977DFF",
+        strokeOpacity: 0.6, strokeWeight: 1.5,
+        fillColor:    act ? "#0033FF" : "#977DFF",
+        fillOpacity: 0.08, map: mapa
+      });
+    });
+  });
+}
+
+/* ══════════════════════════════════════════
+   DIBUJO DE POLÍGONOS
+══════════════════════════════════════════ */
+function iniciarDibujo(tipo) {
+  if (!mapa) { toast("Carga el mapa primero con tu API Key", false); return; }
+  terminarDibujo();
+
+  const color = tipo === "activa" ? "#0033FF" : "#977DFF";
+  const puntos = [];
+  const polyline = new google.maps.Polyline({ path: puntos, strokeColor: color, strokeOpacity: 0.9, strokeWeight: 2, map: mapa });
+  const markers = [];
+
+  const listener = mapa.addListener("click", e => {
+    puntos.push({ lat: e.latLng.lat(), lng: e.latLng.lng() });
+    polyline.setPath(puntos);
+    markers.push(new google.maps.Marker({
+      position: e.latLng, map: mapa,
+      icon: { path: google.maps.SymbolPath.CIRCLE, scale: 5, fillColor: color, fillOpacity: 1, strokeColor: "white", strokeWeight: 1.5 }
+    }));
+  });
+
+  const keyFn = e => {
+    if (e.key === "Enter")  { terminarDibujo(); document.removeEventListener("keydown", keyFn); }
+    if (e.key === "Escape") { cancelarDibujo(); document.removeEventListener("keydown", keyFn); }
+  };
+  document.addEventListener("keydown", keyFn);
+
+  dibujando = { tipo, puntos, polyline, markers, listener };
+  document.getElementById("btn-stop").style.display = "flex";
+  document.getElementById("map-hint").classList.add("visible");
+  document.getElementById("map").style.cursor = "crosshair";
+}
+
+function terminarDibujo() {
+  if (!dibujando) return;
+  const { tipo, puntos, polyline, markers, listener } = dibujando;
+  google.maps.event.removeListener(listener);
+  polyline.setMap(null);
+  markers.forEach(m => m.setMap(null));
+  document.getElementById("btn-stop").style.display = "none";
+  document.getElementById("map-hint").classList.remove("visible");
+  document.getElementById("map").style.cursor = "";
+  dibujando = null;
+
+  if (puntos.length < 3) { toast("Necesitas al menos 3 puntos", false); return; }
+  polisEnMapa.push({ tipo, path: puntos, poly: null });
+  dibujarPolisActivos();
+  renderPolis();
+  toast(`Polígono de zona ${tipo === "activa" ? "activa" : "en expansión"} agregado`, true);
+}
+
+function cancelarDibujo() {
+  if (!dibujando) return;
+  const { polyline, markers, listener } = dibujando;
+  google.maps.event.removeListener(listener);
+  polyline.setMap(null);
+  markers.forEach(m => m.setMap(null));
+  document.getElementById("btn-stop").style.display = "none";
+  document.getElementById("map-hint").classList.remove("visible");
+  document.getElementById("map").style.cursor = "";
+  dibujando = null;
+}
+
+function renderPolis() {
+  const el = document.getElementById("poli-lista");
+  if (!polisEnMapa.length) {
+    el.innerHTML = `<p style="font-size:0.8rem;color:rgba(3,8,18,0.45);">Usa los botones de abajo para dibujar polígonos.</p>`;
+    return;
+  }
+  el.innerHTML = polisEnMapa.map((p, i) => `
+    <div class="poli-item">
+      <div class="poli-dot ${p.tipo}"></div>
+      <span class="poli-label">${p.tipo === "activa" ? "Zona activa" : "Zona en expansión"}</span>
+      <span class="poli-pts">${p.path.length} pts</span>
+      <button class="btn-icon" style="border-color:#ffd5d5;" title="Eliminar" onclick="eliminarPoli(${i})">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#cc2222" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>`).join("");
+}
+
+function eliminarPoli(i) {
+  if (polisEnMapa[i]?.poly) polisEnMapa[i].poly.setMap(null);
+  polisEnMapa.splice(i, 1);
+  dibujarPolisActivos();
+  renderPolis();
+}
+
+function centrarMapa() {
+  if (!mapa) return;
+  const lat = parseFloat(document.getElementById("f-lat").value);
+  const lng = parseFloat(document.getElementById("f-lng").value);
+  const z   = parseInt(document.getElementById("f-zoom").value) || 13;
+  if (isNaN(lat) || isNaN(lng)) { toast("Ingresa coordenadas de centro", false); return; }
+  mapa.setCenter({ lat, lng }); mapa.setZoom(z);
+}
+
+/* ══════════════════════════════════════════
+   EXPORT / IMPORT
+══════════════════════════════════════════ */
+function getJSON() { return JSON.stringify(zonas, null, 2); }
+
+function exportarJSON() {
+  document.getElementById("json-pre").textContent = getJSON();
+  document.getElementById("modal-json").classList.add("open");
+}
+
+function copiarJSON() {
+  navigator.clipboard.writeText(getJSON()).then(() => toast("Copiado al portapapeles", true));
+}
+
+function descargarJSON() {
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([getJSON()], { type: "application/json" }));
+  a.download = "cobertura.json"; a.click();
+  toast("Descargando cobertura.json…", true);
+}
+
+function abrirImport() { document.getElementById("modal-import").classList.add("open"); }
+
+function procesarImport() {
+  try {
+    const parsed = JSON.parse(document.getElementById("import-ta").value.trim());
+    if (!Array.isArray(parsed)) throw new Error("Debe ser un array JSON");
+    zonas = parsed;
+    document.getElementById("modal-import").classList.remove("open");
+    renderLista();
+    mostrarTodasEnMapa();
+    toast(`${zonas.length} zonas importadas`, true);
+  } catch(e) { toast("JSON inválido: " + e.message, false); }
+}
+
+/* ══════════════════════════════════════════
+   TOAST
+══════════════════════════════════════════ */
+function toast(msg, ok = true) {
+  const t = document.getElementById("toast");
+  const icon = document.getElementById("toast-icon");
+  t.className = "toast " + (ok ? "ok" : "err");
+  document.getElementById("toast-msg").textContent = msg;
+  icon.innerHTML = ok
+    ? `<path d="M5 13l4 4l10 -10"/>`
+    : `<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>`;
+  t.classList.add("show");
+  setTimeout(() => t.classList.remove("show"), 3000);
+}
+
+/* ══════════════════════════════════════════
+   ESTILO MAPA (mismo que internet2.html)
+══════════════════════════════════════════ */
+const ESTILO_MAPA = [
+  { elementType: "geometry", stylers: [{ color: "#eaedf8" }] },
+  { elementType: "labels.text.fill", stylers: [{ color: "#030812" }] },
+  { elementType: "labels.text.stroke", stylers: [{ color: "#ffffff" }] },
+  { featureType: "administrative", elementType: "geometry", stylers: [{ color: "#c9cde0" }] },
+  { featureType: "poi", stylers: [{ visibility: "off" }] },
+  { featureType: "road", elementType: "geometry", stylers: [{ color: "#ffffff" }] },
+  { featureType: "road", elementType: "labels", stylers: [{ visibility: "simplified" }] },
+  { featureType: "road.highway", elementType: "geometry", stylers: [{ color: "#dfe3f2" }] },
+  { featureType: "transit", stylers: [{ visibility: "off" }] },
+  { featureType: "water", elementType: "geometry", stylers: [{ color: "#c7d0f0" }] }
+];
+
+/* ══════════════════════════════════════════
+   INICIALIZAR CON DATOS DEL JSON ACTUAL
+══════════════════════════════════════════ */
+zonas = [{"clave":"hidalgo","nombre":"Hidalgo","titulo":"Tizayuca, Hidalgo","estado":"Cobertura activa","centro":{"lat":19.8367,"lng":-98.9918},"zoom":13,"descripcion":"Servicio disponible en Tizayuca y alrededores, con instalación en pocos días en las zonas marcadas.","zonas":["SADASI Los Héroes Tizayuca","Fuentes de Tizayuca"],"poligonos":[{"tipo":"activa","path":[{"lat":19.846,"lng":-99.004},{"lat":19.843,"lng":-98.982},{"lat":19.833,"lng":-98.976},{"lat":19.826,"lng":-98.987},{"lat":19.829,"lng":-99.001},{"lat":19.839,"lng":-99.007}]}]},{"clave":"ecatepec","nombre":"Ecatepec","titulo":"Ecatepec de Morelos","estado":"Cobertura activa","centro":{"lat":19.6018,"lng":-99.0507},"zoom":13,"descripcion":"Cobertura sólida en zonas residenciales del municipio, con una zona en expansión.","zonas":["Las Américas","Montes B"],"poligonos":[{"tipo":"activa","path":[{"lat":19.612,"lng":-99.065},{"lat":19.608,"lng":-99.04},{"lat":19.59,"lng":-99.035},{"lat":19.58,"lng":-99.055},{"lat":19.595,"lng":-99.07}]},{"tipo":"expansion","path":[{"lat":19.63,"lng":-99.055},{"lat":19.635,"lng":-99.035},{"lat":19.62,"lng":-99.03},{"lat":19.615,"lng":-99.05}]}]},{"clave":"chalco","nombre":"Chalco","titulo":"Chalco de Díaz Covarrubias","estado":"Cobertura activa","centro":{"lat":19.2612,"lng":-98.8958},"zoom":13,"descripcion":"Cobertura en zonas residenciales del municipio de Chalco.","zonas":["Los Héroes Chalco"],"poligonos":[{"tipo":"activa","path":[{"lat":19.27,"lng":-98.908},{"lat":19.268,"lng":-98.885},{"lat":19.253,"lng":-98.88},{"lat":19.248,"lng":-98.898},{"lat":19.26,"lng":-98.91}]}]}];
+renderLista();
+</script>
+</body>
+</html>

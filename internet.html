@@ -105,7 +105,7 @@
 
     <div class="cobertura-ciudades">
       <div class="ciudades-nav" id="ciudades-nav">
-        <p class="cobertura-cargando" id="cobertura-cargando">Cargando zonas de cobertura…</p>
+        <p class="cobertura-cargando" id="cobertura-cargando">No se pudo cargar la información de cobertura.</p>
       </div>
 
       <div class="mapa-panel-google" id="mapa-panel-google" style="display:none;">
@@ -113,7 +113,6 @@
           <div id="mapa-google"></div>
           <div id="mapa-sin-key" class="mapa-aviso" style="display:none;">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.86l-8.18 14.18A1 1 0 0 0 3 19.5h18a1 1 0 0 0 .87 -1.46L13.7 3.86a1 1 0 0 0 -1.74 0z"/></svg>
-            <p><strong>API Key de Google Maps no válida o sin permisos.</strong><br>Verifica que la clave en el atributo <code>key=</code> del script de Google Maps sea correcta y tenga habilitada la API de Maps JavaScript.</p>
           </div>
           <span class="mapa-tag" id="mapa-tag-label">Cobertura activa</span>
           <div class="mapa-leyenda" id="mapa-leyenda">
@@ -168,26 +167,11 @@
 <script src="componentes/cta-section.js"></script>
 <cta-section></cta-section>
 <script src="js/main.js"></script>
-<script>
-/* =========================================================
-   Mapas de cobertura — Google Maps real con polígonos
-   Los datos viven en data/cobertura.json. Para agregar,
-   quitar o editar zonas, usa editor-cobertura.html (no hace
-   falta tocar este archivo nunca más).
-   ========================================================= */
 
-const ESTILO_MAPA = [
-  { elementType: "geometry", stylers: [{ color: "#eaedf8" }] },
-  { elementType: "labels.text.fill", stylers: [{ color: "#030812" }] },
-  { elementType: "labels.text.stroke", stylers: [{ color: "#ffffff" }] },
-  { featureType: "administrative", elementType: "geometry", stylers: [{ color: "#c9cde0" }] },
-  { featureType: "poi", stylers: [{ visibility: "off" }] },
-  { featureType: "road", elementType: "geometry", stylers: [{ color: "#ffffff" }] },
-  { featureType: "road", elementType: "labels", stylers: [{ visibility: "simplified" }] },
-  { featureType: "road.highway", elementType: "geometry", stylers: [{ color: "#dfe3f2" }] },
-  { featureType: "transit", stylers: [{ visibility: "off" }] },
-  { featureType: "water", elementType: "geometry", stylers: [{ color: "#c7d0f0" }] }
-];
+<!-- Leaflet — gratuito, sin API Key, sin tarjeta -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
 
 let mapaCobertura = null;
 let poligonosActivos = [];
@@ -201,25 +185,23 @@ function pintarZona(clave) {
     b.classList.toggle("activo", b.getAttribute("data-ciudad") === clave);
   });
 
-  mapaCobertura.setCenter(datos.centro);
-  mapaCobertura.setZoom(datos.zoom || 13);
+  mapaCobertura.setView([datos.centro.lat, datos.centro.lng], datos.zoom || 13);
 
-  poligonosActivos.forEach(function (p) { p.setMap(null); });
+  poligonosActivos.forEach(function (p) { mapaCobertura.removeLayer(p); });
   poligonosActivos = [];
 
   let hayExpansion = false;
   (datos.poligonos || []).forEach(function (zona) {
     const esActiva = zona.tipo === "activa";
     if (!esActiva) hayExpansion = true;
-    const poly = new google.maps.Polygon({
-      paths: zona.path,
-      strokeColor: esActiva ? "#0033FF" : "#977DFF",
-      strokeOpacity: 0.9,
-      strokeWeight: 2,
-      fillColor: esActiva ? "#0033FF" : "#977DFF",
-      fillOpacity: esActiva ? 0.16 : 0.12,
-      map: mapaCobertura
-    });
+    const coords = zona.path.map(function (p) { return [p.lat, p.lng]; });
+    const poly = L.polygon(coords, {
+      color:       esActiva ? "#0033FF" : "#977DFF",
+      weight:      2,
+      opacity:     0.9,
+      fillColor:   esActiva ? "#0033FF" : "#977DFF",
+      fillOpacity: esActiva ? 0.16 : 0.12
+    }).addTo(mapaCobertura);
     poligonosActivos.push(poly);
   });
 
@@ -263,44 +245,40 @@ async function cargarCobertura() {
   }
   construirBotones();
   document.getElementById("mapa-panel-google").style.display = "grid";
-  if (window.google && window.google.maps) {
-    inicializarMapa();
-  }
+  inicializarMapa();
 }
 
 function inicializarMapa() {
   if (!ZONAS_COBERTURA.length) return;
-  mapaCobertura = new google.maps.Map(document.getElementById("mapa-google"), {
-    center: ZONAS_COBERTURA[0].centro,
-    zoom: ZONAS_COBERTURA[0].zoom || 13,
-    styles: ESTILO_MAPA,
-    disableDefaultUI: true,
+  const primera = ZONAS_COBERTURA[0];
+  const divMapa = document.getElementById("mapa-google");
+  divMapa.style.width  = "100%";
+  divMapa.style.height = "480px";
+  /* Make parent .mapa-media match so no grey overflow */
+  const mapaMedia = divMapa.closest(".mapa-media");
+  if (mapaMedia) { mapaMedia.style.height = "480px"; mapaMedia.style.aspectRatio = "unset"; }
+
+  mapaCobertura = L.map("mapa-google", {
+    center: [primera.centro.lat, primera.centro.lng],
+    zoom:   primera.zoom || 13,
     zoomControl: true
   });
-  pintarZona(ZONAS_COBERTURA[0].clave);
-}
 
-/* Google llama esta función cuando la API key falta o es inválida,
-   en vez de tronar la página mostramos un aviso amigable. */
-window.gm_authFailure = function () {
-  const mapaDiv = document.getElementById("mapa-google");
-  const aviso = document.getElementById("mapa-sin-key");
-  if (mapaDiv) mapaDiv.style.display = "none";
-  if (aviso) aviso.style.display = "flex";
-};
+  L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" style="font-size:10px">OSM</a> &copy; <a href="https://carto.com/" style="font-size:10px">CARTO</a>',
+    maxZoom: 19,
+    subdomains: "abcd"
+  }).addTo(mapaCobertura);
 
-/* initMap es el callback que pide el script de Google Maps */
-function initMap() {
-  if (ZONAS_COBERTURA.length) {
-    inicializarMapa();
-  }
-  /* si el JSON todavía no llegó, cargarCobertura() llamará a
-     inicializarMapa() en cuanto google.maps esté listo */
+  /* Shrink attribution control */
+  mapaCobertura.attributionControl.setPrefix('');
+  document.querySelector('.leaflet-control-attribution') && (document.querySelector('.leaflet-control-attribution').style.fontSize = '10px');
+
+  pintarZona(primera.clave);
 }
 
 cargarCobertura();
 </script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB06cPUllMpB_3U3lQJS-utEcPigPLRsCQ&callback=initMap" async defer></script>
 <script src="componentes/footer.js"></script>
 
 <mi-footer></mi-footer>
