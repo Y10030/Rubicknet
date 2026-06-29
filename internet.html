@@ -101,6 +101,10 @@
       <span class="eyebrow">Cobertura por zona</span>
       <h2 style="margin-top:14px;">Estas son las zonas donde ya tenemos cobertura</h2>
       <p>Selecciona una zona para ver el mapa real con la cobertura activa. Si tu colonia no aparece, usa el buscador de arriba para confirmar tu dirección exacta.</p>
+      <div class="mapa-leyenda mapa-leyenda-fija" id="mapa-leyenda">
+        <span><i class="punto activa"></i>Cobertura activa</span>
+        <span id="leyenda-expansion" style="display:none;"><i class="punto expansion"></i>En expansión</span>
+      </div>
     </div>
 
     <div class="cobertura-ciudades">
@@ -115,10 +119,6 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.86l-8.18 14.18A1 1 0 0 0 3 19.5h18a1 1 0 0 0 .87 -1.46L13.7 3.86a1 1 0 0 0 -1.74 0z"/></svg>
           </div>
           <span class="mapa-tag" id="mapa-tag-label">Cobertura activa</span>
-          <div class="mapa-leyenda" id="mapa-leyenda">
-            <span><i class="punto activa"></i>Cobertura activa</span>
-            <span id="leyenda-expansion" style="display:none;"><i class="punto expansion"></i>En expansión</span>
-          </div>
         </div>
         <div class="mapa-info">
           <span class="estado" id="info-estado">Cobertura activa</span>

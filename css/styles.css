@@ -1,4 +1,3 @@
-
 :root {
   --navy-900: #00033D;
   --blue-600: #0033FF;
@@ -623,6 +622,11 @@ site-header { display: block; }
 .mapa-panel { display: none; margin-top: 40px; }
 .mapa-panel.activo { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 44px; align-items: center; }
 
+.mapa-media {
+  position: relative;
+  overflow: hidden;
+  min-height: 480px;
+}
 .mapa-media > svg,
 .mapa-media .mapa-aviso svg {
   width: 100%;
@@ -636,11 +640,12 @@ site-header { display: block; }
   border: 1px solid var(--line-faint); display: flex; align-items: center; gap: 6px;
 }
 .mapa-tag::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--blue-600); box-shadow: 0 0 0 3px rgba(0,51,255,0.18); }
-.mapa-leyenda { position: absolute; bottom: 16px; left: 16px; z-index: 2; display: flex; gap: 10px; flex-wrap: wrap; }
+.mapa-leyenda { display: flex; gap: 10px; flex-wrap: wrap; }
+.mapa-leyenda-fija { margin-top: 18px; }
 .mapa-leyenda span {
-  font-family: var(--font-mono); font-size: 0.68rem; color: rgba(3,8,18,0.65);
+  font-family: var(--font-mono); font-size: 0.78rem; color: rgba(3,8,18,0.65);
   display: flex; align-items: center; gap: 6px;
-  background: rgba(255,255,255,0.88); padding: 5px 10px; border-radius: 999px;
+  background: var(--mist-100); padding: 6px 12px; border-radius: 999px;
 }
 .mapa-leyenda i.punto { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; display: block; }
 .mapa-leyenda i.punto.activa { background: var(--blue-600); }
