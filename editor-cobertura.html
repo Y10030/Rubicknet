@@ -63,6 +63,7 @@ svg { display: block; } button { font-family: var(--font-body); }
 .btn-secundario:hover { border-color: var(--navy-900); }
 .btn-claro { background: transparent; color: var(--white); border-color: rgba(234,237,248,0.28); }
 .btn-claro:hover { border-color: var(--white); }
+.btn-claro.conectado { background: rgba(0,196,140,0.18); border-color: rgba(0,196,140,0.5); color: #6ee7b7; }
 .btn-peligro { background: transparent; color: #cc2222; border-color: #ffd5d5; }
 .btn-peligro:hover { background: #fff0f0; }
 .btn-bloque { width: 100%; justify-content: center; }
@@ -134,7 +135,7 @@ svg { display: block; } button { font-family: var(--font-body); }
 .toast.err { border-left: 3px solid #FF3B3B; }
 .toast svg { width: 15px; height: 15px; flex-shrink: 0; }
 
-.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,3,61,0.55); z-index: 100; align-items: center; justify-content: center; padding: 24px; }
+.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,3,61,0.55); z-index: 10000; align-items: center; justify-content: center; padding: 24px; }
 .modal-overlay.open { display: flex; }
 .modal { background: var(--white); border-radius: var(--radius-l); width: 100%; max-width: 680px; max-height: 85vh; display: flex; flex-direction: column; box-shadow: 0 40px 80px -24px rgba(0,3,61,0.5); }
 .modal-head { padding: 18px 22px; border-bottom: 1px solid var(--line-faint); display: flex; align-items: center; gap: 10px; }
@@ -156,6 +157,10 @@ svg { display: block; } button { font-family: var(--font-body); }
     <span class="header-tag">Editor de Cobertura</span>
   </div>
   <div class="header-right">
+    <button class="btn btn-claro" id="btn-conectar-archivo" onclick="conectarArchivo()" title="Conecta tu data/cobertura.json real para guardar directo a disco (Chrome/Edge)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M5 3h9l5 5v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/></svg>
+      Conectar mi cobertura.json
+    </button>
     <button class="btn btn-claro" onclick="abrirImport()">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/><polyline points="7 9 12 4 17 9"/><line x1="12" y1="4" x2="12" y2="16"/></svg>
       Importar JSON
@@ -294,6 +299,7 @@ svg { display: block; } button { font-family: var(--font-body); }
 /* ══ ESTADO ══ */
 let zonas = [];
 let idxActivo = null;
+let fileHandle = null; // handle del archivo real cobertura.json, vía File System Access API
 let mapa = null;
 let polisEnMapa = [];   // { tipo, path[], layer }
 let dibujando = null;   // { tipo, puntos[], polyline, markers[], clickFn, keyFn }
@@ -374,7 +380,7 @@ function cancelarEdicion() {
 }
 
 /* ══ GUARDAR / ELIMINAR ══ */
-function guardarZona() {
+async function guardarZona() {
   terminarDibujo();
   const nombre = document.getElementById("f-nombre").value.trim();
   const clave  = document.getElementById("f-clave").value.trim();
@@ -393,17 +399,21 @@ function guardarZona() {
   };
   if (!z.centro) delete z.centro;
   if (idxActivo===null) { zonas.push(z); idxActivo=zonas.length-1; } else zonas[idxActivo]=z;
-  toast(`"${nombre}" guardada`,true); renderLista(); dibujarPolisActivos();
+  renderLista(); dibujarPolisActivos();
+  const guardadoEnDisco = await guardarEnArchivo();
+  toast(guardadoEnDisco ? `"${nombre}" guardada en tu archivo` : `"${nombre}" guardada (conecta tu cobertura.json para escribir directo a disco)`, true);
 }
 
-function eliminarZona() {
+async function eliminarZona() {
   if (idxActivo===null) return;
   const nombre=zonas[idxActivo]?.nombre||"esta zona";
   if (!confirm(`¿Eliminar "${nombre}"? No se puede deshacer.`)) return;
   zonas.splice(idxActivo,1); limpiarPolisActivos(); idxActivo=null; polisEnMapa=[];
   document.getElementById("form-panel").style.display="none";
   document.getElementById("map-label").textContent="Selecciona o crea una zona para empezar";
-  renderLista(); mostrarTodasEnMapa(); toast("Zona eliminada",true);
+  renderLista(); mostrarTodasEnMapa();
+  const guardadoEnDisco = await guardarEnArchivo();
+  toast(guardadoEnDisco ? "Zona eliminada y guardada en tu archivo" : "Zona eliminada", true);
 }
 
 /* ══ CHIPS ══ */
@@ -466,7 +476,7 @@ function renderPolis() {
   </div>`).join("");
 }
 
-function eliminarPoli(i){
+async function eliminarPoli(i){
   const p=polisEnMapa[i];
   if(p?.layer && mapa.hasLayer(p.layer)) mapa.removeLayer(p.layer);
   polisEnMapa.splice(i,1);
@@ -479,7 +489,8 @@ function eliminarPoli(i){
   dibujarPolisActivos();
   renderPolis();
   renderLista();
-  toast("Polígono eliminado",true);
+  const guardadoEnDisco = await guardarEnArchivo();
+  toast(guardadoEnDisco ? "Polígono eliminado y guardado en tu archivo" : "Polígono eliminado",true);
 }
 
 /* ══ DIBUJO CON LEAFLET ══ */
@@ -572,10 +583,85 @@ function toast(msg,ok=true){
   t.classList.add("show"); setTimeout(()=>t.classList.remove("show"),3000);
 }
 
+/* ══ ARCHIVO REAL EN DISCO (File System Access API) ══ */
+async function conectarArchivo() {
+  if (!window.showOpenFilePicker) {
+    toast("Tu navegador no soporta esto. Usa Chrome o Edge en computadora.", false);
+    return;
+  }
+  try {
+    const [handle] = await window.showOpenFilePicker({
+      types: [{ description: "JSON de cobertura", accept: { "application/json": [".json"] } }],
+      multiple: false
+    });
+    const file = await handle.getFile();
+    const texto = await file.text();
+    const datos = JSON.parse(texto);
+    if (!Array.isArray(datos)) throw new Error("El archivo no contiene un arreglo de zonas");
+
+    fileHandle = handle;
+    zonas = datos;
+    idxActivo = null;
+    limpiarPolisActivos();
+    document.getElementById("form-panel").style.display = "none";
+    document.getElementById("map-label").textContent = "Selecciona o crea una zona para empezar";
+    renderLista();
+    mostrarTodasEnMapa();
+    actualizarEstadoArchivo();
+    toast(`Conectado a "${fileHandle.name}" — ${zonas.length} zonas cargadas`, true);
+  } catch (e) {
+    if (e.name !== "AbortError") toast("No se pudo conectar el archivo: " + e.message, false);
+  }
+}
+
+async function guardarEnArchivo() {
+  if (!fileHandle) return false;
+  try {
+    const writable = await fileHandle.createWritable();
+    await writable.write(getJSON());
+    await writable.close();
+    return true;
+  } catch (e) {
+    toast("No se pudo escribir en el archivo: " + e.message, false);
+    return false;
+  }
+}
+
+function actualizarEstadoArchivo() {
+  const btn = document.getElementById("btn-conectar-archivo");
+  if (!btn) return;
+  if (fileHandle) {
+    btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4l10 -10"/></svg> ${fileHandle.name} conectado`;
+    btn.classList.add("conectado");
+  } else {
+    btn.classList.remove("conectado");
+  }
+}
+
 /* ══ INICIO ══ */
-zonas=[{"clave":"hidalgo","nombre":"Hidalgo","titulo":"Tizayuca, Hidalgo","estado":"Cobertura activa","centro":{"lat":19.8367,"lng":-98.9918},"zoom":13,"descripcion":"Servicio disponible en Tizayuca y alrededores.","zonas":["SADASI Los Héroes Tizayuca","Fuentes de Tizayuca"],"poligonos":[{"tipo":"activa","path":[{"lat":19.846,"lng":-99.004},{"lat":19.843,"lng":-98.982},{"lat":19.833,"lng":-98.976},{"lat":19.826,"lng":-98.987},{"lat":19.829,"lng":-99.001},{"lat":19.839,"lng":-99.007}]}]},{"clave":"ecatepec","nombre":"Ecatepec","titulo":"Ecatepec de Morelos","estado":"Cobertura activa","centro":{"lat":19.6018,"lng":-99.0507},"zoom":13,"descripcion":"Cobertura sólida en zonas residenciales.","zonas":["Las Américas","Montes B"],"poligonos":[{"tipo":"activa","path":[{"lat":19.612,"lng":-99.065},{"lat":19.608,"lng":-99.04},{"lat":19.59,"lng":-99.035},{"lat":19.58,"lng":-99.055},{"lat":19.595,"lng":-99.07}]},{"tipo":"expansion","path":[{"lat":19.63,"lng":-99.055},{"lat":19.635,"lng":-99.035},{"lat":19.62,"lng":-99.03},{"lat":19.615,"lng":-99.05}]}]},{"clave":"chalco","nombre":"Chalco","titulo":"Chalco de Díaz Covarrubias","estado":"Cobertura activa","centro":{"lat":19.2612,"lng":-98.8958},"zoom":13,"descripcion":"Cobertura en zonas residenciales de Chalco.","zonas":["Los Héroes Chalco"],"poligonos":[{"tipo":"activa","path":[{"lat":19.27,"lng":-98.908},{"lat":19.268,"lng":-98.885},{"lat":19.253,"lng":-98.88},{"lat":19.248,"lng":-98.898},{"lat":19.26,"lng":-98.91}]}]}];
-renderLista();
-window.addEventListener("load", initMapa);
+const ZONAS_EJEMPLO = [{"clave":"hidalgo","nombre":"Hidalgo","titulo":"Tizayuca, Hidalgo","estado":"Cobertura activa","centro":{"lat":19.8367,"lng":-98.9918},"zoom":13,"descripcion":"Servicio disponible en Tizayuca y alrededores.","zonas":["SADASI Los Héroes Tizayuca","Fuentes de Tizayuca"],"poligonos":[{"tipo":"activa","path":[{"lat":19.846,"lng":-99.004},{"lat":19.843,"lng":-98.982},{"lat":19.833,"lng":-98.976},{"lat":19.826,"lng":-98.987},{"lat":19.829,"lng":-99.001},{"lat":19.839,"lng":-99.007}]}]},{"clave":"ecatepec","nombre":"Ecatepec","titulo":"Ecatepec de Morelos","estado":"Cobertura activa","centro":{"lat":19.6018,"lng":-99.0507},"zoom":13,"descripcion":"Cobertura sólida en zonas residenciales.","zonas":["Las Américas","Montes B"],"poligonos":[{"tipo":"activa","path":[{"lat":19.612,"lng":-99.065},{"lat":19.608,"lng":-99.04},{"lat":19.59,"lng":-99.035},{"lat":19.58,"lng":-99.055},{"lat":19.595,"lng":-99.07}]},{"tipo":"expansion","path":[{"lat":19.63,"lng":-99.055},{"lat":19.635,"lng":-99.035},{"lat":19.62,"lng":-99.03},{"lat":19.615,"lng":-99.05}]}]},{"clave":"chalco","nombre":"Chalco","titulo":"Chalco de Díaz Covarrubias","estado":"Cobertura activa","centro":{"lat":19.2612,"lng":-98.8958},"zoom":13,"descripcion":"Cobertura en zonas residenciales de Chalco.","zonas":["Los Héroes Chalco"],"poligonos":[{"tipo":"activa","path":[{"lat":19.27,"lng":-98.908},{"lat":19.268,"lng":-98.885},{"lat":19.253,"lng":-98.88},{"lat":19.248,"lng":-98.898},{"lat":19.26,"lng":-98.91}]}]}];
+
+async function cargarZonasIniciales() {
+  try {
+    const resp = await fetch("data/cobertura.json", { cache: "no-store" });
+    if (!resp.ok) throw new Error("HTTP " + resp.status);
+    const datos = await resp.json();
+    if (!Array.isArray(datos)) throw new Error("El JSON no es un arreglo");
+    zonas = datos;
+    toast(`Se cargó tu data/cobertura.json real (${zonas.length} zonas)`, true);
+  } catch (e) {
+    console.warn("No se pudo cargar data/cobertura.json, usando zonas de ejemplo:", e);
+    zonas = JSON.parse(JSON.stringify(ZONAS_EJEMPLO));
+    toast("No se encontró data/cobertura.json — mostrando zonas de ejemplo", false);
+  }
+  renderLista();
+  mostrarTodasEnMapa();
+}
+
+window.addEventListener("load", function () {
+  initMapa();
+  cargarZonasIniciales();
+});
 </script>
 </body>
 </html>
