@@ -623,12 +623,12 @@ site-header { display: block; }
 .mapa-panel { display: none; margin-top: 40px; }
 .mapa-panel.activo { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 44px; align-items: center; }
 
-.mapa-media {
-  position: relative; border-radius: var(--radius-l); overflow: hidden;
-  background: var(--mist-100); border: 1px solid var(--line-faint);
-  aspect-ratio: 4/3; box-shadow: var(--shadow-card);
+.mapa-media > svg,
+.mapa-media .mapa-aviso svg {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
-.mapa-media svg { width: 100%; height: 100%; display: block; }
 .mapa-tag {
   position: absolute; top: 16px; left: 16px; z-index: 2;
   font-family: var(--font-mono); font-size: 0.7rem; color: var(--navy-900);
