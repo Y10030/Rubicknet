@@ -67,15 +67,35 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  /* ---------- Formulario de contacto (demo) ---------- */
+  /* ---------- Formulario de contacto -> arma mensaje y abre WhatsApp ---------- */
   var formContacto = document.getElementById('form-contacto');
   if (formContacto) {
     formContacto.addEventListener('submit', function (e) {
       e.preventDefault();
+
+      var nombre = (formContacto.nombre && formContacto.nombre.value.trim()) || '';
+      var empresa = (formContacto.empresa && formContacto.empresa.value.trim()) || '';
+      var telefono = (formContacto.telefono && formContacto.telefono.value.trim()) || '';
+      var servicio = (formContacto.servicio && formContacto.servicio.value) || '';
+      var mensaje = (formContacto.mensaje && formContacto.mensaje.value.trim()) || '';
+
+      var lineas = ['Hola, quiero cotizar un servicio.'];
+      if (servicio) lineas.push('Servicio de interés: ' + servicio + '.');
+      if (nombre) lineas.push('Nombre: ' + nombre + '.');
+      if (empresa) lineas.push('Empresa: ' + empresa + '.');
+      if (telefono) lineas.push('Teléfono: ' + telefono + '.');
+      if (mensaje) lineas.push('Mensaje: ' + mensaje);
+      var textoWhatsApp = lineas.join(' ');
+
+      var url = (window.Rubicknet && window.Rubicknet.armarLinkWhatsApp)
+        ? window.Rubicknet.armarLinkWhatsApp(textoWhatsApp)
+        : ('https://wa.me/5568115210?text=' + encodeURIComponent(textoWhatsApp));
+      window.open(url, '_blank', 'noopener');
+
       var aviso = document.getElementById('aviso-contacto');
       if (aviso) {
         aviso.style.display = 'block';
-        aviso.textContent = 'Gracias por escribirnos. Te contactaremos muy pronto.';
+        aviso.textContent = 'Gracias por escribirnos. Abrimos WhatsApp con tu mensaje listo para enviar.';
       }
       formContacto.reset();
     });

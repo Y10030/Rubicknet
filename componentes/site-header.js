@@ -50,6 +50,7 @@ class SiteHeader extends HTMLElement {
             </span>
 
             <a href="contacto.html"
+               data-wa-msg="Hola, no estoy seguro de qué servicio necesito, ¿me pueden orientar?"
                class="btn btn-primario"
                style="padding:9px 16px;">
                Pedir ayuda
@@ -86,6 +87,16 @@ class SiteHeader extends HTMLElement {
         const navToggle     = this.querySelector('.menu-toggle');
         const navItem        = this.querySelector('.nav-item');
         const solucionesBtn  = this.querySelector('.soluciones-btn');
+
+        /* Botón "Cotizar" -> WhatsApp con mensaje según la página actual */
+        const navCta = this.querySelector('.nav-cta');
+        if (navCta && window.Rubicknet) {
+            navCta.href = window.Rubicknet.armarLinkWhatsApp(window.Rubicknet.mensajePorPagina());
+            navCta.target = '_blank';
+            navCta.rel = 'noopener';
+        }
+        /* Activa cualquier otro link con data-wa-msg dentro del header (p. ej. "Pedir ayuda") */
+        if (window.Rubicknet) window.Rubicknet.activarBotonesWhatsApp(this);
 
         const esEscritorio = () =>
             window.matchMedia('(hover: hover) and (pointer: fine)').matches;
