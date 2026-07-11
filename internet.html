@@ -280,7 +280,7 @@ async function cargarCobertura() {
   } catch (e) {
     console.error("No se pudo cargar data/cobertura.json", e);
     document.getElementById("cobertura-cargando").textContent =
-      "No se pudo cargar la información de cobertura. Verifica que el archivo data/cobertura.json exista junto a este HTML.";
+      "No se pudo cargar la información de cobertura.";
     return;
   }
   construirBotones();
