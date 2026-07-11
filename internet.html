@@ -171,12 +171,18 @@
 
 <script src="componentes/cta-section.js?v=202606290439"></script>
 <cta-section></cta-section>
+<script src="js/cobertura.js?v=202606290439"></script>
 <script src="js/main.js?v=202606290439"></script>
 
 <!-- Leaflet — gratuito, sin API Key, sin tarjeta -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script>
+
+/* La búsqueda por texto, por ubicación y la carga de data/cobertura.json
+   viven en js/cobertura.js (window.Rubicknet.cobertura) y se comparten con
+   TODO el sitio. Aquí solo se usa ese mismo resultado para pintar el mapa,
+   así que agregar una zona nueva solo requiere editar data/cobertura.json. */
 
 let mapaCobertura = null;
 let poligonosActivos = [];
@@ -267,8 +273,10 @@ function construirBotones() {
 
 async function cargarCobertura() {
   try {
-    const resp = await fetch("data/cobertura.json", { cache: "no-store" });
-    ZONAS_COBERTURA = await resp.json();
+    // Reutiliza la misma carga (y el mismo caché) que usa js/cobertura.js
+    // para el resto del sitio, en vez de volver a hacer fetch aquí.
+    ZONAS_COBERTURA = await window.Rubicknet.cobertura.cargar();
+    if (!ZONAS_COBERTURA.length) throw new Error("cobertura.json vacío o no disponible");
   } catch (e) {
     console.error("No se pudo cargar data/cobertura.json", e);
     document.getElementById("cobertura-cargando").textContent =
@@ -314,86 +322,34 @@ function inicializarMapa() {
 
 cargarCobertura();
 
-/* ---------- Utilidades de coincidencia de texto ---------- */
-function normalizarTexto(str) {
-  return (str || "").toString()
-    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase().trim();
-}
-
-function buscarZonaPorTexto(texto) {
-  const t = normalizarTexto(texto);
-  if (!t) return null;
-  for (const zona of ZONAS_COBERTURA) {
-    const candidatos = [zona.nombre, zona.clave].concat(zona.zonas || []);
-    for (const candidato of candidatos) {
-      const n = normalizarTexto(candidato);
-      if (n && (n.includes(t) || t.includes(n))) return zona;
-    }
-  }
-  return null;
-}
-
-/* ---------- Punto dentro de polígono (ray casting) ---------- */
-function puntoDentroPoligono(lat, lng, path) {
-  let dentro = false;
-  for (let i = 0, j = path.length - 1; i < path.length; j = i++) {
-    const xi = path[i].lat, yi = path[i].lng;
-    const xj = path[j].lat, yj = path[j].lng;
-    const cruza = ((yi > lng) !== (yj > lng)) &&
-      (lat < (xj - xi) * (lng - yi) / (yj - yi) + xi);
-    if (cruza) dentro = !dentro;
-  }
-  return dentro;
-}
-
-function buscarZonaPorCoordenadas(lat, lng) {
-  for (const zona of ZONAS_COBERTURA) {
-    for (const poligono of (zona.poligonos || [])) {
-      if (puntoDentroPoligono(lat, lng, poligono.path || [])) {
-        return { zona: zona, tipo: poligono.tipo };
-      }
-    }
-  }
-  return null;
-}
-
 function mostrarResultado(elemento, texto, variante) {
-  elemento.textContent = texto;
+  if (!elemento) return;
+  elemento.innerHTML = texto;
   elemento.className = "resultado-cobertura mostrar" + (variante ? " resultado-cobertura--" + variante : "");
 }
 
-/* ---------- Buscador del hero (colonia o código postal) ---------- */
+/* ---------- Buscador del hero (colonia o código postal) ----------
+   El texto/geolocalización y el mensaje de resultado los resuelve
+   js/cobertura.js (mismo comportamiento que en el resto del sitio, y
+   ahí mismo aparece siempre el botón "Usar mi ubicación" junto al
+   buscador). Aquí solo escuchamos su evento para pintar el mapa. */
 const formBuscador = document.getElementById("buscador");
 if (formBuscador) {
-  formBuscador.addEventListener("submit", function (e) {
-    e.preventDefault();
-    const input = formBuscador.querySelector("input");
-    const resultado = document.getElementById("resultado-buscador");
-    const texto = input ? input.value : "";
-
-    if (!ZONAS_COBERTURA.length) {
-      mostrarResultado(resultado, "Estamos cargando la información de cobertura, intenta de nuevo en unos segundos.", null);
-      return;
-    }
-    if (!normalizarTexto(texto)) {
-      mostrarResultado(resultado, "Escribe tu colonia o código postal para consultar.", "no");
-      return;
-    }
-
-    const zona = buscarZonaPorTexto(texto);
-    if (zona) {
-      mostrarResultado(resultado, "¡Buena noticia! Ya tenemos presencia en " + zona.nombre + " (" + zona.estado + "). Te mostramos el detalle más abajo.", "si");
+  formBuscador.addEventListener("rubicknet:cobertura-resultado", function (e) {
+    const detalle = e.detail || {};
+    if (detalle.encontrado && detalle.zona) {
       const navCiudades = document.getElementById("ciudades-nav");
       if (navCiudades) navCiudades.scrollIntoView({ behavior: "smooth", block: "start" });
-      setTimeout(function () { pintarZona(zona.clave); }, 350);
-    } else {
-      mostrarResultado(resultado, "Por ahora no encontramos esa colonia o código postal en nuestra cobertura confirmada. Contáctanos para revisar tu caso a detalle.", "no");
+      setTimeout(function () { pintarZona(detalle.zona.clave); }, 350);
     }
   });
 }
 
-/* ---------- Verificar por ubicación (geolocalización del navegador) ---------- */
+/* ---------- Verificar por ubicación, dentro del panel del mapa ----------
+   Este botón es aparte del "Usar mi ubicación" del buscador de arriba:
+   vuelve a pedir la ubicación pero la resuelve con la misma función
+   compartida (window.Rubicknet.cobertura.buscarPorCoordenadas), sin
+   duplicar la lógica de punto-en-polígono. */
 const btnUbicacion = document.getElementById("btn-verificar-ubicacion");
 if (btnUbicacion) {
   btnUbicacion.addEventListener("click", function () {
@@ -415,7 +371,7 @@ if (btnUbicacion) {
         return;
       }
 
-      const encontrado = buscarZonaPorCoordenadas(pos.coords.latitude, pos.coords.longitude);
+      const encontrado = window.Rubicknet.cobertura.buscarPorCoordenadas(pos.coords.latitude, pos.coords.longitude);
 
       if (encontrado && encontrado.tipo === "activa") {
         mostrarResultado(resultado, "¡Buenas noticias! Tu ubicación está dentro de la cobertura activa de " + encontrado.zona.nombre + ".", "si");
