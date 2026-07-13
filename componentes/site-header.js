@@ -4,7 +4,12 @@ class SiteHeader extends HTMLElement {
         this.innerHTML = `
 <header class="site-header">
   <div class="header-inner">
-    <a href="index.html" class="logo">Rubicknet<span>.</span></a>
+    <a href="index.html" class="logo">
+    <img src="Logo-RN.png" alt="Rubicknet">
+    <span class="logo-text">
+        Rubicknet<span class="punto">.</span>
+    </span>
+</a>
 
     <nav class="main-nav">
 

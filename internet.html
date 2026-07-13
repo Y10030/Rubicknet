@@ -3,11 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Planes de internet para hogar y empresa | Rubicknet</title>
+<title>Internet | Rubicknet</title>
 <meta name="description" content="Consulta cobertura de internet residencial y empresarial de Rubicknet: planes, velocidades, SLA y enlaces de respaldo.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/styles.css?v=1.4">
+<link rel="stylesheet" href="css/styles.css?v=1.9">
+<link rel="icon" type="image/png" href="Logo-RN.png">
 <style>
   .faq-categoria{
     font-family:"Space Grotesk",sans-serif;
@@ -50,7 +51,18 @@
     opacity:0;
     transform:translateY(14px);
     transition:opacity .25s ease, transform .25s ease;
+    pointer-events:auto;
   }
+  .rn-toast-cuerpo{display:flex;flex-direction:column;align-items:flex-start;gap:9px;flex:1 1 auto;}
+  .rn-toast-cta{
+    display:inline-flex;align-items:center;gap:6px;
+    padding:7px 15px;border-radius:999px;
+    background:rgba(255,255,255,.14);
+    color:#fff;font-size:.82rem;font-weight:600;
+    text-decoration:none;white-space:nowrap;
+    transition:background .15s ease;
+  }
+  .rn-toast-cta:hover{background:rgba(255,255,255,.24);}
   .rn-toast.mostrar{opacity:1;transform:translateY(0);}
   .rn-toast.ocultando{opacity:0;transform:translateY(-6px);}
   .rn-toast .rn-toast-icono{flex:0 0 auto;width:20px;height:20px;margin-top:1px;}
@@ -662,18 +674,25 @@ const ICONOS_TOAST = {
   no: '<svg class="rn-toast-icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.86l-8.18 14.18A1 1 0 0 0 3 19.5h18a1 1 0 0 0 .87 -1.46L13.7 3.86a1 1 0 0 0 -1.74 0z"/></svg>'
 };
 
-function mostrarToast(texto, variante, duracionMs) {
+function mostrarToast(texto, variante, duracionMs, opciones) {
   const wrap = document.getElementById("rubicknet-toast-wrap");
   if (!wrap) return;
 
   const toast = document.createElement("div");
   toast.className = "rn-toast" + (variante ? " rn-toast--" + variante : "");
-  toast.innerHTML = (ICONOS_TOAST[variante] || "") + "<span>" + texto + "</span>";
+
+  let ctaHTML = "";
+  if (opciones && opciones.ctaHref && opciones.ctaLabel) {
+    ctaHTML = '<a href="' + opciones.ctaHref + '" class="rn-toast-cta">' + opciones.ctaLabel + '</a>';
+  }
+
+  toast.innerHTML = (ICONOS_TOAST[variante] || "") +
+    '<div class="rn-toast-cuerpo"><span>' + texto + '</span>' + ctaHTML + '</div>';
   wrap.appendChild(toast);
 
   requestAnimationFrame(function () { toast.classList.add("mostrar"); });
 
-  const tiempoVida = duracionMs || 5000;
+  const tiempoVida = duracionMs || (ctaHTML ? 7000 : 5000);
   setTimeout(function () {
     toast.classList.remove("mostrar");
     toast.classList.add("ocultando");
@@ -730,7 +749,7 @@ if (btnUbicacion) {
 
       if (encontrado && encontrado.tipo === "activa") {
         window.Rubicknet.cobertura.guardarUltimaZona(encontrado.zona);
-        mostrarToast("¡Buenas noticias! Tu ubicación está dentro de la cobertura activa de " + encontrado.zona.nombre + ".", "si");
+        mostrarToast("¡Buenas noticias! Tu ubicación está dentro de la cobertura activa de " + encontrado.zona.nombre + ".", "si", null, { ctaHref: "#planes", ctaLabel: "Ver planes" });
         pintarZona(encontrado.zona.clave);
       } else if (encontrado) {
         window.Rubicknet.cobertura.guardarUltimaZona(encontrado.zona);

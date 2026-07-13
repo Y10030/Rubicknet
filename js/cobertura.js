@@ -165,7 +165,7 @@
         return;
       }
 
-      mostrar(form, '¡Buena noticia! Ya tenemos presencia en <strong>' + item.zona.nombre + '</strong> (' + item.zona.estado + ').', 'si');
+      avisar(form, '¡Buena noticia! Ya tenemos presencia en <strong>' + item.zona.nombre + '</strong> (' + item.zona.estado + ').', 'si', { ctaHref: '#planes', ctaLabel: 'Ver planes' });
       emitir(form, { origen: 'autocompletado', encontrado: true, zona: item.zona });
     }
 
@@ -366,13 +366,19 @@
 
   /* ---------- Inicialización por formulario ---------- */
 
-  function avisar(form, texto, variante) {
+  function avisar(form, texto, variante, opciones) {
     // Usa la notificación flotante si la página la define (internet.html la
-    // trae); si no existe (otras páginas), cae en el mensaje inline de siempre.
+    // trae); si no existe (otras páginas), cae en el mensaje inline de siempre,
+    // agregando el botón CTA (p. ej. "Ver planes") como link dentro del texto.
     if (typeof window.mostrarToast === 'function') {
-      window.mostrarToast(texto, variante);
+      window.mostrarToast(texto, variante, null, opciones);
     } else {
-      mostrar(form, texto, variante);
+      var html = texto;
+      if (opciones && opciones.ctaHref && opciones.ctaLabel) {
+        html += '<br><a href="' + opciones.ctaHref + '" class="btn btn-primario" ' +
+          'style="margin-top:10px;padding:9px 18px;font-size:.85rem;">' + opciones.ctaLabel + '</a>';
+      }
+      mostrar(form, html, variante);
     }
   }
 
@@ -407,10 +413,10 @@
 
         var zona = buscarPorTexto(texto);
         if (zona) {
-          mostrar(form, '¡Buena noticia! Ya tenemos presencia en <strong>' + zona.nombre + '</strong> (' + zona.estado + ').', 'si');
+          avisar(form, '¡Buena noticia! Ya tenemos presencia en <strong>' + zona.nombre + '</strong> (' + zona.estado + ').', 'si', { ctaHref: '#planes', ctaLabel: 'Ver planes' });
           emitir(form, { origen: 'texto', encontrado: true, zona: zona });
         } else {
-          mostrar(form, 'Por ahora no encontramos esa colonia en nuestra cobertura confirmada. <a href="contacto.html">Contáctanos</a> para revisar tu caso a detalle.', 'no');
+          avisar(form, 'Por ahora no encontramos esa colonia en nuestra cobertura confirmada. <a href="contacto.html">Contáctanos</a> para revisar tu caso a detalle.', 'no');
           emitir(form, { origen: 'texto', encontrado: false });
         }
       });
@@ -438,7 +444,7 @@
           var encontrado = buscarPorCoordenadas(pos.coords.latitude, pos.coords.longitude);
 
           if (encontrado && encontrado.tipo === 'activa') {
-            avisar(form, '¡Buenas noticias! Tu ubicación está dentro de la cobertura activa de <strong>' + encontrado.zona.nombre + '</strong>.', 'si');
+            avisar(form, '¡Buenas noticias! Tu ubicación está dentro de la cobertura activa de <strong>' + encontrado.zona.nombre + '</strong>.', 'si', { ctaHref: 'internet.html#planes', ctaLabel: 'Ver planes' });
             emitir(form, { origen: 'ubicacion', encontrado: true, zona: encontrado.zona, tipoPoligono: 'activa' });
           } else if (encontrado) {
             avisar(form, 'Tu ubicación está en una zona en expansión de <strong>' + encontrado.zona.nombre + '</strong>. Pronto tendremos cobertura ahí.', 'expansion');

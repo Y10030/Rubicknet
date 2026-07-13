@@ -6,7 +6,10 @@ class MiFooter extends HTMLElement {
   <div class="contenedor">
     <div class="footer-grid">
       <div>
-        <div class="footer-logo">Rubicknet</div>
+        <div class="footer-logo">
+    <img src="Logo-RN.png" alt="Rubicknet">
+    <span>Rubicknet</span>
+</div>
         <p>Internet, cableado, vigilancia y soporte técnico para hogares y empresas.</p>
         <p>Ecatepec - Jardines de Morelos</p>
       </div>
