@@ -178,6 +178,12 @@
           return;
         }
 
+        var yaEnMapa = !!document.getElementById('mapa-panel-google');
+        if (!yaEnMapa) {
+          window.location.href = 'internet.html?colonia=' + encodeURIComponent(texto) + '#ciudades-nav';
+          return;
+        }
+
         var zona = buscarPorTexto(texto);
         if (zona) {
           mostrar(form, '¡Buena noticia! Ya tenemos presencia en <strong>' + zona.nombre + '</strong> (' + zona.estado + ').', 'si');

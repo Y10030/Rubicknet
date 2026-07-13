@@ -356,6 +356,15 @@
           return;
         }
 
+        // Si no estamos ya en la página del mapa de cobertura (internet.html),
+        // mandamos ahí al usuario con su búsqueda, para que vea el mapa real
+        // y, si hay cobertura, los botones de "Ver planes" / "Cotizar".
+        var yaEnMapa = !!document.getElementById('mapa-panel-google');
+        if (!yaEnMapa) {
+          window.location.href = 'internet.html?colonia=' + encodeURIComponent(texto) + '#ciudades-nav';
+          return;
+        }
+
         var zona = buscarPorTexto(texto);
         if (zona) {
           mostrar(form, '¡Buena noticia! Ya tenemos presencia en <strong>' + zona.nombre + '</strong> (' + zona.estado + ').', 'si');
