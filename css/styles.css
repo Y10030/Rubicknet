@@ -148,7 +148,7 @@ site-header { display: block; }
 
 /* ---------- Header ---------- */
 .site-header {
-  position: sticky; top: 0; z-index: 60;
+  position: sticky; top: 0; z-index: 80;
   background: rgba(0,3,61,0.9);
   border-bottom: 1px solid rgba(151,125,255,0.30);
   /* Nota: backdrop-filter se quitó a propósito. Al tener un hijo con

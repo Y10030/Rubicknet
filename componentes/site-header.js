@@ -93,16 +93,6 @@ class SiteHeader extends HTMLElement {
         const navItem        = this.querySelector('.nav-item');
         const solucionesBtn  = this.querySelector('.soluciones-btn');
 
-        /* Botón "Cotizar" -> WhatsApp con mensaje según la página actual */
-        const navCta = this.querySelector('.nav-cta');
-        if (navCta && window.Rubicknet) {
-            navCta.href = window.Rubicknet.armarLinkWhatsApp(window.Rubicknet.mensajePorPagina());
-            navCta.target = '_blank';
-            navCta.rel = 'noopener';
-        }
-        /* Activa cualquier otro link con data-wa-msg dentro del header (p. ej. "Pedir ayuda") */
-        if (window.Rubicknet) window.Rubicknet.activarBotonesWhatsApp(this);
-
         const esEscritorio = () =>
             window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
@@ -157,6 +147,21 @@ class SiteHeader extends HTMLElement {
                 nav.classList.remove('abierto');
             });
         });
+
+        try {
+            const navCta = this.querySelector('.nav-cta');
+            if (navCta && window.Rubicknet && typeof window.Rubicknet.armarLinkWhatsApp === 'function' && typeof window.Rubicknet.mensajePorPagina === 'function') {
+                navCta.href = window.Rubicknet.armarLinkWhatsApp(window.Rubicknet.mensajePorPagina());
+                navCta.target = '_blank';
+                navCta.rel = 'noopener';
+            }
+            /* Activa cualquier otro link con data-wa-msg dentro del header (p. ej. "Pedir ayuda") */
+            if (window.Rubicknet && typeof window.Rubicknet.activarBotonesWhatsApp === 'function') {
+                window.Rubicknet.activarBotonesWhatsApp(this);
+            }
+        } catch (err) {
+            console.error('SiteHeader: fallo al preparar los links de WhatsApp', err);
+        }
     }
 }
 
