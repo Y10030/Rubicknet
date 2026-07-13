@@ -36,6 +36,7 @@ body {
   font-size: 16px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 img { max-width: 100%; display: block; }
 a { color: inherit; text-decoration: none; }
@@ -262,7 +263,7 @@ site-header { display: block; }
 }
 .buscador-cobertura svg { width: 20px; height: 20px; color: var(--lavender-400); flex-shrink: 0; }
 .buscador-cobertura input {
-  flex: 1; background: none; border: none; outline: none;
+  flex: 1; min-width: 0; background: none; border: none; outline: none;
   color: var(--white); font-family: var(--font-body); font-size: 0.96rem;
   padding: 14px 0;
 }
@@ -734,4 +735,80 @@ site-header { display: block; }
         pointer-events: auto;
         transform: translateX(-50%) translateY(0);
     }
+}
+
+/* =========================================================
+   Responsive · pantallas pequeñas (celulares)
+   ========================================================= */
+@media (max-width: 480px) {
+  .contenedor { padding: 0 18px; }
+  .header-inner { padding: 14px 18px; }
+
+  .seccion { padding: 48px 0; }
+  .seccion.compacta { padding: 40px 0; }
+  .hero { padding: 36px 0 60px; }
+  .hero-sub { font-size: 1rem; }
+  .hero-cta-row { gap: 14px; }
+
+  /* Los botones ya no fuerzan una sola línea: un texto largo
+     (p. ej. "¿Eres empresa? Cotiza tus servicios") baja de línea
+     en vez de estirar el botón fuera de la pantalla. */
+  .btn { white-space: normal; text-align: left; }
+
+  /* Buscador de cobertura: input y botón se apilan para que
+     ambos queden cómodos y con buen tamaño de toque. */
+  .buscador-cobertura {
+    flex-wrap: wrap;
+    padding: 14px 14px 10px;
+  }
+  .buscador-cobertura svg { display: none; }
+  .buscador-cobertura input {
+    flex: 1 1 100%;
+    padding: 6px 0 12px;
+  }
+  .buscador-cobertura .btn {
+    flex: 1 1 100%;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .cifras-grid { gap: 22px 14px; }
+  .cifra strong { font-size: 1.7rem; }
+
+  .grid-servicios { margin-top: 34px; }
+  .tarjeta-servicio { padding: 24px 20px; }
+
+  .mini-proyectos { grid-template-columns: repeat(2,1fr); }
+
+  .cta-final { padding: 36px 22px; }
+  .cta-botones { flex-direction: column; align-items: stretch; }
+  .cta-botones .btn { justify-content: center; text-align: center; }
+
+  .solucion-hero { padding: 56px 0 44px; }
+  .solucion-hero .icono-grande { width: 54px; height: 54px; }
+
+  .panel-lateral { padding: 26px 22px; }
+  .otras-grid { grid-template-columns: 1fr; }
+
+  .filtros-proyectos { gap: 8px; }
+  .filtro { padding: 8px 14px; font-size: 0.8rem; }
+
+  .ficha-proyecto { padding: 24px 20px; }
+  .ficha-datos dl { grid-template-columns: 84px 1fr; }
+  .ficha-galeria { grid-template-columns: repeat(2,1fr); }
+
+  .contacto-info-card { padding: 28px 22px; }
+  .dato-contacto span, .footer-grid p, .footer-grid a { word-break: break-word; }
+
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 26px 18px; }
+  .site-footer { padding: 56px 0 24px; }
+
+  .mega-destacado { flex-direction: column; align-items: flex-start; }
+  .mega-destacado .btn { align-self: stretch; justify-content: center; }
+
+  .mapa-media { min-height: 300px; }
+  .mapa-tag { font-size: 0.65rem; padding: 5px 10px; }
+
+  .whatsapp-float { width: 52px; height: 52px; bottom: 20px; right: 18px; }
+  .whatsapp-float svg { width: 22px; height: 22px; }
 }
