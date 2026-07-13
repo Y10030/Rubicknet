@@ -38,6 +38,174 @@
     return null;
   }
 
+  /* Devuelve hasta `max` sugerencias { etiqueta, zona } que coincidan con lo
+     que el usuario va escribiendo, buscando tanto en el nombre de la zona
+     como en cada colonia individual (zona.zonas), para que autocompletar
+     "las am" ya muestre "Las Américas — Ecatepec". Las coincidencias que
+     empiezan igual que lo escrito se priorizan sobre las que solo lo
+     contienen en medio. */
+  function obtenerSugerencias(texto, max) {
+    var t = normalizarTexto(texto);
+    if (!t) return [];
+    max = max || 6;
+
+    var vistos = {};
+    var empiezan = [];
+    var contienen = [];
+
+    zonas.forEach(function (zona) {
+      var candidatos = (zona.zonas && zona.zonas.length) ? zona.zonas.slice() : [zona.nombre];
+      if (zona.zonas && zona.zonas.length && normalizarTexto(zona.nombre).indexOf(t) !== -1) {
+        candidatos = candidatos.concat([zona.nombre]);
+      }
+      candidatos.forEach(function (candidato) {
+        var n = normalizarTexto(candidato);
+        if (!n) return;
+        var clave = n + '|' + zona.clave;
+        if (vistos[clave]) return;
+
+        var pos = n.indexOf(t);
+        if (pos === -1) return;
+        vistos[clave] = true;
+
+        var item = { etiqueta: candidato, zona: zona };
+        if (pos === 0) empiezan.push(item); else contienen.push(item);
+      });
+    });
+
+    return empiezan.concat(contienen).slice(0, max);
+  }
+
+  /* ---------- Autocompletado ---------- */
+
+  function inyectarEstilosAutocompletado() {
+    if (document.getElementById('rubicknet-autocomplete-estilos')) return;
+    var style = document.createElement('style');
+    style.id = 'rubicknet-autocomplete-estilos';
+    style.textContent =
+      '.rbk-autocomplete-wrap{position:relative;}' +
+      '.rbk-autocomplete{position:absolute;top:calc(100% + 8px);left:0;right:0;z-index:60;' +
+      'background:#fff;border-radius:14px;box-shadow:0 16px 40px rgba(15,23,42,.18);' +
+      'overflow:hidden;border:1px solid rgba(15,23,42,.08);}' +
+      '.rbk-autocomplete ul{list-style:none;margin:0;padding:6px;max-height:280px;overflow-y:auto;}' +
+      '.rbk-autocomplete li{margin:0;}' +
+      '.rbk-autocomplete button{width:100%;text-align:left;display:flex;flex-direction:column;gap:1px;' +
+      'padding:10px 12px;border:0;background:none;border-radius:9px;cursor:pointer;font-family:inherit;}' +
+      '.rbk-autocomplete button:hover,.rbk-autocomplete button.activa{background:rgba(0,51,255,.07);}' +
+      '.rbk-autocomplete .rbk-ac-colonia{font-size:.94rem;font-weight:600;color:#0f172a;}' +
+      '.rbk-autocomplete .rbk-ac-zona{font-size:.8rem;color:#64748b;}';
+    document.head.appendChild(style);
+  }
+
+  function inicializarAutocompletado(form) {
+    var input = form.querySelector('input[type="text"]');
+    if (!input) return;
+
+    inyectarEstilosAutocompletado();
+
+    // El dropdown se posiciona relativo al padre inmediato del input (que
+    // normalmente es el propio <form>), así que ese padre necesita position:relative.
+    var contenedor = input.parentElement || form;
+    contenedor.classList.add('rbk-autocomplete-wrap');
+    if (getComputedStyle(contenedor).position === 'static') {
+      contenedor.style.position = 'relative';
+    }
+
+    var panel = document.createElement('div');
+    panel.className = 'rbk-autocomplete';
+    panel.style.display = 'none';
+    var lista = document.createElement('ul');
+    panel.appendChild(lista);
+    contenedor.appendChild(panel);
+
+    var activo = -1;
+    var sugerenciasActuales = [];
+
+    function ocultar() {
+      panel.style.display = 'none';
+      activo = -1;
+      sugerenciasActuales = [];
+    }
+
+    function seleccionar(item) {
+      input.value = item.etiqueta;
+      ocultar();
+      mostrar(form, '¡Buena noticia! Ya tenemos presencia en <strong>' + item.zona.nombre + '</strong> (' + item.zona.estado + ').', 'si');
+      emitir(form, { origen: 'autocompletado', encontrado: true, zona: item.zona });
+    }
+
+    function pintar(sugerencias) {
+      sugerenciasActuales = sugerencias;
+      activo = -1;
+      lista.innerHTML = '';
+
+      if (!sugerencias.length) { ocultar(); return; }
+
+      sugerencias.forEach(function (item, i) {
+        var li = document.createElement('li');
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.innerHTML =
+          '<span class="rbk-ac-colonia">' + item.etiqueta + '</span>' +
+          '<span class="rbk-ac-zona">' + item.zona.titulo + '</span>';
+        btn.addEventListener('mousedown', function (e) {
+          // mousedown (no click) para que dispare antes del blur del input
+          e.preventDefault();
+          seleccionar(item);
+        });
+        li.appendChild(btn);
+        lista.appendChild(li);
+      });
+
+      panel.style.display = 'block';
+    }
+
+    function actualizarActivo() {
+      var botones = lista.querySelectorAll('button');
+      botones.forEach(function (b, i) { b.classList.toggle('activa', i === activo); });
+      if (activo >= 0 && botones[activo]) {
+        botones[activo].scrollIntoView({ block: 'nearest' });
+      }
+    }
+
+    input.addEventListener('input', function () {
+      cargar().then(function () {
+        pintar(obtenerSugerencias(input.value));
+      });
+    });
+
+    input.addEventListener('keydown', function (e) {
+      if (panel.style.display === 'none' || !sugerenciasActuales.length) return;
+
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        activo = Math.min(activo + 1, sugerenciasActuales.length - 1);
+        actualizarActivo();
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        activo = Math.max(activo - 1, 0);
+        actualizarActivo();
+      } else if (e.key === 'Enter') {
+        if (activo >= 0) {
+          e.preventDefault();
+          seleccionar(sugerenciasActuales[activo]);
+        }
+      } else if (e.key === 'Escape') {
+        ocultar();
+      }
+    });
+
+    input.addEventListener('focus', function () {
+      if (input.value.trim()) {
+        cargar().then(function () { pintar(obtenerSugerencias(input.value)); });
+      }
+    });
+
+    document.addEventListener('click', function (e) {
+      if (!contenedor.contains(e.target)) ocultar();
+    });
+  }
+
   function puntoDentroPoligono(lat, lng, path) {
     var dentro = false;
     for (var i = 0, j = path.length - 1; i < path.length; j = i++) {
@@ -160,6 +328,16 @@
 
   /* ---------- Inicialización por formulario ---------- */
 
+  function avisar(form, texto, variante) {
+    // Usa la notificación flotante si la página la define (internet.html la
+    // trae); si no existe (otras páginas), cae en el mensaje inline de siempre.
+    if (typeof window.mostrarToast === 'function') {
+      window.mostrarToast(texto, variante);
+    } else {
+      mostrar(form, texto, variante);
+    }
+  }
+
   function inicializarForm(form) {
     var btnUbicacion = asegurarBotonUbicacion(form);
 
@@ -174,7 +352,7 @@
           return;
         }
         if (!normalizarTexto(texto)) {
-          mostrar(form, 'Escribe tu colonia o código postal para consultar.', 'no');
+          mostrar(form, 'Escribe tu colonia para consultar.', 'no');
           return;
         }
 
@@ -183,7 +361,7 @@
           mostrar(form, '¡Buena noticia! Ya tenemos presencia en <strong>' + zona.nombre + '</strong> (' + zona.estado + ').', 'si');
           emitir(form, { origen: 'texto', encontrado: true, zona: zona });
         } else {
-          mostrar(form, 'Por ahora no encontramos esa colonia o código postal en nuestra cobertura confirmada. <a href="contacto.html">Contáctanos</a> para revisar tu caso a detalle.', 'no');
+          mostrar(form, 'Por ahora no encontramos esa colonia en nuestra cobertura confirmada. <a href="contacto.html">Contáctanos</a> para revisar tu caso a detalle.', 'no');
           emitir(form, { origen: 'texto', encontrado: false });
         }
       });
@@ -191,7 +369,7 @@
 
     btnUbicacion.addEventListener('click', function () {
       if (!navigator.geolocation) {
-        mostrar(form, 'Tu navegador no permite obtener tu ubicación. Usa el buscador con tu colonia o código postal.', 'no');
+        avisar(form, 'Tu navegador no permite obtener tu ubicación. Usa el buscador con tu colonia.', 'no');
         return;
       }
 
@@ -200,31 +378,35 @@
 
       navigator.geolocation.getCurrentPosition(function (pos) {
         btnUbicacion.disabled = false;
+        mostrar(form, '', null);
 
         cargar().then(function () {
           if (!zonas.length) {
-            mostrar(form, 'Aún estamos cargando la información de cobertura, intenta de nuevo en un momento.', null);
+            avisar(form, 'Aún estamos cargando la información de cobertura, intenta de nuevo en un momento.', null);
             return;
           }
 
           var encontrado = buscarPorCoordenadas(pos.coords.latitude, pos.coords.longitude);
 
           if (encontrado && encontrado.tipo === 'activa') {
-            mostrar(form, '¡Buenas noticias! Tu ubicación está dentro de la cobertura activa de <strong>' + encontrado.zona.nombre + '</strong>.', 'si');
+            avisar(form, '¡Buenas noticias! Tu ubicación está dentro de la cobertura activa de <strong>' + encontrado.zona.nombre + '</strong>.', 'si');
             emitir(form, { origen: 'ubicacion', encontrado: true, zona: encontrado.zona, tipoPoligono: 'activa' });
           } else if (encontrado) {
-            mostrar(form, 'Tu ubicación está en una zona en expansión de <strong>' + encontrado.zona.nombre + '</strong>. Pronto tendremos cobertura ahí.', 'expansion');
+            avisar(form, 'Tu ubicación está en una zona en expansión de <strong>' + encontrado.zona.nombre + '</strong>. Pronto tendremos cobertura ahí.', 'expansion');
             emitir(form, { origen: 'ubicacion', encontrado: true, zona: encontrado.zona, tipoPoligono: 'expansion' });
           } else {
-            mostrar(form, 'Por ahora no tenemos cobertura confirmada en tu ubicación exacta. Usa el buscador o <a href="contacto.html">contáctanos</a> para más detalles.', 'no');
+            avisar(form, 'Por ahora no tenemos cobertura confirmada en tu ubicación exacta. Usa el buscador o <a href="contacto.html">contáctanos</a> para más detalles.', 'no');
             emitir(form, { origen: 'ubicacion', encontrado: false });
           }
         });
       }, function () {
         btnUbicacion.disabled = false;
-        mostrar(form, 'No pudimos obtener tu ubicación. Revisa los permisos de ubicación en tu navegador o usa el buscador.', 'no');
+        mostrar(form, '', null);
+        avisar(form, 'No pudimos obtener tu ubicación. Revisa los permisos de ubicación en tu navegador o usa el buscador.', 'no');
       }, { enableHighAccuracy: true, timeout: 10000 });
     });
+
+    inicializarAutocompletado(form);
   }
 
   document.addEventListener('DOMContentLoaded', function () {
@@ -237,6 +419,7 @@
     cargar: cargar,
     normalizarTexto: normalizarTexto,
     buscarPorTexto: buscarPorTexto,
+    obtenerSugerencias: obtenerSugerencias,
     buscarPorCoordenadas: buscarPorCoordenadas,
     puntoDentroPoligono: puntoDentroPoligono
   };

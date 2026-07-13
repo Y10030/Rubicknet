@@ -8,6 +8,59 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/styles.css?v=202606290439">
+<style>
+  .faq-categoria{
+    font-family:"Space Grotesk",sans-serif;
+    font-size:1.05rem;
+    font-weight:600;
+    color:var(--blue-600,#0033FF);
+    margin:36px 0 12px;
+    letter-spacing:.01em;
+  }
+  .faq-categoria:first-of-type{margin-top:8px;}
+
+  #rubicknet-toast-wrap{
+    position:fixed;
+    left:50%;
+    bottom:28px;
+    transform:translateX(-50%);
+    z-index:9999;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    align-items:center;
+    pointer-events:none;
+    width:100%;
+    padding:0 16px;
+  }
+  .rn-toast{
+    font-family:"Inter",sans-serif;
+    font-size:.92rem;
+    line-height:1.4;
+    color:#fff;
+    background:#101425;
+    border:1px solid rgba(255,255,255,.08);
+    box-shadow:0 12px 32px rgba(0,0,0,.35);
+    border-radius:12px;
+    padding:14px 18px;
+    max-width:420px;
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+    opacity:0;
+    transform:translateY(14px);
+    transition:opacity .25s ease, transform .25s ease;
+  }
+  .rn-toast.mostrar{opacity:1;transform:translateY(0);}
+  .rn-toast.ocultando{opacity:0;transform:translateY(-6px);}
+  .rn-toast .rn-toast-icono{flex:0 0 auto;width:20px;height:20px;margin-top:1px;}
+  .rn-toast--si{border-color:rgba(52,211,153,.35);}
+  .rn-toast--si .rn-toast-icono{color:#34D399;}
+  .rn-toast--expansion{border-color:rgba(151,125,255,.35);}
+  .rn-toast--expansion .rn-toast-icono{color:#977DFF;}
+  .rn-toast--no{border-color:rgba(248,113,113,.35);}
+  .rn-toast--no .rn-toast-icono{color:#F87171;}
+</style>
 </head>
 <body>
 
@@ -21,11 +74,11 @@
   <div class="contenedor hero-inner">
     <span class="eyebrow claro">Cobertura residencial y empresarial</span>
     <h1>Internet estable, con equipo de calidad.</h1>
-    <p class="hero-sub">Ingresa tu colonia o código postal y te decimos si ya tenemos cobertura en tu zona.</p>
+    <p class="hero-sub">Ingresa tu colonia y te decimos si ya tenemos cobertura en tu zona.</p>
     
         <form id="buscador" class="buscador-cobertura form-cobertura" action="#" method="get" style="margin-top:30px;max-width:640px;">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.3 -4.3"/></svg>
-          <input type="text" placeholder="Ingresa tu colonia o código postal" aria-label="Colonia o código postal">
+          <input type="text" placeholder="Ingresa tu colonia" aria-label="Colonia" autocomplete="off">
           <button type="submit" class="btn btn-primario">Consultar cobertura</button>
         </form>
         <p class="resultado-cobertura" id="resultado-buscador"></p>
@@ -140,25 +193,260 @@
       <span class="eyebrow">Preguntas frecuentes</span>
       <h2 style="margin-top:14px;">Antes de contratar</h2>
     </div>
+    <h3 class="faq-categoria">Instalación y equipo</h3>
     <div class="faq-list">
       <div class="faq-item">
-        <button class="faq-pregunta">&#191;Cuánto tarda la instalación?<span class="signo">+</span></button>
-        <div class="faq-respuesta"><p>En la mayoría de las zonas, la instalación se agenda dentro de los primeros días después de confirmar tu cobertura. [Ajustar tiempo real de instalación].</p></div>
+        <button class="faq-pregunta">&#191;En qué horario instalan?<span class="signo">+</span></button>
+        <div class="faq-respuesta"><p>Solo se realizan instalaciones de 12:00 pm a 7:00 pm (lunes a viernes) y los sábados de 10:00 am a 12:00 pm.</p></div>
       </div>
-    
+
       <div class="faq-item">
-        <button class="faq-pregunta">&#191;Qué equipo se incluye?<span class="signo">+</span></button>
-        <div class="faq-respuesta"><p>El router Wi-Fi queda incluido en todos los planes residenciales. [Dependiendo del caso, el equipo para fibra optica o antena].</p></div>
+        <button class="faq-pregunta">&#191;Cuánto tiempo se tarda en la instalación?<span class="signo">+</span></button>
+        <div class="faq-respuesta"><p>De 2 a 3 horas, dependiendo si hay tubería, dónde se va a colocar el router inalámbrico, etc.</p></div>
       </div>
-    
+
       <div class="faq-item">
-        <button class="faq-pregunta">&#191;Hay contrato mínimo?<span class="signo">+</span></button>
-        <div class="faq-respuesta"><p>[No, texto que no se que poner].</p></div>
+        <button class="faq-pregunta">&#191;En cuánto tiempo instalan una vez que contrate?<span class="signo">+</span></button>
+        <div class="faq-respuesta"><p>Tenemos hasta 72 horas en condiciones normales de carga de trabajo, siempre y cuando el clima lo permita.</p></div>
       </div>
-    
+
       <div class="faq-item">
-        <button class="faq-pregunta">&#191;Qué pasa si me cambio de domicilio?<span class="signo">+</span></button>
-        <div class="faq-respuesta"><p>Si tu nueva dirección está dentro de zona de cobertura, agendamos el cambio de domicilio [extender xd].</p></div>
+        <button class="faq-pregunta">&#191;Por qué no pueden instalar por la noche?<span class="signo">+</span></button>
+        <div class="faq-respuesta"><p>No programamos instalaciones durante la noche, para salvaguardar la integridad física de nuestros técnicos instaladores.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-pregunta">&#191;Qué pasa si hago una cita y no estoy?<span class="signo">+</span></button>
+        <div class="faq-respuesta"><p>Podemos generarte un cargo por tiempo y gasolina de hasta $150 pesos.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-pregunta">&#191;Qué instalan en mi casa?<span class="signo">+</span></button>
+        <div class="faq-respuesta"><p>Una antena (módem) y un cable para interconectar la antena receptora de la azotea y el router dentro de su domicilio, que es a donde se conectarán sus dispositivos (tablets, teléfonos, computadoras, etc.).</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-pregunta">&#191;Me instalan algún cable de red en la casa?<span class="signo">+</span></button>
+        <div class="faq-respuesta"><p>Nosotros le podemos instalar el cable que necesite; esto incluye un costo adicional, siempre y cuando la vivienda lo permita.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-pregunta">&#191;Con qué equipos es compatible el internet?<span class="signo">+</span></button>
+        <div class="faq-respuesta"><p>Es compatible con la mayoría de los equipos inalámbricos actuales o de última generación, no debe de tener ningún problema.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-pregunta">&#191;Si pago la instalación el equipo es mío?<span class="signo">+</span></button>
+        <div class="faq-respuesta"><p>No, el equipo es propiedad en todo momento de RubickNET; por la instalación lo que se está pagando es el cableado, los accesorios, la configuración y el tiempo del técnico.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-pregunta">&#191;Qué pasa si no regreso el equipo?<span class="signo">+</span></button>
+        <div class="faq-respuesta"><p>Se ejecutaría el pagaré que se firmó en el contrato, donde se firma como garantía de que los equipos siguen siendo de RubickNET.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-pregunta">&#191;Por qué tengo que firmar un pagaré?<span class="signo">+</span></button>
+        <div class="faq-respuesta"><p>Debido a que el equipo está instalado en una propiedad ajena a RubickNET, y requerimos un medio para asegurar el acceso a nuestro equipo. Una vez que desinstalamos el equipo, se le hace entrega del pagaré.</p></div>
+      </div>
+    </div>
+
+    <h3 class="faq-categoria">Servicio y velocidad</h3>
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-pregunta">&#191;El servicio es inalámbrico?<span class="signo">+</span></button>
+        <div class="faq-respuesta"><p>Llegamos a su domicilio de manera inalámbrica con un equipo en su azotea y después instalamos otro equipo al interior del domicilio, para entregarle el servicio de internet.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-pregunta">&#191;El servicio es dedicado?<span class="signo">+</span></button>
+        <div class="faq-respuesta"><p>Es un servicio de banda ancha del tipo "mejor esfuerzo" con un medio de acceso dedicado, pero debido a la misma naturaleza de internet el servicio en un punto o varios se comparte y sobre-suscribe.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-pregunta">&#191;Si contratan más vecinos mi velocidad disminuye?<span class="signo">+</span></button>
+        <div class="faq-respuesta"><p>No, la empresa se encarga de poner más ancho de banda según las fórmulas de sobre-suscripción.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-pregunta">&#191;Qué pasa si nos conectamos todos en mi casa al mismo tiempo?<span class="signo">+</span></button>
+        <div class="faq-respuesta"><p>La velocidad de navegación en cada dispositivo disminuye; es un comportamiento similar a abrir todas las llaves de agua de la casa al mismo tiempo: en todas sale agua, pero a una presión muy baja.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-pregunta">&#191;Por qué hacia algunas páginas está lento y hacia otras no?<span class="signo">+</span></button>
+        <div class="faq-respuesta"><p>Ese tipo de comportamiento se debe a la misma naturaleza de internet: puede ser que algunas rutas se encuentren temporalmente saturadas o los servidores donde se alojan las páginas.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-pregunta">&#191;Si se va la luz qué pasa?<span class="signo">+</span></button>
+        <div class="faq-respuesta"><p>Debido a que necesita de energía, no habrá servicio de internet.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-pregunta">&#191;Ya regresó la luz, va a funcionar correctamente?<span class="signo">+</span></button>
+        <div class="faq-respuesta"><p>El equipo guarda la configuración, debe funcionar correctamente sin problema.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-pregunta">&#191;Funciona cuando llueve, hay tormenta o mucho aire?<span class="signo">+</span></button>
+        <div class="faq-respuesta"><p>El sistema debe funcionar correctamente sin ningún problema.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-pregunta">&#191;El servicio cuenta con una IP homologada?<span class="signo">+</span></button>
+        <div class="faq-respuesta"><p>No, el servicio cuenta con una IP privada.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-pregunta">&#191;Pueden filtrar el contenido o hacer que alguien no vea algún destino?<span class="signo">+</span></button>
+        <div class="faq-respuesta"><p>No, el servicio de filtrado tendría que configurarlo usted mismo o contratar a un tercero.</p></div>
+      </div>
+    </div>
+
+    <h3 class="faq-categoria">Soporte y contacto</h3>
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-pregunta">&#191;Cómo los puedo contactar?<span class="signo">+</span></button>
+        <div class="faq-respuesta"><p>El mejor medio es por correo electrónico soporte@rubicknet.com.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-pregunta">&#191;Cómo obtengo soporte si tengo un problema?<span class="signo">+</span></button>
+        <div class="faq-respuesta"><p>La comunicación con la empresa es únicamente por medios electrónicos para mantener costos bajos: correo electrónico soporte@rubicknet.com o los teléfonos 6811-5210 / 7675-9193 / 55-3451-0027.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-pregunta">&#191;Por qué toda la comunicación es electrónica o telefónica?<span class="signo">+</span></button>
+        <div class="faq-respuesta"><p>Debido a que la mayoría de los problemas son ajenos a configuraciones o al servicio en sí, al mismo tiempo que nos ayuda a mantener bajos costos.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-pregunta">&#191;Está lento, qué hago?<span class="signo">+</span></button>
+        <div class="faq-respuesta"><p>Repórtalo al departamento de soporte técnico al correo soporte@rubicknet.com.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-pregunta">&#191;El router es inalámbrico, qué tengo que hacer para poder conectarme?<span class="signo">+</span></button>
+        <div class="faq-respuesta"><p>Contar con algún dispositivo inalámbrico como tableta, teléfono celular con capacidad de WiFi, o una PC con algún adaptador inalámbrico USB; la mayoría de las laptops ya cuentan con tarjeta de red inalámbrica integrada.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-pregunta">&#191;Pueden configurarme mis equipos?<span class="signo">+</span></button>
+        <div class="faq-respuesta"><p>El instalador lo asesora para conectar sus dispositivos por primera vez, a través de una sencilla explicación. La configuración de equipos no está incluida en nuestro servicio.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-pregunta">&#191;Tengo virus en mi computadora, me la pueden formatear?<span class="signo">+</span></button>
+        <div class="faq-respuesta"><p>Contamos con servicio técnico para equipos de cómputo con costo adicional bajo cotización y revisión.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-pregunta">&#191;Qué pasa si comparto mi clave?<span class="signo">+</span></button>
+        <div class="faq-respuesta"><p>Si comparte su clave de acceso con algún vecino, bajaría la velocidad y estabilidad de navegación, así como aumentaría el riesgo de contagiar a sus dispositivos de algún virus informático que pudiese tener.</p></div>
+      </div>
+    </div>
+
+    <h3 class="faq-categoria">Pagos y plan</h3>
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-pregunta">&#191;Por qué debo pagar la instalación primero?<span class="signo">+</span></button>
+        <div class="faq-respuesta"><p>Es el proceso establecido para realizar la instalación del servicio.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-pregunta">&#191;Puedo subir de plan?<span class="signo">+</span></button>
+        <div class="faq-respuesta"><p>Durante el periodo de vigencia de tu contrato es posible aumentar de plan de internet, a partir de tu tercer mes, firmando un nuevo contrato con fechas nuevas de vencimiento; únicamente es para incrementos.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-pregunta">&#191;Quiero menos velocidad, qué hago?<span class="signo">+</span></button>
+        <div class="faq-respuesta"><p>Durante la vigencia del plan no se puede disminuir, solo al renovar se hacen cambios. Puedes exponer tu caso o situación enviando las condiciones al correo informes@rubicknet.com para valoración.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-pregunta">&#191;Quiero cancelar, qué hago?<span class="signo">+</span></button>
+        <div class="faq-respuesta"><p>Como se menciona en el contrato, envía al correo informes@rubicknet.com las causas o motivo de la solicitud de cancelación, y revisaremos la información para dar respuesta en un plazo no mayor a 5 días hábiles.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-pregunta">&#191;No funciona el servicio, quiero cancelar?<span class="signo">+</span></button>
+        <div class="faq-respuesta"><p>Si el servicio no funciona y no lo podemos solucionar tienes derecho a cancelar; solo necesitamos tu carta de motivos, revisar si no existe algún adeudo, y posteriormente pasaremos a tu domicilio por los equipos.</p></div>
+      </div>
+    </div>
+
+    <h3 class="faq-categoria">Casos especiales</h3>
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-pregunta">&#191;Qué pasa si se roban el equipo?<span class="signo">+</span></button>
+        <div class="faq-respuesta"><p>Deberá levantar la denuncia correspondiente en el ministerio público para iniciar el trámite de reposición de equipo nuevo con cargo a su cuenta. Puede enviar copia de la denuncia al correo informes@rubicknet.com para la suspensión temporal de cargo de 1 mes.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="seccion" id="aviso-privacidad">
+  <div class="contenedor">
+    <div class="seccion-titulo">
+      <span class="eyebrow">Aviso de privacidad</span>
+      <h2 style="margin-top:14px;">Tratamiento de tus datos personales</h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-pregunta">Ver Aviso de Privacidad<span class="signo">+</span></button>
+        <div class="faq-respuesta">
+          <p>Para RubickNET el tratamiento controlado e informado de sus datos personales es muy importante para reiterar nuestro compromiso con su privacidad y el derecho a la autodeterminación informativa. El presente Aviso de Privacidad tiene como objeto informarle sobre el tratamiento que se le dará a sus datos personales cuando los mismos son recabados, utilizados, almacenados y/o transferidos por RubickNET.</p>
+
+          <h4>Responsable del tratamiento de sus datos personales</h4>
+          <p>RubickNET S.A.S. (en adelante "RubickNET"), será el responsable y, por ende, quien decidirá sobre el tratamiento que se le dé a sus datos personales.</p>
+
+          <h4>Datos personales que se recaban</h4>
+          <p>RubickNET podrá recabar y, en su caso, tratar los siguientes datos personales, dependiendo de la relación que con usted exista:</p>
+          <ul class="lista-check">
+            <li>Nombre completo</li>
+            <li>Domicilio(s)</li>
+            <li>Correo electrónico</li>
+            <li>Teléfono particular, del trabajo, celular</li>
+          </ul>
+          <p>RubickNET también podrá tratar los siguientes datos personales sensibles:</p>
+          <ul class="lista-check">
+            <li>Información respecto a los productos de RubickNET que usted adquiere</li>
+            <li>Registro de compras del producto</li>
+          </ul>
+          <p>Podrán tratarse otros datos personales, sensibles y no sensibles, que no se incluyan en las listas anteriores siempre y cuando dichos datos se consideren de la misma naturaleza y no sean excesivos respecto a las finalidades para las cuales se recaban.</p>
+
+          <h4>Finalidades del tratamiento de los datos personales</h4>
+          <p>RubickNET recaba, utiliza, almacena o transfiere sus datos personales, en la medida en que las leyes aplicables lo permiten, para llevar a cabo lo siguiente:</p>
+          <ul class="lista-check">
+            <li>Desarrollo de nuevos productos y servicios</li>
+            <li>Seguimiento a las ventas a fin de alcanzar la satisfacción del cliente</li>
+            <li>Creación de directorios</li>
+            <li>Envío de promociones sobre nuestros productos o servicios de acuerdo con lo que consideramos son los intereses del consumidor</li>
+            <li>Entrega de promociones</li>
+            <li>Hacerle llegar comunicaciones de todo tipo, provenientes de RubickNET</li>
+          </ul>
+          <p>RubickNET podrá hacer uso de sus datos personales para otras finalidades, siempre y cuando dichas finalidades sean compatibles y puedan considerarse análogas a las anteriores.</p>
+          <p>Sus datos personales serán tratados únicamente por el tiempo necesario a fin de cumplir con las finalidades descritas y/o de conformidad con lo que establezcan las disposiciones legales aplicables.</p>
+
+          <h4>Seguridad de los datos personales</h4>
+          <p>RubickNET implementará las medidas de seguridad, técnicas, administrativas y físicas, necesarias para proteger sus datos personales y evitar su daño, pérdida, alteración, destrucción o el uso, acceso o tratamiento no autorizado.</p>
+          <p>Únicamente el personal autorizado, que ha cumplido y observado los correspondientes requisitos de confidencialidad, podrá participar en el tratamiento de sus datos personales. El personal autorizado tiene prohibido permitir el acceso de personas no autorizadas y utilizar sus datos personales para fines distintos a los establecidos en el presente Aviso de Privacidad. La obligación de confidencialidad de las personas que participan en el tratamiento de sus datos personales subsiste aun después de terminada la relación con RubickNET.</p>
+
+          <h4>Comunicaciones y transferencias de datos personales</h4>
+          <p>Como parte de las operaciones propias del negocio y a fin de cumplir con las finalidades descritas, RubickNET podrá compartir con terceros, nacionales o extranjeros, algunos o todos sus datos personales. Dichos terceros podrán ser compañías afiliadas o subsidiarias de RubickNET; asesores profesionales externos y/u otros prestadores de servicios que actúen como encargados a nombre y por cuenta de RubickNET.</p>
+          <p>RubickNET se asegurará de que dichos terceros mantengan medidas de seguridad, administrativas, técnicas y físicas adecuadas para resguardar sus datos personales, así como que dichos terceros únicamente utilicen sus datos personales para las finalidades para las cuales fueron contratados y de conformidad con el presente Aviso de Privacidad.</p>
+          <p>RubickNET no cederá, venderá o transferirá sus datos personales a terceros no relacionados con RubickNET, sin su consentimiento previo. Sin embargo, RubickNET podrá transferir sus datos personales en los casos previstos en la Ley Federal de Protección de Datos Personales en Posesión de los Particulares.</p>
+
+          <h4>Derechos que le corresponden</h4>
+          <p>Usted, como titular de datos personales, podrá ejercitar ante el Comité de Protección de Datos de RubickNET los derechos de acceso, rectificación, cancelación y oposición respecto al tratamiento de sus datos personales. Asimismo, podrá revocar, en todo momento, el consentimiento que haya otorgado y que fuere necesario para el tratamiento de sus datos personales. A manera de referencia, a continuación se describen los derechos de acceso, rectificación, cancelación y oposición:</p>
+          <p>A través de su derecho de acceso usted podrá solicitar se le informe qué tipo de datos personales están siendo tratados por RubickNET, el origen de dichos datos y las comunicaciones que se hayan realizado con los mismos.</p>
+          <p>Por virtud del derecho de rectificación usted puede solicitar se corrija o complete los datos personales que sean incorrectos o estén incompletos y que obren en manos de RubickNET. Usted tendrá la obligación de informar a RubickNET cuando deba hacerse un cambio o corrección en sus datos personales y este hecho solo sea de su conocimiento.</p>
+          <p>Cuando sus datos personales hayan dejado de ser necesarios para los fines para los cuales se recabaron, usted podrá solicitar que los mismos sean cancelados si es que aún se conservaran en las bases de datos de RubickNET. El proceso de cancelación irá precedido de un periodo de bloqueo, mediante el cual únicamente se almacenarán sus datos por un tiempo equivalente al plazo de prescripción de las acciones que dieron origen al tratamiento de sus datos personales o el periodo que por ley se establezca. Existen casos en que los datos personales no pueden ser cancelados por disposición de ley.</p>
+          <p>Podrá oponerse al tratamiento de sus datos personales cuando exista una causa legítima para ello, incluso habiendo expresado anteriormente su consentimiento para dicho tratamiento.</p>
+
+          <h4>Cambios al Aviso de Privacidad</h4>
+          <p>RubickNET se reserva el derecho de enmendar o modificar el presente Aviso de Privacidad como estime conveniente, por ejemplo, para cumplir con cambios a la legislación sobre protección de datos o cumplir con disposiciones internas de RubickNET. RubickNET le informará y/o pondrá a su disposición el Aviso de Privacidad actualizado cuando se le hagan cambios significativos al mismo, así como cuando se requiera recabar su consentimiento. La versión actualizada del Aviso de Privacidad estará disponible en el sitio web www.rubicknet.com.</p>
+        </div>
       </div>
     </div>
   </div>
@@ -328,6 +616,35 @@ function mostrarResultado(elemento, texto, variante) {
   elemento.className = "resultado-cobertura mostrar" + (variante ? " resultado-cobertura--" + variante : "");
 }
 
+/* ---------- Notificación flotante (toast) ----------
+   Se usa para los resultados de "Verificar mi dirección" en vez de
+   dejar el mensaje fijo en pantalla: aparece, se queda unos segundos
+   y se desvanece sola. variante: "si" | "expansion" | "no". */
+const ICONOS_TOAST = {
+  si: '<svg class="rn-toast-icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4l10 -10"/></svg>',
+  expansion: '<svg class="rn-toast-icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01"/><circle cx="12" cy="12" r="9"/></svg>',
+  no: '<svg class="rn-toast-icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.86l-8.18 14.18A1 1 0 0 0 3 19.5h18a1 1 0 0 0 .87 -1.46L13.7 3.86a1 1 0 0 0 -1.74 0z"/></svg>'
+};
+
+function mostrarToast(texto, variante, duracionMs) {
+  const wrap = document.getElementById("rubicknet-toast-wrap");
+  if (!wrap) return;
+
+  const toast = document.createElement("div");
+  toast.className = "rn-toast" + (variante ? " rn-toast--" + variante : "");
+  toast.innerHTML = (ICONOS_TOAST[variante] || "") + "<span>" + texto + "</span>";
+  wrap.appendChild(toast);
+
+  requestAnimationFrame(function () { toast.classList.add("mostrar"); });
+
+  const tiempoVida = duracionMs || 5000;
+  setTimeout(function () {
+    toast.classList.remove("mostrar");
+    toast.classList.add("ocultando");
+    setTimeout(function () { toast.remove(); }, 250);
+  }, tiempoVida);
+}
+
 /* ---------- Buscador del hero (colonia o código postal) ----------
    El texto/geolocalización y el mensaje de resultado los resuelve
    js/cobertura.js (mismo comportamiento que en el resto del sitio, y
@@ -356,7 +673,7 @@ if (btnUbicacion) {
     const resultado = document.getElementById("resultado-ubicacion");
 
     if (!navigator.geolocation) {
-      mostrarResultado(resultado, "Tu navegador no permite obtener tu ubicación. Usa el buscador de arriba con tu colonia o código postal.", "no");
+      mostrarToast("Tu navegador no permite obtener tu ubicación. Usa el buscador de arriba con tu colonia.", "no");
       return;
     }
 
@@ -365,30 +682,36 @@ if (btnUbicacion) {
 
     navigator.geolocation.getCurrentPosition(function (pos) {
       btnUbicacion.disabled = false;
+      mostrarResultado(resultado, "", null);
+      resultado.className = "resultado-cobertura";
 
       if (!ZONAS_COBERTURA.length) {
-        mostrarResultado(resultado, "Aún estamos cargando la información de cobertura, intenta de nuevo en un momento.", null);
+        mostrarToast("Aún estamos cargando la información de cobertura, intenta de nuevo en un momento.", "no");
         return;
       }
 
       const encontrado = window.Rubicknet.cobertura.buscarPorCoordenadas(pos.coords.latitude, pos.coords.longitude);
 
       if (encontrado && encontrado.tipo === "activa") {
-        mostrarResultado(resultado, "¡Buenas noticias! Tu ubicación está dentro de la cobertura activa de " + encontrado.zona.nombre + ".", "si");
+        mostrarToast("¡Buenas noticias! Tu ubicación está dentro de la cobertura activa de " + encontrado.zona.nombre + ".", "si");
         pintarZona(encontrado.zona.clave);
       } else if (encontrado) {
-        mostrarResultado(resultado, "Tu ubicación está en una zona en expansión de " + encontrado.zona.nombre + ". Pronto tendremos cobertura ahí.", "expansion");
+        mostrarToast("Tu ubicación está en una zona en expansión de " + encontrado.zona.nombre + ". Pronto tendremos cobertura ahí.", "expansion");
         pintarZona(encontrado.zona.clave);
       } else {
-        mostrarResultado(resultado, "Por ahora no tenemos cobertura confirmada en tu ubicación exacta. Usa el buscador de arriba o contáctanos para más detalles.", "no");
+        mostrarToast("Por ahora no tenemos cobertura confirmada en tu ubicación exacta. Usa el buscador de arriba o contáctanos para más detalles.", "no");
       }
     }, function () {
       btnUbicacion.disabled = false;
-      mostrarResultado(resultado, "No pudimos obtener tu ubicación. Revisa los permisos de ubicación en tu navegador o usa el buscador de arriba.", "no");
+      mostrarResultado(resultado, "", null);
+      resultado.className = "resultado-cobertura";
+      mostrarToast("No pudimos obtener tu ubicación. Revisa los permisos de ubicación en tu navegador o usa el buscador de arriba.", "no");
     }, { enableHighAccuracy: true, timeout: 10000 });
   });
 }
 </script>
+<div id="rubicknet-toast-wrap" aria-live="polite"></div>
+
 <script src="componentes/footer.js?v=202606290439"></script>
 
 <mi-footer></mi-footer>
