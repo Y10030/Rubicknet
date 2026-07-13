@@ -150,8 +150,11 @@ site-header { display: block; }
 .site-header {
   position: sticky; top: 0; z-index: 60;
   background: rgba(0,3,61,0.9);
-  backdrop-filter: blur(14px);
   border-bottom: 1px solid rgba(151,125,255,0.30);
+  /* Nota: backdrop-filter se quitó a propósito. Al tener un hijo con
+     position:fixed (.main-nav en móvil), backdrop-filter convierte a este
+     elemento en el "contenedor de referencia" de ese fixed (en vez de la
+     pantalla completa), aplastando el menú dentro de los ~70px del header. */
 }
 .header-inner {
   max-width: var(--container);

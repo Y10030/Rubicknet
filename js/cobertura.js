@@ -18,6 +18,25 @@
   var zonas = [];
   var promesaCarga = null;
 
+  /* Clave de localStorage donde se guarda la última zona con cobertura
+     confirmada (por texto, autocompletado o ubicación). whatsapp.js lee
+     esta misma clave para agregarla automáticamente al cotizar. */
+  var CLAVE_ULTIMA_ZONA = 'rbk_ultima_zona';
+
+  function guardarUltimaZona(zona) {
+    if (!zona) return;
+    try {
+      localStorage.setItem(CLAVE_ULTIMA_ZONA, JSON.stringify({
+        clave: zona.clave,
+        nombre: zona.nombre,
+        estado: zona.estado,
+        guardadoEn: Date.now()
+      }));
+    } catch (e) {
+      // localStorage no disponible (modo privado, cuota llena, etc.): no es crítico.
+    }
+  }
+
   function normalizarTexto(str) {
     return (str || '').toString()
       .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
@@ -130,6 +149,22 @@
     function seleccionar(item) {
       input.value = item.etiqueta;
       ocultar();
+
+      // Guardamos la zona de una vez (por si a continuación redirigimos y
+      // nunca llegamos a emitir(), que es donde normalmente se persiste).
+      guardarUltimaZona(item.zona);
+
+      // Mismo comportamiento que al enviar el formulario: si no estamos ya
+      // en la página del mapa (internet.html), mandamos ahí al usuario para
+      // que vea el mapa real y los botones de "Ver planes" / "Cotizar".
+      // Antes, elegir una sugerencia solo llenaba el input y nunca llegaba
+      // a este redirect porque seleccionar() no lo replicaba.
+      var yaEnMapa = !!document.getElementById('mapa-panel-google');
+      if (!yaEnMapa) {
+        window.location.href = 'internet.html?colonia=' + encodeURIComponent(item.etiqueta) + '#ciudades-nav';
+        return;
+      }
+
       mostrar(form, '¡Buena noticia! Ya tenemos presencia en <strong>' + item.zona.nombre + '</strong> (' + item.zona.estado + ').', 'si');
       emitir(form, { origen: 'autocompletado', encontrado: true, zona: item.zona });
     }
@@ -282,6 +317,9 @@
   }
 
   function emitir(form, detalle) {
+    if (detalle && detalle.encontrado && detalle.zona) {
+      guardarUltimaZona(detalle.zona);
+    }
     form.dispatchEvent(new CustomEvent('rubicknet:cobertura-resultado', { bubbles: true, detail: detalle }));
   }
 
@@ -299,7 +337,7 @@
       '.rbk-btn-ubicacion:hover{border-color:rgba(255,255,255,0.7);background:rgba(255,255,255,0.09);}' +
       '.rbk-btn-ubicacion:disabled{opacity:.55;cursor:default;}' +
       '.rbk-btn-ubicacion svg{width:17px;height:17px;flex-shrink:0;}' +
-      '@media (max-width:560px){.cobertura-buscador-fila{flex-direction:column;} .rbk-btn-ubicacion{padding:13px 22px;justify-content:center;}}';
+      '@media (max-width:560px){.cobertura-buscador-fila{flex-direction:column;} .cobertura-buscador-fila .buscador-cobertura{flex:1 1 auto;} .rbk-btn-ubicacion{padding:13px 22px;justify-content:center;}}';
     document.head.appendChild(style);
   }
 
@@ -361,6 +399,8 @@
         // y, si hay cobertura, los botones de "Ver planes" / "Cotizar".
         var yaEnMapa = !!document.getElementById('mapa-panel-google');
         if (!yaEnMapa) {
+          var zonaPrevia = buscarPorTexto(texto);
+          if (zonaPrevia) guardarUltimaZona(zonaPrevia);
           window.location.href = 'internet.html?colonia=' + encodeURIComponent(texto) + '#ciudades-nav';
           return;
         }
@@ -430,6 +470,7 @@
     buscarPorTexto: buscarPorTexto,
     obtenerSugerencias: obtenerSugerencias,
     buscarPorCoordenadas: buscarPorCoordenadas,
-    puntoDentroPoligono: puntoDentroPoligono
+    puntoDentroPoligono: puntoDentroPoligono,
+    guardarUltimaZona: guardarUltimaZona
   };
 })();

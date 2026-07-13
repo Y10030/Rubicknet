@@ -7,7 +7,7 @@
 <meta name="description" content="Consulta cobertura de internet residencial y empresarial de Rubicknet: planes, velocidades, SLA y enlaces de respaldo.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/styles.css?v=1.3">
+<link rel="stylesheet" href="css/styles.css?v=1.4">
 <style>
   .faq-categoria{
     font-family:"Space Grotesk",sans-serif;
@@ -621,6 +621,7 @@ function inicializarMapa() {
       if (coloniaURL) {
         const zonaEncontrada = window.Rubicknet.cobertura.buscarPorTexto(coloniaURL);
         if (zonaEncontrada) {
+          window.Rubicknet.cobertura.guardarUltimaZona(zonaEncontrada);
           pintarZona(zonaEncontrada.clave);
           mostrarResultado(document.getElementById("resultado-buscador"),
             "¡Buena noticia! Ya tenemos presencia en <strong>" + zonaEncontrada.nombre + "</strong> (" + zonaEncontrada.estado + ").", "si");
@@ -728,9 +729,11 @@ if (btnUbicacion) {
       const encontrado = window.Rubicknet.cobertura.buscarPorCoordenadas(pos.coords.latitude, pos.coords.longitude);
 
       if (encontrado && encontrado.tipo === "activa") {
+        window.Rubicknet.cobertura.guardarUltimaZona(encontrado.zona);
         mostrarToast("¡Buenas noticias! Tu ubicación está dentro de la cobertura activa de " + encontrado.zona.nombre + ".", "si");
         pintarZona(encontrado.zona.clave);
       } else if (encontrado) {
+        window.Rubicknet.cobertura.guardarUltimaZona(encontrado.zona);
         mostrarToast("Tu ubicación está en una zona en expansión de " + encontrado.zona.nombre + ". Pronto tendremos cobertura ahí.", "expansion");
         pintarZona(encontrado.zona.clave);
       } else {
