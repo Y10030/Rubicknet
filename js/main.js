@@ -67,6 +67,13 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
+  /* ---------- Checkbox de servicios: resalta el chip al marcarlo ---------- */
+  document.querySelectorAll('.chip-check input[type="checkbox"]').forEach(function (input) {
+    input.addEventListener('change', function () {
+      input.closest('.chip-check').classList.toggle('marcada', input.checked);
+    });
+  });
+
   /* ---------- Formulario de contacto -> arma mensaje y abre WhatsApp ---------- */
   var formContacto = document.getElementById('form-contacto');
   if (formContacto) {
@@ -76,14 +83,26 @@ document.addEventListener('DOMContentLoaded', function () {
       var nombre = (formContacto.nombre && formContacto.nombre.value.trim()) || '';
       var empresa = (formContacto.empresa && formContacto.empresa.value.trim()) || '';
       var telefono = (formContacto.telefono && formContacto.telefono.value.trim()) || '';
-      var servicio = (formContacto.servicio && formContacto.servicio.value) || '';
+      var colonia = (formContacto.colonia && formContacto.colonia.value.trim()) || '';
+      var servicios = Array.from(formContacto.querySelectorAll('input[name="servicio"]:checked')).map(function (el) { return el.value; });
       var mensaje = (formContacto.mensaje && formContacto.mensaje.value.trim()) || '';
+      var aviso = document.getElementById('aviso-contacto');
+
+      if (mensaje.length > 0 && mensaje.length < 10) {
+        if (aviso) {
+          aviso.style.display = 'block';
+          aviso.textContent = 'Tu mensaje es muy corto. Escribe al menos 10 caracteres para que podamos entender qué necesitas.';
+        }
+        formContacto.mensaje.focus();
+        return;
+      }
 
       var lineas = ['Hola, quiero cotizar un servicio.'];
-      if (servicio) lineas.push('Servicio de interés: ' + servicio + '.');
+      if (servicios.length) lineas.push('Servicio(s) de interés: ' + servicios.join(', ') + '.');
       if (nombre) lineas.push('Nombre: ' + nombre + '.');
       if (empresa) lineas.push('Empresa: ' + empresa + '.');
       if (telefono) lineas.push('Teléfono: ' + telefono + '.');
+      if (colonia) lineas.push('Colonia / C.P.: ' + colonia + '.');
       if (mensaje) lineas.push('Mensaje: ' + mensaje);
       var textoWhatsApp = lineas.join(' ');
 
@@ -92,7 +111,6 @@ document.addEventListener('DOMContentLoaded', function () {
         : ('https://wa.me/5568115210?text=' + encodeURIComponent(textoWhatsApp));
       window.open(url, '_blank', 'noopener');
 
-      var aviso = document.getElementById('aviso-contacto');
       if (aviso) {
         aviso.style.display = 'block';
         aviso.textContent = 'Gracias por escribirnos. Abrimos WhatsApp con tu mensaje listo para enviar.';

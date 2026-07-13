@@ -131,6 +131,9 @@ class ChatWidget extends HTMLElement {
       '    cursor:pointer;padding:4px 0;text-decoration:underline;}' +
       '  .rbk-pie{padding:10px 16px;font-size:.68rem;color:rgba(3,8,18,0.45);background:#fff;' +
       '    border-top:1px solid rgba(3,8,18,0.06);text-align:center;}' +
+      '  .rbk-cambiar{background:none;border:none;color:rgba(234,237,248,0.75);font-size:.7rem;' +
+      '    text-decoration:underline;cursor:pointer;padding:0;margin-top:2px;align-self:flex-start;}' +
+      '  .rbk-cambiar:hover{color:#fff;}' +
       '  @media (max-width:480px){ chat-widget{right:14px;bottom:88px;} .rbk-panel{right:-6px;} }' +
       '</style>' +
       '<button type="button" class="rbk-burbuja" aria-label="Abrir asistente de Rubicknet" aria-expanded="false">' +
@@ -138,7 +141,7 @@ class ChatWidget extends HTMLElement {
       '</button>' +
       '<div class="rbk-panel" hidden>' +
       '  <div class="rbk-cab">' +
-      '    <div class="rbk-cab-info"><strong>Asistente Rubicknet</strong><span><span class="rbk-punto"></span>Te conectamos por WhatsApp</span></div>' +
+      '    <div class="rbk-cab-info"><strong>Asistente Rubicknet</strong><span><span class="rbk-punto"></span>Te conectamos por WhatsApp</span><button type="button" class="rbk-cambiar">Elegir otro servicio</button></div>' +
       '    <button type="button" class="rbk-cerrar" aria-label="Cerrar">&times;</button>' +
       '  </div>' +
       '  <div class="rbk-cuerpo"></div>' +
@@ -148,6 +151,7 @@ class ChatWidget extends HTMLElement {
     var burbuja = this.querySelector('.rbk-burbuja');
     var panel = this.querySelector('.rbk-panel');
     var cerrar = this.querySelector('.rbk-cerrar');
+    var cambiar = this.querySelector('.rbk-cambiar');
     var cuerpo = this.querySelector('.rbk-cuerpo');
 
     /* ---------- Estado de la conversación ---------- */
@@ -166,6 +170,7 @@ class ChatWidget extends HTMLElement {
       panel.hidden ? abrir() : cerrarPanel();
     });
     cerrar.addEventListener('click', cerrarPanel);
+    cambiar.addEventListener('click', mostrarPantallaInicial);
     document.addEventListener('click', (e) => {
       if (!this.contains(e.target)) cerrarPanel();
     });

@@ -43,6 +43,22 @@
       .toLowerCase().trim();
   }
 
+  /* Compara "por palabras": cada palabra de lo que escribió el usuario debe
+     aparecer dentro del candidato (o viceversa), sin importar el orden.
+     Así "morelos jardines" o solo "jardines morelos" también encuentran
+     "Jardines de Morelos", y no solo una coincidencia exacta de substring. */
+  function coincideTexto(candidatoNormalizado, textoNormalizado) {
+    if (!candidatoNormalizado || !textoNormalizado) return false;
+    if (candidatoNormalizado.indexOf(textoNormalizado) !== -1) return true;
+    if (textoNormalizado.indexOf(candidatoNormalizado) !== -1) return true;
+
+    var palabrasTexto = textoNormalizado.split(/\s+/).filter(function (p) { return p.length > 1; });
+    if (!palabrasTexto.length) return false;
+    return palabrasTexto.every(function (palabra) {
+      return candidatoNormalizado.indexOf(palabra) !== -1;
+    });
+  }
+
   function buscarPorTexto(texto) {
     var t = normalizarTexto(texto);
     if (!t) return null;
@@ -51,7 +67,7 @@
       var candidatos = [zona.nombre, zona.clave].concat(zona.zonas || []);
       for (var j = 0; j < candidatos.length; j++) {
         var n = normalizarTexto(candidatos[j]);
-        if (n && (n.indexOf(t) !== -1 || t.indexOf(n) !== -1)) return zona;
+        if (n && coincideTexto(n, t)) return zona;
       }
     }
     return null;
@@ -71,6 +87,7 @@
     var vistos = {};
     var empiezan = [];
     var contienen = [];
+    var porPalabras = [];
 
     zonas.forEach(function (zona) {
       var candidatos = (zona.zonas && zona.zonas.length) ? zona.zonas.slice() : [zona.nombre];
@@ -84,15 +101,21 @@
         if (vistos[clave]) return;
 
         var pos = n.indexOf(t);
-        if (pos === -1) return;
-        vistos[clave] = true;
-
         var item = { etiqueta: candidato, zona: zona };
-        if (pos === 0) empiezan.push(item); else contienen.push(item);
+
+        if (pos !== -1) {
+          vistos[clave] = true;
+          if (pos === 0) empiezan.push(item); else contienen.push(item);
+        } else if (coincideTexto(n, t)) {
+          // No aparece como substring seguido, pero todas las palabras
+          // escritas están presentes (p. ej. "morelos jardines").
+          vistos[clave] = true;
+          porPalabras.push(item);
+        }
       });
     });
 
-    return empiezan.concat(contienen).slice(0, max);
+    return empiezan.concat(contienen).concat(porPalabras).slice(0, max);
   }
 
   /* ---------- Autocompletado ---------- */
@@ -165,7 +188,7 @@
         return;
       }
 
-      avisar(form, '¡Buena noticia! Ya tenemos presencia en <strong>' + item.zona.nombre + '</strong> (' + item.zona.estado + ').', 'si', { ctaHref: '#planes', ctaLabel: 'Ver planes' });
+      avisar(form, '¡Buena noticia! Ya tenemos presencia en <strong>' + item.zona.nombre + '</strong> (' + item.zona.estado + ').', 'si', { ctaHref: '#plan-recomendado', ctaLabel: 'Ver planes' });
       emitir(form, { origen: 'autocompletado', encontrado: true, zona: item.zona });
     }
 
@@ -175,6 +198,8 @@
       lista.innerHTML = '';
 
       if (!sugerencias.length) { ocultar(); return; }
+
+      var yaVisible = panel.style.display === 'block';
 
       sugerencias.forEach(function (item, i) {
         var li = document.createElement('li');
@@ -193,6 +218,15 @@
       });
 
       panel.style.display = 'block';
+
+      // Al abrirse por primera vez, centra el buscador + la lista de
+      // sugerencias en pantalla, para que en móvil el teclado no las
+      // tape y el usuario vea de inmediato las ubicaciones recomendadas.
+      if (!yaVisible) {
+        setTimeout(function () {
+          contenedor.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 80);
+      }
     }
 
     function actualizarActivo() {
@@ -413,7 +447,7 @@
 
         var zona = buscarPorTexto(texto);
         if (zona) {
-          avisar(form, '¡Buena noticia! Ya tenemos presencia en <strong>' + zona.nombre + '</strong> (' + zona.estado + ').', 'si', { ctaHref: '#planes', ctaLabel: 'Ver planes' });
+          avisar(form, '¡Buena noticia! Ya tenemos presencia en <strong>' + zona.nombre + '</strong> (' + zona.estado + ').', 'si', { ctaHref: '#plan-recomendado', ctaLabel: 'Ver planes' });
           emitir(form, { origen: 'texto', encontrado: true, zona: zona });
         } else {
           avisar(form, 'Por ahora no encontramos esa colonia en nuestra cobertura confirmada. <a href="contacto.html">Contáctanos</a> para revisar tu caso a detalle.', 'no');
@@ -444,7 +478,7 @@
           var encontrado = buscarPorCoordenadas(pos.coords.latitude, pos.coords.longitude);
 
           if (encontrado && encontrado.tipo === 'activa') {
-            avisar(form, '¡Buenas noticias! Tu ubicación está dentro de la cobertura activa de <strong>' + encontrado.zona.nombre + '</strong>.', 'si', { ctaHref: 'internet.html#planes', ctaLabel: 'Ver planes' });
+            avisar(form, '¡Buenas noticias! Tu ubicación está dentro de la cobertura activa de <strong>' + encontrado.zona.nombre + '</strong>.', 'si', { ctaHref: 'internet.html#plan-recomendado', ctaLabel: 'Ver planes' });
             emitir(form, { origen: 'ubicacion', encontrado: true, zona: encontrado.zona, tipoPoligono: 'activa' });
           } else if (encontrado) {
             avisar(form, 'Tu ubicación está en una zona en expansión de <strong>' + encontrado.zona.nombre + '</strong>. Pronto tendremos cobertura ahí.', 'expansion');

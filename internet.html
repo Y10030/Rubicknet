@@ -7,7 +7,7 @@
 <meta name="description" content="Consulta cobertura de internet residencial y empresarial de Rubicknet: planes, velocidades, SLA y enlaces de respaldo.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/styles.css?v=1.11">
+<link rel="stylesheet" href="css/styles.css?v=1.12">
 <link rel="icon" type="image/png" href="Logo-RN.png">
 <style>
   .faq-categoria{
@@ -109,16 +109,16 @@
       <div class="planes-grid">
       <div class="plan-card">
         
-        <div class="icono" style="background:var(--mist-100);color:var(--blue-600);width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3l-7 10h5l-1 8l7 -10h-5z"/></svg></div>
+        <div class="icono" style="background:var(--mist-100);color:var(--blue-600);width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8.5a15.5 15.5 0 0 1 20 0"/><path d="M5.5 12.3a10.8 10.8 0 0 1 13 0"/><path d="M9 16a5.5 5.5 0 0 1 6 0"/><circle cx="12" cy="19.2" r="1.1" fill="currentColor" stroke="none"/></svg></div>
         <div class="plan-velocidad">100 <span>Mbps</span></div>
         <div class="plan-precio">$[000] /mes</div>
         <ul class="lista-check"><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4l10 -10"/></svg>Instalación incluida</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4l10 -10"/></svg>Router Wi-Fi incluido</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4l10 -10"/></svg>Soporte técnico ilimitado</li></ul>
         <a href="contacto.html" data-wa-msg="Hola, quiero cotizar el plan de 100 Mbps para hogar." class="btn btn-secundario btn-bloque">Cotizar este plan</a>
       </div>
     
-      <div class="plan-card destacado">
+      <div class="plan-card destacado" id="plan-recomendado">
         <span class="tag-popular">Más elegido</span>
-        <div class="icono" style="background:var(--mist-100);color:var(--blue-600);width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3l-7 10h5l-1 8l7 -10h-5z"/></svg></div>
+        <div class="icono" style="background:var(--mist-100);color:var(--blue-600);width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8.5a15.5 15.5 0 0 1 20 0"/><path d="M5.5 12.3a10.8 10.8 0 0 1 13 0"/><path d="M9 16a5.5 5.5 0 0 1 6 0"/><circle cx="12" cy="19.2" r="1.1" fill="currentColor" stroke="none"/></svg></div>
         <div class="plan-velocidad">300 <span>Mbps</span></div>
         <div class="plan-precio">$[000] /mes</div>
         <ul class="lista-check"><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4l10 -10"/></svg>Instalación incluida</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4l10 -10"/></svg>
@@ -129,7 +129,7 @@
     
       <div class="plan-card">
         
-        <div class="icono" style="background:var(--mist-100);color:var(--blue-600);width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3l-7 10h5l-1 8l7 -10h-5z"/></svg></div>
+        <div class="icono" style="background:var(--mist-100);color:var(--blue-600);width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8.5a15.5 15.5 0 0 1 20 0"/><path d="M5.5 12.3a10.8 10.8 0 0 1 13 0"/><path d="M9 16a5.5 5.5 0 0 1 6 0"/><circle cx="12" cy="19.2" r="1.1" fill="currentColor" stroke="none"/></svg></div>
         <div class="plan-velocidad">600 <span>Mbps</span></div>
         <div class="plan-precio">$[000] /mes</div>
         <ul class="lista-check"><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4l10 -10"/></svg>Instalación incluida</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4l10 -10"/></svg>
@@ -142,6 +142,7 @@
       </div></div>
     </div>
       <div class="tab-panel" id="tab-empresa">
+      <p style="max-width:640px;color:rgba(3,8,18,0.65);margin-bottom:28px;">Internet dedicado para negocios que no pueden darse el lujo de perder conexión: mismo ancho de banda de subida y bajada, IP fija disponible, garantía de disponibilidad (SLA) y enlace de respaldo automático ante fallas. Ideal para videovigilancia, punto de venta, oficinas y comercios que dependen de una conexión estable todo el día.</p>
       <div class="planes-grid">
         
       <div class="plan-card">
@@ -193,7 +194,7 @@
           <div class="zonas-chips" id="info-chips"></div>
 
           <div class="mapa-info-cta" style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;">
-            <a href="#planes" class="btn btn-primario">Ver planes</a>
+            <a href="#plan-recomendado" class="btn btn-primario">Ver planes</a>
             <a href="#" id="btn-cotizar-zona" class="btn btn-secundario-purpura" target="_blank" rel="noopener">Cotizar por WhatsApp</a>
           </div>
 
@@ -215,189 +216,86 @@
     <div class="faq-list">
       <div class="faq-item">
         <button class="faq-pregunta">&#191;En qué horario instalan?<span class="signo">+</span></button>
-        <div class="faq-respuesta"><p>Solo se realizan instalaciones de 12:00 pm a 7:00 pm (lunes a viernes) y los sábados de 10:00 am a 12:00 pm.</p></div>
+        <div class="faq-respuesta"><p>De lunes a viernes de 12:00 a 19:00 h, y los sábados de 10:00 a 12:00 h. No agendamos instalaciones nocturnas, para proteger la seguridad de nuestros técnicos.</p></div>
       </div>
 
       <div class="faq-item">
-        <button class="faq-pregunta">&#191;Cuánto tiempo se tarda en la instalación?<span class="signo">+</span></button>
-        <div class="faq-respuesta"><p>De 2 a 3 horas, dependiendo si hay tubería, dónde se va a colocar el router inalámbrico, etc.</p></div>
+        <button class="faq-pregunta">&#191;Cuánto tarda la instalación y en cuánto tiempo la agendan?<span class="signo">+</span></button>
+        <div class="faq-respuesta"><p>La visita técnica dura entre 2 y 3 horas, según el trayecto del cableado dentro de tu casa o negocio. Una vez contratado el servicio, agendamos dentro de las siguientes 72 horas, siempre que el clima lo permita: lluvia fuerte, tormenta eléctrica o viento intenso pueden obligarnos a reprogramar por seguridad.</p></div>
       </div>
 
       <div class="faq-item">
-        <button class="faq-pregunta">&#191;En cuánto tiempo instalan una vez que contrate?<span class="signo">+</span></button>
-        <div class="faq-respuesta"><p>Tenemos hasta 72 horas en condiciones normales de carga de trabajo, siempre y cuando el clima lo permita.</p></div>
+        <button class="faq-pregunta">&#191;Qué instalan en mi domicilio?<span class="signo">+</span></button>
+        <div class="faq-respuesta"><p>Una antena receptora en la azotea y un router dentro de tu domicilio o negocio, conectados entre sí por un cable. A ese router se conectan tus dispositivos. Si necesitas cableado adicional dentro del inmueble, tiene un costo extra.</p></div>
       </div>
 
       <div class="faq-item">
-        <button class="faq-pregunta">&#191;Por qué no pueden instalar por la noche?<span class="signo">+</span></button>
-        <div class="faq-respuesta"><p>No programamos instalaciones durante la noche, para salvaguardar la integridad física de nuestros técnicos instaladores.</p></div>
+        <button class="faq-pregunta">&#191;El equipo es mío si pago la instalación?<span class="signo">+</span></button>
+        <div class="faq-respuesta"><p>No: el equipo siempre es propiedad de RubickNET. Lo que pagas en la instalación cubre el cableado, los accesorios y el tiempo del técnico. Por eso, al contratar, firmas un pagaré como garantía; te lo devolvemos al desinstalar el equipo.</p></div>
       </div>
 
       <div class="faq-item">
-        <button class="faq-pregunta">&#191;Qué pasa si hago una cita y no estoy?<span class="signo">+</span></button>
-        <div class="faq-respuesta"><p>Podemos generarte un cargo por tiempo y gasolina de hasta $150 pesos.</p></div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-pregunta">&#191;Qué instalan en mi casa?<span class="signo">+</span></button>
-        <div class="faq-respuesta"><p>Una antena (módem) y un cable para interconectar la antena receptora de la azotea y el router dentro de su domicilio, que es a donde se conectarán sus dispositivos (tablets, teléfonos, computadoras, etc.).</p></div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-pregunta">&#191;Me instalan algún cable de red en la casa?<span class="signo">+</span></button>
-        <div class="faq-respuesta"><p>Nosotros le podemos instalar el cable que necesite; esto incluye un costo adicional, siempre y cuando la vivienda lo permita.</p></div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-pregunta">&#191;Con qué equipos es compatible el internet?<span class="signo">+</span></button>
-        <div class="faq-respuesta"><p>Es compatible con la mayoría de los equipos inalámbricos actuales o de última generación, no debe de tener ningún problema.</p></div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-pregunta">&#191;Si pago la instalación el equipo es mío?<span class="signo">+</span></button>
-        <div class="faq-respuesta"><p>No, el equipo es propiedad en todo momento de RubickNET; por la instalación lo que se está pagando es el cableado, los accesorios, la configuración y el tiempo del técnico.</p></div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-pregunta">&#191;Qué pasa si no regreso el equipo?<span class="signo">+</span></button>
-        <div class="faq-respuesta"><p>Se ejecutaría el pagaré que se firmó en el contrato, donde se firma como garantía de que los equipos siguen siendo de RubickNET.</p></div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-pregunta">&#191;Por qué tengo que firmar un pagaré?<span class="signo">+</span></button>
-        <div class="faq-respuesta"><p>Debido a que el equipo está instalado en una propiedad ajena a RubickNET, y requerimos un medio para asegurar el acceso a nuestro equipo. Una vez que desinstalamos el equipo, se le hace entrega del pagaré.</p></div>
+        <button class="faq-pregunta">&#191;Qué pasa si no estoy en la cita agendada?<span class="signo">+</span></button>
+        <div class="faq-respuesta"><p>Podemos generar un cargo de hasta $150 pesos por el tiempo y traslado del técnico.</p></div>
       </div>
     </div>
 
     <h3 class="faq-categoria">Servicio y velocidad</h3>
     <div class="faq-list">
       <div class="faq-item">
-        <button class="faq-pregunta">&#191;El servicio es inalámbrico?<span class="signo">+</span></button>
-        <div class="faq-respuesta"><p>Llegamos a su domicilio de manera inalámbrica con un equipo en su azotea y después instalamos otro equipo al interior del domicilio, para entregarle el servicio de internet.</p></div>
+        <button class="faq-pregunta">&#191;El internet es inalámbrico o dedicado?<span class="signo">+</span></button>
+        <div class="faq-respuesta"><p>La conexión hasta tu domicilio es inalámbrica (antena en azotea), y el medio de acceso es dedicado para ti. Como en toda red de internet, el ancho de banda se comparte más adelante entre usuarios de la misma zona, por lo que vamos ampliando la capacidad conforme crece la demanda.</p></div>
       </div>
 
       <div class="faq-item">
-        <button class="faq-pregunta">&#191;El servicio es dedicado?<span class="signo">+</span></button>
-        <div class="faq-respuesta"><p>Es un servicio de banda ancha del tipo "mejor esfuerzo" con un medio de acceso dedicado, pero debido a la misma naturaleza de internet el servicio en un punto o varios se comparte y sobre-suscribe.</p></div>
+        <button class="faq-pregunta">&#191;Baja mi velocidad si se conectan más vecinos o más dispositivos en casa?<span class="signo">+</span></button>
+        <div class="faq-respuesta"><p>Monitoreamos la demanda de cada zona y ampliamos el ancho de banda conforme se necesita, así que contratar más vecinos no debería afectarte. Dentro de casa, sí es normal que la velocidad por dispositivo baje un poco si varios usan internet al mismo tiempo, igual que ocurre con la presión del agua cuando abres varias llaves a la vez.</p></div>
       </div>
 
       <div class="faq-item">
-        <button class="faq-pregunta">&#191;Si contratan más vecinos mi velocidad disminuye?<span class="signo">+</span></button>
-        <div class="faq-respuesta"><p>No, la empresa se encarga de poner más ancho de banda según las fórmulas de sobre-suscripción.</p></div>
+        <button class="faq-pregunta">&#191;Por qué a veces algunas páginas cargan lento y otras no?<span class="signo">+</span></button>
+        <div class="faq-respuesta"><p>Es normal en internet: puede deberse a que esa ruta específica o el servidor donde está alojada la página esté temporalmente saturado, no necesariamente a tu conexión.</p></div>
       </div>
 
       <div class="faq-item">
-        <button class="faq-pregunta">&#191;Qué pasa si nos conectamos todos en mi casa al mismo tiempo?<span class="signo">+</span></button>
-        <div class="faq-respuesta"><p>La velocidad de navegación en cada dispositivo disminuye; es un comportamiento similar a abrir todas las llaves de agua de la casa al mismo tiempo: en todas sale agua, pero a una presión muy baja.</p></div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-pregunta">&#191;Por qué hacia algunas páginas está lento y hacia otras no?<span class="signo">+</span></button>
-        <div class="faq-respuesta"><p>Ese tipo de comportamiento se debe a la misma naturaleza de internet: puede ser que algunas rutas se encuentren temporalmente saturadas o los servidores donde se alojan las páginas.</p></div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-pregunta">&#191;Si se va la luz qué pasa?<span class="signo">+</span></button>
-        <div class="faq-respuesta"><p>Debido a que necesita de energía, no habrá servicio de internet.</p></div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-pregunta">&#191;Ya regresó la luz, va a funcionar correctamente?<span class="signo">+</span></button>
-        <div class="faq-respuesta"><p>El equipo guarda la configuración, debe funcionar correctamente sin problema.</p></div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-pregunta">&#191;Funciona cuando llueve, hay tormenta o mucho aire?<span class="signo">+</span></button>
-        <div class="faq-respuesta"><p>El sistema debe funcionar correctamente sin ningún problema.</p></div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-pregunta">&#191;El servicio cuenta con una IP homologada?<span class="signo">+</span></button>
-        <div class="faq-respuesta"><p>No, el servicio cuenta con una IP privada.</p></div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-pregunta">&#191;Pueden filtrar el contenido o hacer que alguien no vea algún destino?<span class="signo">+</span></button>
-        <div class="faq-respuesta"><p>No, el servicio de filtrado tendría que configurarlo usted mismo o contratar a un tercero.</p></div>
+        <button class="faq-pregunta">&#191;Qué pasa si se va la luz?<span class="signo">+</span></button>
+        <div class="faq-respuesta"><p>El equipo necesita energía eléctrica para funcionar, así que el internet se corta mientras no haya luz. Al regresar la energía, el equipo recupera su configuración automáticamente y el servicio vuelve a funcionar sin que tengas que hacer nada.</p></div>
       </div>
     </div>
 
     <h3 class="faq-categoria">Soporte y contacto</h3>
     <div class="faq-list">
       <div class="faq-item">
-        <button class="faq-pregunta">&#191;Cómo los puedo contactar?<span class="signo">+</span></button>
-        <div class="faq-respuesta"><p>El mejor medio es por correo electrónico soporte@rubicknet.com.</p></div>
+        <button class="faq-pregunta">&#191;Cómo pido soporte si tengo un problema?<span class="signo">+</span></button>
+        <div class="faq-respuesta"><p>Escríbenos a soporte@rubicknet.com o llama al 6811-5210 / 7675-9193 / 55-3451-0027. Damos seguimiento por estos medios para responder más rápido y mantener los costos del servicio bajos.</p></div>
       </div>
 
       <div class="faq-item">
-        <button class="faq-pregunta">&#191;Cómo obtengo soporte si tengo un problema?<span class="signo">+</span></button>
-        <div class="faq-respuesta"><p>La comunicación con la empresa es únicamente por medios electrónicos para mantener costos bajos: correo electrónico soporte@rubicknet.com o los teléfonos 6811-5210 / 7675-9193 / 55-3451-0027.</p></div>
+        <button class="faq-pregunta">&#191;Configuran mis dispositivos o me formatean el equipo?<span class="signo">+</span></button>
+        <div class="faq-respuesta"><p>El técnico te asesora para conectar tus dispositivos por primera vez, pero la configuración de equipos no está incluida en el servicio. Si necesitas soporte para tu computadora (por ejemplo, quitar un virus), lo cotizamos aparte según el caso.</p></div>
       </div>
 
       <div class="faq-item">
-        <button class="faq-pregunta">&#191;Por qué toda la comunicación es electrónica o telefónica?<span class="signo">+</span></button>
-        <div class="faq-respuesta"><p>Debido a que la mayoría de los problemas son ajenos a configuraciones o al servicio en sí, al mismo tiempo que nos ayuda a mantener bajos costos.</p></div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-pregunta">&#191;Está lento, qué hago?<span class="signo">+</span></button>
-        <div class="faq-respuesta"><p>Repórtalo al departamento de soporte técnico al correo soporte@rubicknet.com.</p></div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-pregunta">&#191;El router es inalámbrico, qué tengo que hacer para poder conectarme?<span class="signo">+</span></button>
-        <div class="faq-respuesta"><p>Contar con algún dispositivo inalámbrico como tableta, teléfono celular con capacidad de WiFi, o una PC con algún adaptador inalámbrico USB; la mayoría de las laptops ya cuentan con tarjeta de red inalámbrica integrada.</p></div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-pregunta">&#191;Pueden configurarme mis equipos?<span class="signo">+</span></button>
-        <div class="faq-respuesta"><p>El instalador lo asesora para conectar sus dispositivos por primera vez, a través de una sencilla explicación. La configuración de equipos no está incluida en nuestro servicio.</p></div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-pregunta">&#191;Tengo virus en mi computadora, me la pueden formatear?<span class="signo">+</span></button>
-        <div class="faq-respuesta"><p>Contamos con servicio técnico para equipos de cómputo con costo adicional bajo cotización y revisión.</p></div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-pregunta">&#191;Qué pasa si comparto mi clave?<span class="signo">+</span></button>
-        <div class="faq-respuesta"><p>Si comparte su clave de acceso con algún vecino, bajaría la velocidad y estabilidad de navegación, así como aumentaría el riesgo de contagiar a sus dispositivos de algún virus informático que pudiese tener.</p></div>
+        <button class="faq-pregunta">&#191;Qué pasa si comparto mi contraseña de Wi-Fi?<span class="signo">+</span></button>
+        <div class="faq-respuesta"><p>Bajará tu velocidad de navegación y aumenta el riesgo de que algún dispositivo con virus afecte tu red. Te recomendamos no compartirla fuera de tu hogar o negocio.</p></div>
       </div>
     </div>
 
     <h3 class="faq-categoria">Pagos y plan</h3>
     <div class="faq-list">
       <div class="faq-item">
-        <button class="faq-pregunta">&#191;Por qué debo pagar la instalación primero?<span class="signo">+</span></button>
-        <div class="faq-respuesta"><p>Es el proceso establecido para realizar la instalación del servicio.</p></div>
+        <button class="faq-pregunta">&#191;Puedo subir o bajar de plan?<span class="signo">+</span></button>
+        <div class="faq-respuesta"><p>Puedes subir de plan a partir de tu tercer mes de contrato, firmando un nuevo contrato con fecha de vencimiento actualizada. Bajar de velocidad solo es posible al momento de renovar; si tienes una situación particular antes de eso, escríbenos a informes@rubicknet.com y la revisamos.</p></div>
       </div>
 
       <div class="faq-item">
-        <button class="faq-pregunta">&#191;Puedo subir de plan?<span class="signo">+</span></button>
-        <div class="faq-respuesta"><p>Durante el periodo de vigencia de tu contrato es posible aumentar de plan de internet, a partir de tu tercer mes, firmando un nuevo contrato con fechas nuevas de vencimiento; únicamente es para incrementos.</p></div>
+        <button class="faq-pregunta">&#191;Cómo cancelo mi servicio?<span class="signo">+</span></button>
+        <div class="faq-respuesta"><p>Envía tus motivos de cancelación a informes@rubicknet.com. Revisamos que no exista algún adeudo y respondemos en un plazo máximo de 5 días hábiles; después, pasamos a recoger el equipo. Si el servicio no funciona y no logramos solucionarlo, tienes derecho a cancelar sin problema.</p></div>
       </div>
 
       <div class="faq-item">
-        <button class="faq-pregunta">&#191;Quiero menos velocidad, qué hago?<span class="signo">+</span></button>
-        <div class="faq-respuesta"><p>Durante la vigencia del plan no se puede disminuir, solo al renovar se hacen cambios. Puedes exponer tu caso o situación enviando las condiciones al correo informes@rubicknet.com para valoración.</p></div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-pregunta">&#191;Quiero cancelar, qué hago?<span class="signo">+</span></button>
-        <div class="faq-respuesta"><p>Como se menciona en el contrato, envía al correo informes@rubicknet.com las causas o motivo de la solicitud de cancelación, y revisaremos la información para dar respuesta en un plazo no mayor a 5 días hábiles.</p></div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-pregunta">&#191;No funciona el servicio, quiero cancelar?<span class="signo">+</span></button>
-        <div class="faq-respuesta"><p>Si el servicio no funciona y no lo podemos solucionar tienes derecho a cancelar; solo necesitamos tu carta de motivos, revisar si no existe algún adeudo, y posteriormente pasaremos a tu domicilio por los equipos.</p></div>
-      </div>
-    </div>
-
-    <h3 class="faq-categoria">Casos especiales</h3>
-    <div class="faq-list">
-      <div class="faq-item">
-        <button class="faq-pregunta">&#191;Qué pasa si se roban el equipo?<span class="signo">+</span></button>
-        <div class="faq-respuesta"><p>Deberá levantar la denuncia correspondiente en el ministerio público para iniciar el trámite de reposición de equipo nuevo con cargo a su cuenta. Puede enviar copia de la denuncia al correo informes@rubicknet.com para la suspensión temporal de cargo de 1 mes.</p></div>
+        <button class="faq-pregunta">&#191;Qué pasa si roban el equipo?<span class="signo">+</span></button>
+        <div class="faq-respuesta"><p>Levanta la denuncia correspondiente ante el ministerio público para iniciar la reposición del equipo, con cargo a tu cuenta. Si nos envías copia de la denuncia a informes@rubicknet.com, suspendemos tu cargo mensual por un mes mientras se resuelve.</p></div>
       </div>
     </div>
   </div>
@@ -470,7 +368,7 @@
   </div>
 </section>
 
-<a href="https://wa.me/5568115210" class="whatsapp-float" target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1 -8.4 8.4a8.5 8.5 0 0 1 -4 -1l-4.4 1l1.2 -4.3a8.4 8.4 0 0 1 -1.2 -4.3a8.4 8.4 0 1 1 16.8 .2z"/><path d="M8.5 10.3c0 2.9 2.4 5.3 5.3 5.3"/></svg></a>
+<a href="https://wa.me/5568115210" data-wa-msg="Hola, quiero más información sobre los servicios de Rubicknet." class="whatsapp-float" target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp"><svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path fill="white" d="M16.004 3C8.824 3 3 8.82 3 16c0 2.42.66 4.68 1.8 6.63L3 29l6.55-1.72A12.94 12.94 0 0 0 16.004 29C23.18 29 29 23.18 29 16S23.18 3 16.004 3zm0 23.4a10.5 10.5 0 0 1-5.36-1.47l-.38-.23-4.05 1.06 1.08-3.95-.25-.4a10.47 10.47 0 0 1-1.61-5.55c0-5.82 4.73-10.55 10.57-10.55 5.82 0 10.55 4.73 10.55 10.55S21.82 26.4 16.004 26.4zm5.79-7.9c-.32-.16-1.87-.92-2.16-1.02-.29-.11-.5-.16-.71.16-.21.32-.81 1.02-1 1.23-.18.21-.37.24-.68.08-.32-.16-1.34-.49-2.55-1.57-.94-.84-1.58-1.86-1.76-2.18-.18-.32-.02-.49.14-.65.14-.14.32-.37.48-.55.16-.18.21-.32.32-.53.11-.21.05-.4-.03-.55-.08-.16-.71-1.7-.97-2.34-.26-.61-.52-.53-.71-.54h-.61c-.21 0-.55.08-.84.4-.29.32-1.1 1.07-1.1 2.62s1.13 3.03 1.29 3.24c.16.21 2.22 3.38 5.37 4.74.75.32 1.34.52 1.79.66.75.24 1.44.2 1.98.13.6-.09 1.87-.76 2.14-1.5.26-.74.26-1.36.18-1.5-.08-.13-.29-.21-.6-.37z"/></svg></a>
 
 <script src="componentes/chat-widget.js?v=1.3"></script>
 <chat-widget></chat-widget>
@@ -749,7 +647,7 @@ if (btnUbicacion) {
 
       if (encontrado && encontrado.tipo === "activa") {
         window.Rubicknet.cobertura.guardarUltimaZona(encontrado.zona);
-        mostrarToast("¡Buenas noticias! Tu ubicación está dentro de la cobertura activa de " + encontrado.zona.nombre + ".", "si", null, { ctaHref: "#planes", ctaLabel: "Ver planes" });
+        mostrarToast("¡Buenas noticias! Tu ubicación está dentro de la cobertura activa de " + encontrado.zona.nombre + ".", "si", null, { ctaHref: "#plan-recomendado", ctaLabel: "Ver planes" });
         pintarZona(encontrado.zona.clave);
       } else if (encontrado) {
         window.Rubicknet.cobertura.guardarUltimaZona(encontrado.zona);

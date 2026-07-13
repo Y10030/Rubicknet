@@ -7,12 +7,13 @@ class SiteHeader extends HTMLElement {
     <a href="index.html" class="logo">
     <img src="Logo-RN.png" alt="Rubicknet">
     <span class="logo-text">
-        Rubicknet<span class="punto">.</span>
+        Rubicknet<span class="punto"></span>
     </span>
 </a>
 
     <nav class="main-nav">
 
+      <a href="index.html">Inicio</a>
       <a href="internet.html">Internet</a>
 
       <div class="nav-item">
@@ -34,8 +35,8 @@ class SiteHeader extends HTMLElement {
           </a>
 
           <a href="soluciones-cctv.html">
-            <strong>Vigilancia Seguridad y CCTV</strong>
-            <span>Portones, Cámaras análogas e IP</span>
+            <strong>Vigilancia, Seguridad y CCTV</strong>
+            <span>Portones automáticos, interphone y cámaras análogas e IP</span>
           </a>
 
           <a href="soluciones-soporte.html">
@@ -56,8 +57,7 @@ class SiteHeader extends HTMLElement {
 
             <a href="contacto.html"
                data-wa-msg="Hola, no estoy seguro de qué servicio necesito, ¿me pueden orientar?"
-               class="btn btn-primario"
-               style="padding:9px 16px;">
+               class="btn btn-primario">
                Pedir ayuda
             </a>
 
@@ -69,10 +69,6 @@ class SiteHeader extends HTMLElement {
       <a href="proyectos.html">Proyectos</a>
       <a href="nosotros.html">Nosotros</a>
       <a href="contacto.html">Contacto</a>
-
-      <a href="contacto.html" class="btn btn-primario nav-cta">
-        Cotizar
-      </a>
 
     </nav>
 
@@ -92,6 +88,16 @@ class SiteHeader extends HTMLElement {
         const navToggle     = this.querySelector('.menu-toggle');
         const navItem        = this.querySelector('.nav-item');
         const solucionesBtn  = this.querySelector('.soluciones-btn');
+
+        /* Marca en el menú la página en la que está el visitante */
+        const paginaActual = (window.location.pathname.split('/').pop() || 'index.html').toLowerCase();
+        this.querySelectorAll('.main-nav > a, .mega-menu a').forEach((link) => {
+            const destino = (link.getAttribute('href') || '').toLowerCase();
+            if (destino === paginaActual || (paginaActual === '' && destino === 'index.html')) {
+                link.classList.add('activo');
+                if (link.closest('.mega-menu')) solucionesBtn.classList.add('activo');
+            }
+        });
 
         const esEscritorio = () =>
             window.matchMedia('(hover: hover) and (pointer: fine)').matches;
@@ -149,12 +155,6 @@ class SiteHeader extends HTMLElement {
         });
 
         try {
-            const navCta = this.querySelector('.nav-cta');
-            if (navCta && window.Rubicknet && typeof window.Rubicknet.armarLinkWhatsApp === 'function' && typeof window.Rubicknet.mensajePorPagina === 'function') {
-                navCta.href = window.Rubicknet.armarLinkWhatsApp(window.Rubicknet.mensajePorPagina());
-                navCta.target = '_blank';
-                navCta.rel = 'noopener';
-            }
             /* Activa cualquier otro link con data-wa-msg dentro del header (p. ej. "Pedir ayuda") */
             if (window.Rubicknet && typeof window.Rubicknet.activarBotonesWhatsApp === 'function') {
                 window.Rubicknet.activarBotonesWhatsApp(this);

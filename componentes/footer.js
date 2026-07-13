@@ -11,7 +11,7 @@ class MiFooter extends HTMLElement {
     <span>Rubicknet</span>
 </div>
         <p>Internet, cableado, vigilancia y soporte técnico para hogares y empresas.</p>
-        <p>Ecatepec - Jardines de Morelos</p>
+        <p>Ecatepec </p>
       </div>
       <div>
         <h4>Soluciones</h4>

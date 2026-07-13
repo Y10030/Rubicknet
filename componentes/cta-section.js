@@ -29,10 +29,11 @@ class CTASection extends HTMLElement {
                             <div class="cta-botones">
                                 <button type="button" class="btn btn-primario cta-cotizar-btn" aria-expanded="false">
                                     Solicitar cotización
+                                    <svg class="cta-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6l6 -6"/></svg>
                                 </button>
 
                                 <a href="https://wa.me/5568115210?text=Hola%2C%20quiero%20cotizar%20un%20servicio"
-                                   class="btn btn-secundario-purpura"
+                                   class="btn btn-secundario-purpura cta-whatsapp-btn"
                                    target="_blank"
                                    rel="noopener">
                                     Escríbenos por WhatsApp
@@ -53,6 +54,9 @@ class CTASection extends HTMLElement {
                 </div>
 
                 <style>
+                  .cta-cotizar-btn{position:relative;}
+                  .cta-caret{width:15px;height:15px;transition:transform .2s ease;}
+                  .cta-cotizar-btn[aria-expanded="true"] .cta-caret{transform:rotate(180deg);}
                   .cta-selector{margin-top:22px;padding-top:22px;border-top:1px solid rgba(234,237,248,0.14);}
                   .cta-selector[hidden]{display:none;}
                   .cta-selector-titulo{color:var(--ink-soft,rgba(234,237,248,0.72));font-size:.85rem;margin:0 0 12px;}
@@ -71,10 +75,26 @@ class CTASection extends HTMLElement {
         const selector = this.querySelector('.cta-selector');
         const chips = this.querySelectorAll('.cta-chip');
         const enviarBtn = this.querySelector('.cta-enviar-btn');
+        const whatsappBtn = this.querySelector('.cta-whatsapp-btn');
 
         chips.forEach(function (chip) {
             if (preseleccion.indexOf(chip.dataset.id) !== -1) chip.classList.add('activo');
         });
+
+        function mensajeSegunSeleccion() {
+            const elegidos = Array.from(chips).filter(function (c) { return c.classList.contains('activo'); }).map(function (c) { return c.textContent.trim(); });
+            return elegidos.length
+                ? 'Hola, quiero cotizar los siguientes servicios: ' + elegidos.join(', ') + '.'
+                : (window.Rubicknet ? window.Rubicknet.mensajePorPagina() : 'Hola, quiero más información sobre los servicios de Rubicknet.');
+        }
+
+        function actualizarLinkWhatsApp() {
+            const mensaje = mensajeSegunSeleccion();
+            whatsappBtn.href = (window.Rubicknet && window.Rubicknet.armarLinkWhatsApp)
+                ? window.Rubicknet.armarLinkWhatsApp(mensaje)
+                : ('https://wa.me/5568115210?text=' + encodeURIComponent(mensaje));
+        }
+        actualizarLinkWhatsApp();
 
         cotizarBtn.addEventListener('click', function () {
             selector.hidden = !selector.hidden;
@@ -85,15 +105,12 @@ class CTASection extends HTMLElement {
         chips.forEach(function (chip) {
             chip.addEventListener('click', function () {
                 chip.classList.toggle('activo');
+                actualizarLinkWhatsApp();
             });
         });
 
         enviarBtn.addEventListener('click', function () {
-            const elegidos = Array.from(chips).filter(function (c) { return c.classList.contains('activo'); }).map(function (c) { return c.textContent.trim(); });
-            const mensaje = elegidos.length
-                ? 'Hola, quiero cotizar los siguientes servicios: ' + elegidos.join(', ') + '.'
-                : (window.Rubicknet ? window.Rubicknet.mensajePorPagina() : 'Hola, quiero más información sobre los servicios de Rubicknet.');
-
+            const mensaje = mensajeSegunSeleccion();
             const url = (window.Rubicknet && window.Rubicknet.armarLinkWhatsApp)
                 ? window.Rubicknet.armarLinkWhatsApp(mensaje)
                 : ('https://wa.me/5568115210?text=' + encodeURIComponent(mensaje));
