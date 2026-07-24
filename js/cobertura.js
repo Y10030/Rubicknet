@@ -64,7 +64,7 @@
     if (!t) return null;
     for (var i = 0; i < zonas.length; i++) {
       var zona = zonas[i];
-      var candidatos = [zona.nombre, zona.clave].concat(zona.zonas || []);
+      var candidatos = [zona.nombre, zona.clave, zona.titulo].concat(zona.zonas || []);
       for (var j = 0; j < candidatos.length; j++) {
         var n = normalizarTexto(candidatos[j]);
         if (n && coincideTexto(n, t)) return zona;
@@ -91,6 +91,7 @@
 
     zonas.forEach(function (zona) {
       var candidatos = (zona.zonas && zona.zonas.length) ? zona.zonas.slice() : [zona.nombre];
+      if (zona.titulo && candidatos.indexOf(zona.titulo) === -1) candidatos.push(zona.titulo);
       if (zona.zonas && zona.zonas.length && normalizarTexto(zona.nombre).indexOf(t) !== -1) {
         candidatos = candidatos.concat([zona.nombre]);
       }

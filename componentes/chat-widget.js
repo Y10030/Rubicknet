@@ -87,17 +87,24 @@ class ChatWidget extends HTMLElement {
 
     this.innerHTML =
       '<style>' +
-      '  chat-widget{position:fixed;right:24px;bottom:96px;z-index:999;font-family:var(--font-body,\'Inter\',sans-serif);}' +
+      '  chat-widget{position:static;display:block;font-family:var(--font-body,\'Inter\',sans-serif);}' +
       '  .rbk-burbuja{width:56px;height:56px;border-radius:50%;border:none;cursor:pointer;' +
       '    background:var(--gradient-diag,linear-gradient(135deg,#0033FF 0%,#977DFF 100%));' +
       '    box-shadow:0 8px 24px rgba(0,51,255,0.35);display:flex;align-items:center;justify-content:center;' +
       '    transition:transform .15s ease;color:#fff;}' +
       '  .rbk-burbuja:hover{transform:scale(1.06);}' +
       '  .rbk-burbuja svg{width:26px;height:26px;}' +
-      '  .rbk-panel{position:absolute;right:0;bottom:70px;width:340px;max-width:calc(100vw - 32px);' +
+      /* El panel se ancla arriba del stack completo (bottom:100%) y anima
+         de abajo hacia arriba con transform + opacity en vez de usar
+         [hidden], que no se puede animar. */
+      '  .rbk-panel{position:fixed;right:26px;bottom:26px;width:340px;max-width:calc(100vw - 52px);' +
       '    background:var(--white,#fff);border-radius:var(--radius-l,18px);overflow:hidden;' +
-      '    box-shadow:0 20px 50px rgba(3,8,18,0.25);border:1px solid rgba(3,8,18,0.08);}' +
-      '  .rbk-panel[hidden]{display:none;}' +
+      '    box-shadow:0 20px 50px rgba(3,8,18,0.25);border:1px solid rgba(3,8,18,0.08);z-index:9999;' +
+      '    transform-origin:bottom right;transform:translateY(18px) scale(.96);opacity:0;' +
+      '    visibility:hidden;pointer-events:none;' +
+      '    transition:transform .22s ease,opacity .18s ease,visibility 0s linear .22s;}' +
+      '  .rbk-panel.abierto{transform:translateY(0) scale(1);opacity:1;visibility:visible;pointer-events:auto;' +
+      '    transition:transform .22s ease,opacity .18s ease;}' +
       '  .rbk-cab{background:var(--navy-900,#00033D);color:#fff;padding:16px 18px;display:flex;' +
       '    align-items:center;justify-content:space-between;}' +
       '  .rbk-cab-info{display:flex;flex-direction:column;gap:2px;}' +
@@ -106,7 +113,7 @@ class ChatWidget extends HTMLElement {
       '  .rbk-punto{width:7px;height:7px;border-radius:50%;background:#3ddc84;display:inline-block;}' +
       '  .rbk-cerrar{background:none;border:none;color:#fff;font-size:1.3rem;line-height:1;cursor:pointer;opacity:.8;}' +
       '  .rbk-cerrar:hover{opacity:1;}' +
-      '  .rbk-cuerpo{max-height:400px;overflow-y:auto;padding:16px;background:var(--mist-100,#EAEDF8);}' +
+      '  .rbk-cuerpo{max-height:min(64vh,520px);overflow-y:auto;padding:16px;background:var(--mist-100,#EAEDF8);}' +
       '  .rbk-msg-bot{background:#fff;border-radius:14px 14px 14px 4px;padding:10px 13px;font-size:.85rem;' +
       '    line-height:1.45;color:var(--ink-950,#030812);box-shadow:0 1px 2px rgba(3,8,18,0.06);margin-bottom:12px;max-width:92%;}' +
       '  .rbk-msg-usuario{background:var(--gradient-diag,linear-gradient(135deg,#0033FF 0%,#977DFF 100%));' +
@@ -134,12 +141,12 @@ class ChatWidget extends HTMLElement {
       '  .rbk-cambiar{background:none;border:none;color:rgba(234,237,248,0.75);font-size:.7rem;' +
       '    text-decoration:underline;cursor:pointer;padding:0;margin-top:2px;align-self:flex-start;}' +
       '  .rbk-cambiar:hover{color:#fff;}' +
-      '  @media (max-width:480px){ chat-widget{right:14px;bottom:88px;} .rbk-panel{right:-6px;} }' +
+      '  @media (max-width:480px){ .rbk-panel{right:16px;bottom:18px;max-width:calc(100vw - 32px);} }' +
       '</style>' +
       '<button type="button" class="rbk-burbuja" aria-label="Abrir asistente de Rubicknet" aria-expanded="false">' +
       '  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 1 1 3.5 6.6L4 20l1.2-3.4A8 8 0 0 1 4 12z"/><path d="M8.5 11h7M8.5 14h4.5"/></svg>' +
       '</button>' +
-      '<div class="rbk-panel" hidden>' +
+      '<div class="rbk-panel">' +
       '  <div class="rbk-cab">' +
       '    <div class="rbk-cab-info"><strong>Asistente Rubicknet</strong><span><span class="rbk-punto"></span>Te conectamos por WhatsApp</span><button type="button" class="rbk-cambiar">Elegir otro servicio</button></div>' +
       '    <button type="button" class="rbk-cerrar" aria-label="Cerrar">&times;</button>' +
@@ -148,6 +155,7 @@ class ChatWidget extends HTMLElement {
       '  <div class="rbk-pie">Se abrirá WhatsApp en una pestaña nueva</div>' +
       '</div>';
 
+    var raiz = this;
     var burbuja = this.querySelector('.rbk-burbuja');
     var panel = this.querySelector('.rbk-panel');
     var cerrar = this.querySelector('.rbk-cerrar');
@@ -158,16 +166,20 @@ class ChatWidget extends HTMLElement {
     var estado = { flujo: null, pasoIndex: 0, respuestas: [] };
 
     function abrir() {
-      panel.hidden = false;
+      panel.classList.add('abierto');
       burbuja.setAttribute('aria-expanded', 'true');
+      var stack = raiz.closest('.rbk-stack-flotante');
+      if (stack) stack.classList.add('chat-abierto');
     }
     function cerrarPanel() {
-      panel.hidden = true;
+      panel.classList.remove('abierto');
       burbuja.setAttribute('aria-expanded', 'false');
+      var stack = raiz.closest('.rbk-stack-flotante');
+      if (stack) stack.classList.remove('chat-abierto');
     }
 
     burbuja.addEventListener('click', function () {
-      panel.hidden ? abrir() : cerrarPanel();
+      panel.classList.contains('abierto') ? cerrarPanel() : abrir();
     });
     cerrar.addEventListener('click', cerrarPanel);
     cambiar.addEventListener('click', mostrarPantallaInicial);
@@ -338,6 +350,38 @@ class ChatWidget extends HTMLElement {
     }
 
     mostrarPantallaInicial();
+
+    /* ---------- Grupo flotante: WhatsApp + Facebook + este chat ----------
+       Se arma una sola vez por página. Toma el botón de WhatsApp que ya
+       existe en el HTML de cada página (con su link/mensaje correcto) y
+       crea el de Facebook, para que los tres queden alineados en una
+       columna fija y no se encimen. Orden visual de abajo hacia arriba:
+       WhatsApp, Facebook, Chat. */
+    (function armarStackFlotante(elementoChat) {
+      if (document.querySelector('.rbk-stack-flotante')) return;
+
+      var stack = document.createElement('div');
+      stack.className = 'rbk-stack-flotante';
+      document.body.appendChild(stack);
+
+      var whatsapp = document.querySelector('a.whatsapp-float');
+
+      var facebook = document.querySelector('a.facebook-float');
+      if (!facebook) {
+        facebook = document.createElement('a');
+        // TODO: confirmar la URL real de la página de Facebook de Rubicknet
+        facebook.href = 'https://www.facebook.com/rubicknet';
+        facebook.target = '_blank';
+        facebook.rel = 'noopener';
+        facebook.className = 'facebook-float';
+        facebook.setAttribute('aria-label', 'Síguenos en Facebook');
+        facebook.innerHTML = '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="white" d="M22 12.06C22 6.53 17.52 2.04 12 2.04S2 6.53 2 12.06c0 5 3.66 9.13 8.44 9.9v-7H7.9v-2.9h2.54V9.84c0-2.5 1.49-3.9 3.77-3.9 1.09 0 2.24.2 2.24.2v2.47h-1.27c-1.24 0-1.63.77-1.63 1.56v1.87h2.78l-.44 2.9h-2.34v7c4.78-.77 8.44-4.9 8.44-9.9z"/></svg>';
+      }
+
+      if (whatsapp) stack.appendChild(whatsapp);
+      stack.appendChild(facebook);
+      stack.appendChild(elementoChat);
+    })(this);
   }
 }
 

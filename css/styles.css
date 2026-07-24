@@ -668,6 +668,26 @@ site-header { display: block; }
   .hero-nodos circle.nodo, .nodos-deco circle.nodo { animation: none; }
 }
 
+/* ---------- Grupo flotante (WhatsApp + Facebook + chat) ---------- */
+/* chat-widget.js arma este contenedor en tiempo de ejecución y mete ahí
+   el botón de WhatsApp que ya trae cada página, el de Facebook y la
+   burbuja del chat, de abajo hacia arriba, para que no se encimen. */
+.rbk-stack-flotante {
+  position: fixed; right: 26px; bottom: 26px; z-index: 9998;
+  display: flex; flex-direction: column-reverse; align-items: center;
+  gap: 14px;
+}
+.rbk-stack-flotante .whatsapp-float,
+.rbk-stack-flotante .facebook-float,
+.rbk-stack-flotante chat-widget {
+  position: static; bottom: auto; right: auto;
+}
+.rbk-stack-flotante.chat-abierto .whatsapp-float,
+.rbk-stack-flotante.chat-abierto .facebook-float,
+.rbk-stack-flotante.chat-abierto .rbk-burbuja {
+  display: none;
+}
+
 /* ---------- WhatsApp flotante ---------- */
 .whatsapp-float {
   position: fixed; bottom: 26px; right: 26px; z-index: 70;
@@ -679,6 +699,23 @@ site-header { display: block; }
 }
 .whatsapp-float:hover { transform: scale(1.07); }
 .whatsapp-float svg { width: 30px; height: 30px; }
+
+/* ---------- Facebook flotante ---------- */
+.facebook-float {
+  width: 58px; height: 58px; border-radius: 50%;
+  background: #1877F2;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 16px 32px -12px rgba(24,119,242,0.65);
+  transition: transform 0.18s ease;
+}
+.facebook-float:hover { transform: scale(1.07); }
+.facebook-float svg { width: 26px; height: 26px; }
+
+@media (max-width: 480px) {
+  .rbk-stack-flotante { right: 16px; bottom: 18px; gap: 10px; }
+  .facebook-float { width: 50px; height: 50px; }
+  .facebook-float svg { width: 22px; height: 22px; }
+}
 
 
 /* ---------- Mapas de cobertura ---------- */

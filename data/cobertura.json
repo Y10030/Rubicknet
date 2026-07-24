@@ -11,6 +11,7 @@
     "zoom": 13,
     "descripcion": "Servicio disponible en Tizayuca y alrededores, con instalación en pocos días en las zonas marcadas.",
     "zonas": [
+      "Tizayuca",
       "SADASI Los Héroes Tizayuca",
       "Fuentes de Tizayuca"
     ],
@@ -58,6 +59,7 @@
     "zoom": 13,
     "descripcion": "Cobertura sólida en zonas residenciales del municipio, con una zona en expansión.",
     "zonas": [
+      "Ecatepec",
       "Las Américas",
       "Montes B"
     ],
@@ -147,6 +149,7 @@
     "zoom": 13,
     "descripcion": "Cobertura en zonas residenciales del municipio de Chalco.",
     "zonas": [
+      "Chalco",
       "Los Héroes Chalco"
     ],
     "poligonos": [
