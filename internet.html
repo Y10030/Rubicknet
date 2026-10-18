@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Internet | Rubicknet</title>
+<meta name="description" content="Consulta cobertura de internet residencial y empresarial de Rubicknet: planes, velocidades, SLA y enlaces de respaldo.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css?v=1.12">
+<link rel="icon" type="image/png" href="Logo-RN.png">
+<link rel="apple-touch-icon" href="Logo-RN.png">
+<link rel="canonical" href="https://rubicknet.com/internet.html">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="theme-color" content="#00033D">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rubicknet">
+<meta property="og:locale" content="es_MX">
+<meta property="og:title" content="Internet | Rubicknet">
+<meta property="og:description" content="Consulta cobertura de internet residencial y empresarial de Rubicknet: planes, velocidades, SLA y enlaces de respaldo.">
+<meta property="og:url" content="https://rubicknet.com/internet.html">
+<meta property="og:image" content="https://rubicknet.com/Logo-RN.png">
+<meta name="twitter:card" content="summary">
+
+<style>
+  .faq-categoria{
+    font-family:"Space Grotesk",sans-serif;
+    font-size:1.05rem;
+    font-weight:600;
+    color:var(--blue-600,#0033FF);
+    margin:36px 0 12px;
+    letter-spacing:.01em;
+  }
+  .faq-categoria:first-of-type{margin-top:8px;}
+
+  #rubicknet-toast-wrap{
+    position:fixed;
+    left:50%;
+    bottom:28px;
+    transform:translateX(-50%);
+    z-index:9999;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    align-items:center;
+    pointer-events:none;
+    width:100%;
+    padding:0 16px;
+  }
+  .rn-toast{
+    font-family:"Inter",sans-serif;
+    font-size:.92rem;
+    line-height:1.4;
+    color:#fff;
+    background:#101425;
+    border:1px solid rgba(255,255,255,.08);
+    box-shadow:0 12px 32px rgba(0,0,0,.35);
+    border-radius:12px;
+    padding:14px 18px;
+    max-width:420px;
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+    opacity:0;
+    transform:translateY(14px);
+    transition:opacity .25s ease, transform .25s ease;
+    pointer-events:auto;
+  }
+  .rn-toast-cuerpo{display:flex;flex-direction:column;align-items:flex-start;gap:9px;flex:1 1 auto;}
+  .rn-toast-cta{
+    display:inline-flex;align-items:center;gap:6px;
+    padding:7px 15px;border-radius:999px;
+    background:rgba(255,255,255,.14);
+    color:#fff;font-size:.82rem;font-weight:600;
+    text-decoration:none;white-space:nowrap;
+    transition:background .15s ease;
+  }
+  .rn-toast-cta:hover{background:rgba(255,255,255,.24);}
+  .rn-toast.mostrar{opacity:1;transform:translateY(0);}
+  .rn-toast.ocultando{opacity:0;transform:translateY(-6px);}
+  .rn-toast .rn-toast-icono{flex:0 0 auto;width:20px;height:20px;margin-top:1px;}
+  .rn-toast--si{border-color:rgba(52,211,153,.35);}
+  .rn-toast--si .rn-toast-icono{color:#34D399;}
+  .rn-toast--expansion{border-color:rgba(151,125,255,.35);}
+  .rn-toast--expansion .rn-toast-icono{color:#977DFF;}
+  .rn-toast--no{border-color:rgba(248,113,113,.35);}
+  .rn-toast--no .rn-toast-icono{color:#F87171;}
+</style>
+</head>
+<body>
+
+<script src="componentes/whatsapp.js?v=1.3"></script>
+<script src="componentes/site-header.js?v=1.3"></script>
+<site-header></site-header>
+
+
+<section class="hero hero-grande">
+  <svg class="hero-nodos" viewBox="0 0 760 520" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg"><line x1="203" y1="78" x2="161" y2="80" stroke="white" stroke-opacity="0.18" stroke-width="1"/><line x1="203" y1="78" x2="310" y2="102" stroke="white" stroke-opacity="0.18" stroke-width="1"/><line x1="310" y1="102" x2="362" y2="72" stroke="white" stroke-opacity="0.18" stroke-width="1"/><line x1="310" y1="102" x2="384" y2="113" stroke="white" stroke-opacity="0.18" stroke-width="1"/><line x1="90" y1="215" x2="161" y2="80" stroke="white" stroke-opacity="0.18" stroke-width="1"/><line x1="660" y1="397" x2="600" y2="400" stroke="white" stroke-opacity="0.18" stroke-width="1"/><line x1="660" y1="397" x2="535" y2="422" stroke="white" stroke-opacity="0.18" stroke-width="1"/><line x1="557" y1="133" x2="581" y2="120" stroke="white" stroke-opacity="0.18" stroke-width="1"/><line x1="557" y1="133" x2="634" y2="71" stroke="white" stroke-opacity="0.18" stroke-width="1"/><line x1="405" y1="158" x2="384" y2="113" stroke="white" stroke-opacity="0.18" stroke-width="1"/><line x1="405" y1="158" x2="362" y2="72" stroke="white" stroke-opacity="0.18" stroke-width="1"/><line x1="189" y1="456" x2="253" y2="318" stroke="white" stroke-opacity="0.18" stroke-width="1"/><line x1="600" y1="400" x2="535" y2="422" stroke="white" stroke-opacity="0.18" stroke-width="1"/><line x1="581" y1="120" x2="634" y2="71" stroke="white" stroke-opacity="0.18" stroke-width="1"/><line x1="535" y1="422" x2="451" y2="339" stroke="white" stroke-opacity="0.18" stroke-width="1"/><line x1="384" y1="113" x2="362" y2="72" stroke="white" stroke-opacity="0.18" stroke-width="1"/><circle class="nodo" cx="203" cy="78" r="5.0" fill="white"/><circle class="nodo" cx="310" cy="102" r="4.8" fill="white"/><circle class="nodo" cx="90" cy="215" r="3.9" fill="white"/><circle class="nodo" cx="660" cy="397" r="3.2" fill="white"/><circle class="nodo" cx="557" cy="133" r="4.9" fill="white"/><circle class="nodo" cx="405" cy="158" r="4.0" fill="white"/><circle class="nodo" cx="161" cy="80" r="4.9" fill="white"/><circle class="nodo" cx="189" cy="456" r="4.8" fill="white"/><circle class="nodo" cx="600" cy="400" r="3.8" fill="white"/><circle class="nodo" cx="581" cy="120" r="3.6" fill="white"/><circle class="nodo" cx="253" cy="318" r="4.1" fill="white"/><circle class="nodo" cx="535" cy="422" r="3.6" fill="white"/><circle class="nodo" cx="634" cy="71" r="2.9" fill="white"/><circle class="nodo" cx="451" cy="339" r="3.3" fill="white"/><circle class="nodo" cx="384" cy="113" r="4.7" fill="white"/><circle class="nodo" cx="362" cy="72" r="2.5" fill="white"/></svg>
+  <div class="contenedor hero-inner">
+    <span class="eyebrow claro">Cobertura residencial y empresarial</span>
+    <h1>Internet estable, con equipo de calidad.</h1>
+    <p class="hero-sub">Ingresa tu colonia y te decimos si ya tenemos cobertura en tu zona.</p>
+    
+        <form id="buscador" class="buscador-cobertura form-cobertura" action="#" method="get" style="margin-top:30px;max-width:640px;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.3 -4.3"/></svg>
+          <input type="text" placeholder="Ingresa tu colonia" aria-label="Colonia" autocomplete="off">
+          <button type="submit" class="btn btn-primario">Consultar cobertura</button>
+        </form>
+        <p class="resultado-cobertura" id="resultado-buscador"></p>
+    
+  </div>
+</section>
+
+<section class="seccion" id="planes">
+  <div class="contenedor">
+    <div class="tabs-wrap">
+      <div class="tabs-nav">
+        <button class="tab-btn activo" data-tab="tab-hogar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8 -7l8 7"/><path d="M6 10v9h12v-9"/><path d="M10 19v-5h4v5"/></svg> Hogar</button>
+        <button class="tab-btn" data-tab="tab-empresa"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="9" width="16" height="11" rx="1"/><path d="M9 9V5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4"/><path d="M9 20v-3h6v3"/></svg> Empresa</button>
+      </div>
+      <div class="tab-panel activo" id="tab-hogar">
+      <div class="planes-grid">
+      <div class="plan-card">
+        
+        <div class="icono" style="background:var(--mist-100);color:var(--blue-600);width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8.5a15.5 15.5 0 0 1 20 0"/><path d="M5.5 12.3a10.8 10.8 0 0 1 13 0"/><path d="M9 16a5.5 5.5 0 0 1 6 0"/><circle cx="12" cy="19.2" r="1.1" fill="currentColor" stroke="none"/></svg></div>
+        <div class="plan-velocidad">100 <span>Mbps</span></div>
+        <div class="plan-precio">$[000] /mes</div>
+        <ul class="lista-check"><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4l10 -10"/></svg>Instalación con costo aparte</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4l10 -10"/></svg>Router Wi-Fi incluido</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4l10 -10"/></svg>Soporte técnico ilimitado</li></ul>
+        <a href="contacto.html" data-wa-msg="Hola, quiero cotizar el plan de 100 Mbps para hogar." class="btn btn-secundario btn-bloque">Cotizar este plan</a>
+      </div>
+    
+      <div class="plan-card destacado" id="plan-recomendado">
+        <span class="tag-popular">Más elegido</span>
+        <div class="icono" style="background:var(--mist-100);color:var(--blue-600);width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8.5a15.5 15.5 0 0 1 20 0"/><path d="M5.5 12.3a10.8 10.8 0 0 1 13 0"/><path d="M9 16a5.5 5.5 0 0 1 6 0"/><circle cx="12" cy="19.2" r="1.1" fill="currentColor" stroke="none"/></svg></div>
+        <div class="plan-velocidad">300 <span>Mbps</span></div>
+        <div class="plan-precio">$[000] /mes</div>
+        <ul class="lista-check"><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4l10 -10"/></svg>Instalación con costo aparte</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4l10 -10"/></svg>
+          Router Wi-Fi</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4l10 -10"/></svg>Soporte técnico prioritario</li></ul>
+        <a href="contacto.html" data-wa-msg="Hola, quiero cotizar el plan de 300 Mbps para hogar." class="btn btn-secundario btn-bloque">Cotizar este plan</a>
+      </div>
+    
+      <div class="plan-card">
+        
+        <div class="icono" style="background:var(--mist-100);color:var(--blue-600);width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8.5a15.5 15.5 0 0 1 20 0"/><path d="M5.5 12.3a10.8 10.8 0 0 1 13 0"/><path d="M9 16a5.5 5.5 0 0 1 6 0"/><circle cx="12" cy="19.2" r="1.1" fill="currentColor" stroke="none"/></svg></div>
+        <div class="plan-velocidad">600 <span>Mbps</span></div>
+        <div class="plan-precio">$[000] /mes</div>
+        <ul class="lista-check"><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4l10 -10"/></svg>Instalación con costo aparte</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4l10 -10"/></svg>
+          Router Wi-Fi 6</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4l10 -10"/></svg>Soporte técnico prioritario</li></ul>
+        <a href="contacto.html" data-wa-msg="Hola, quiero cotizar el plan de 600 Mbps para hogar." class="btn btn-secundario btn-bloque">Cotizar este plan</a>
+      </div>
+    </div>
+      <div class="beneficios-grid"><div class="beneficio"><h4>Instalación rápida</h4><p>Visita técnica agendada en pocos días desde que confirmamos cobertura.</p></div><div class="beneficio"><h4>Soporte técnico</h4><p>Atención directa con personas que conocen tu instalación, no un call center genérico.</p></div><div class="beneficio"><h4>Condiciones claras</h4><p>Sin letras chiquitas.</p>
+      </div></div>
+    </div>
+      <div class="tab-panel" id="tab-empresa">
+      <p style="max-width:640px;color:rgba(3,8,18,0.65);margin-bottom:28px;">Internet dedicado para negocios que no pueden darse el lujo de perder conexión: mismo ancho de banda de subida y bajada, IP fija disponible, garantía de disponibilidad (SLA) y enlace de respaldo automático ante fallas. Ideal para videovigilancia, punto de venta, oficinas y comercios que dependen de una conexión estable todo el día.</p>
+      <div class="planes-grid">
+        
+      <div class="plan-card">
+        
+        <div class="icono" style="background:var(--mist-100);color:var(--blue-600);width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="9" width="16" height="11" rx="1"/><path d="M9 9V5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4"/><path d="M9 20v-3h6v3"/></svg></div>
+        <div class="plan-velocidad">Dedicado <span>servicios pesados</span></div>
+        <div class="plan-precio">Cotización por proyecto</div>
+        <ul class="lista-check"><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4l10 -10"/></svg>Mismo ancho de banda de subida y bajada</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4l10 -10"/></svg>IP fija disponible</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4l10 -10"/></svg>Ideal para videovigilancia y respaldo en la nube</li></ul>
+        <a href="contacto.html" data-wa-msg="Hola, quiero cotizar el plan de internet dedicado para empresa." class="btn btn-secundario btn-bloque">Cotizar este plan</a>
+      </div>
+    
+        <div class="plan-card"><div class="icono" style="background:var(--mist-100);color:var(--blue-600);width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l3 3v15h-12z"/><path d="M9 11h6M9 14h6M9 17h4"/></svg></div><div class="plan-velocidad" style="font-size:1.6rem;">SLA &amp; disponibilidad</div><div class="plan-precio">[100 % de garantía]</div><ul class="lista-check"><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4l10 -10"/></svg>Garantía de disponibilidad mensual</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4l10 -10"/></svg>Tiempos de respuesta definidos por contrato</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4l10 -10"/></svg>Reporte de incidencias</li></ul><a href="contacto.html" data-wa-msg="Hola, quiero solicitar información sobre el SLA y garantía de disponibilidad para mi enlace de internet." class="btn btn-secundario btn-bloque">Solicitar SLA</a></div>
+        <div class="plan-card"><div class="icono" style="background:var(--mist-100);color:var(--blue-600);width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="1.5"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div><div class="plan-velocidad" style="font-size:1.6rem;">Respaldo &amp; redundancia</div><div class="plan-precio">Enlace secundario</div><ul class="lista-check"><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4l10 -10"/></svg>Enlace secundario automático</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4l10 -10"/></svg>Conmutación ante fallas</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4l10 -10"/></svg>Monitoreo continuo del enlace</li></ul><a href="contacto.html" data-wa-msg="Hola, quiero cotizar un enlace de respaldo y redundancia para mi internet." class="btn btn-secundario btn-bloque">Cotizar respaldo</a></div>
+      </div>
+    </div>
+    </div>
+  </div>
+</section>
+
+<section class="seccion">
+  <div class="contenedor">
+    <div class="seccion-titulo">
+      <span class="eyebrow">Cobertura por zona</span>
+      <h2 style="margin-top:14px;">Estas son las zonas donde ya tenemos cobertura</h2>
+      <p>Selecciona una zona para ver el mapa real con la cobertura activa. Si tu colonia no aparece, usa el buscador de arriba para confirmar tu dirección exacta.</p>
+      <div class="mapa-leyenda mapa-leyenda-fija" id="mapa-leyenda">
+        <span><i class="punto activa"></i>Cobertura activa</span>
+        <span id="leyenda-expansion" style="display:none;"><i class="punto expansion"></i>En expansión</span>
+      </div>
+
+      <div class="lista-completa-cobertura" id="lista-completa-cobertura" style="display:none;">
+        <p class="lista-completa-titulo">Todas las colonias y zonas con cobertura</p>
+        <div class="zonas-chips" id="lista-completa-chips"></div>
+      </div>
+    </div>
+
+    <div class="cobertura-ciudades">
+      <div class="ciudades-nav" id="ciudades-nav">
+        <p class="cobertura-cargando" id="cobertura-cargando">No se pudo cargar la información de cobertura.</p>
+      </div>
+
+      <div class="mapa-panel-google" id="mapa-panel-google" style="display:none;">
+        <div class="mapa-media">
+          <div id="mapa-google"></div>
+          <div id="mapa-sin-key" class="mapa-aviso" style="display:none;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.86l-8.18 14.18A1 1 0 0 0 3 19.5h18a1 1 0 0 0 .87 -1.46L13.7 3.86a1 1 0 0 0 -1.74 0z"/></svg>
+          </div>
+          <span class="mapa-tag" id="mapa-tag-label">Cobertura activa</span>
+        </div>
+        <div class="mapa-info">
+          <span class="estado" id="info-estado">Cobertura activa</span>
+          <h3 id="info-titulo">—</h3>
+          <p id="info-desc"></p>
+          <div class="zonas-chips" id="info-chips"></div>
+
+          <div class="mapa-info-cta" style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;">
+            <a href="#plan-recomendado" class="btn btn-primario">Ver planes</a>
+            <a href="#" id="btn-cotizar-zona" class="btn btn-secundario-purpura" target="_blank" rel="noopener">Cotizar por WhatsApp</a>
+          </div>
+
+          <button type="button" id="btn-verificar-ubicacion" class="btn btn-secundario">Verificar mi dirección</button>
+          <p class="resultado-cobertura" id="resultado-ubicacion"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="seccion fondo-mist">
+  <div class="contenedor">
+    <div class="seccion-titulo">
+      <span class="eyebrow">Preguntas frecuentes</span>
+      <h2 style="margin-top:14px;">Antes de contratar</h2>
+    </div>
+    <h3 class="faq-categoria">Instalación y equipo</h3>
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-pregunta">&#191;En qué horario instalan?<span class="signo">+</span></button>
+        <div class="faq-respuesta"><p>De lunes a viernes de 12:00 a 19:00 h, y los sábados de 10:00 a 12:00 h. No agendamos instalaciones nocturnas, para proteger la seguridad de nuestros técnicos.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-pregunta">&#191;Cuánto tarda la instalación y en cuánto tiempo la agendan?<span class="signo">+</span></button>
+        <div class="faq-respuesta"><p>La visita técnica dura entre 2 y 3 horas, según el trayecto del cableado dentro de tu casa o negocio. Una vez contratado el servicio, agendamos dentro de las siguientes 72 horas, siempre que el clima lo permita: lluvia fuerte, tormenta eléctrica o viento intenso pueden obligarnos a reprogramar por seguridad.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-pregunta">&#191;Qué instalan en mi domicilio?<span class="signo">+</span></button>
+        <div class="faq-respuesta"><p>Una antena receptora en la azotea y un router dentro de tu domicilio o negocio, conectados entre sí por un cable. A ese router se conectan tus dispositivos. Si necesitas cableado adicional dentro del inmueble, tiene un costo extra.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-pregunta">&#191;El equipo es mío si pago la instalación?<span class="signo">+</span></button>
+        <div class="faq-respuesta"><p>No: el equipo siempre es propiedad de RubickNET. Lo que pagas en la instalación cubre el cableado, los accesorios y el tiempo del técnico. Por eso, al contratar, firmas un pagaré como garantía; te lo devolvemos al desinstalar el equipo.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-pregunta">&#191;Qué pasa si no estoy en la cita agendada?<span class="signo">+</span></button>
+        <div class="faq-respuesta"><p>Podemos generar un cargo de hasta $150 pesos por el tiempo y traslado del técnico.</p></div>
+      </div>
+    </div>
+
+    <h3 class="faq-categoria">Servicio y velocidad</h3>
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-pregunta">&#191;El internet es inalámbrico o dedicado?<span class="signo">+</span></button>
+        <div class="faq-respuesta"><p>La conexión hasta tu domicilio es inalámbrica (antena en azotea), y el medio de acceso es dedicado para ti. Como en toda red de internet, el ancho de banda se comparte más adelante entre usuarios de la misma zona, por lo que vamos ampliando la capacidad conforme crece la demanda.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-pregunta">&#191;Baja mi velocidad si se conectan más vecinos o más dispositivos en casa?<span class="signo">+</span></button>
+        <div class="faq-respuesta"><p>Monitoreamos la demanda de cada zona y ampliamos el ancho de banda conforme se necesita, así que contratar más vecinos no debería afectarte. Dentro de casa, sí es normal que la velocidad por dispositivo baje un poco si varios usan internet al mismo tiempo, igual que ocurre con la presión del agua cuando abres varias llaves a la vez.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-pregunta">&#191;Por qué a veces algunas páginas cargan lento y otras no?<span class="signo">+</span></button>
+        <div class="faq-respuesta"><p>Es normal en internet: puede deberse a que esa ruta específica o el servidor donde está alojada la página esté temporalmente saturado, no necesariamente a tu conexión.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-pregunta">&#191;Qué pasa si se va la luz?<span class="signo">+</span></button>
+        <div class="faq-respuesta"><p>El equipo necesita energía eléctrica para funcionar, así que el internet se corta mientras no haya luz. Al regresar la energía, el equipo recupera su configuración automáticamente y el servicio vuelve a funcionar sin que tengas que hacer nada.</p></div>
+      </div>
+    </div>
+
+    <h3 class="faq-categoria">Soporte y contacto</h3>
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-pregunta">&#191;Cómo pido soporte si tengo un problema?<span class="signo">+</span></button>
+        <div class="faq-respuesta"><p>Escríbenos a soporte@rubicknet.com o llama al 6811-5210 / 7675-9193 / 55-3451-0027. Damos seguimiento por estos medios para responder más rápido y mantener los costos del servicio bajos.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-pregunta">&#191;Configuran mis dispositivos o me formatean el equipo?<span class="signo">+</span></button>
+        <div class="faq-respuesta"><p>El técnico te asesora para conectar tus dispositivos por primera vez, pero la configuración de equipos no está incluida en el servicio. Si necesitas soporte para tu computadora (por ejemplo, quitar un virus), lo cotizamos aparte según el caso.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-pregunta">&#191;Qué pasa si comparto mi contraseña de Wi-Fi?<span class="signo">+</span></button>
+        <div class="faq-respuesta"><p>Bajará tu velocidad de navegación y aumenta el riesgo de que algún dispositivo con virus afecte tu red. Te recomendamos no compartirla fuera de tu hogar o negocio.</p></div>
+      </div>
+    </div>
+
+    <h3 class="faq-categoria">Pagos y plan</h3>
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-pregunta">&#191;Puedo subir o bajar de plan?<span class="signo">+</span></button>
+        <div class="faq-respuesta"><p>Puedes subir de plan a partir de tu tercer mes de contrato, firmando un nuevo contrato con fecha de vencimiento actualizada. Bajar de velocidad solo es posible al momento de renovar; si tienes una situación particular antes de eso, escríbenos a informes@rubicknet.com y la revisamos.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-pregunta">&#191;Cómo cancelo mi servicio?<span class="signo">+</span></button>
+        <div class="faq-respuesta"><p>Envía tus motivos de cancelación a informes@rubicknet.com. Revisamos que no exista algún adeudo y respondemos en un plazo máximo de 5 días hábiles; después, pasamos a recoger el equipo. Si el servicio no funciona y no logramos solucionarlo, tienes derecho a cancelar sin problema.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-pregunta">&#191;Qué pasa si roban el equipo?<span class="signo">+</span></button>
+        <div class="faq-respuesta"><p>Levanta la denuncia correspondiente ante el ministerio público para iniciar la reposición del equipo, con cargo a tu cuenta. Si nos envías copia de la denuncia a informes@rubicknet.com, suspendemos tu cargo mensual por un mes mientras se resuelve.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="seccion" id="aviso-privacidad">
+  <div class="contenedor">
+    <div class="seccion-titulo">
+      <span class="eyebrow">Aviso de privacidad</span>
+      <h2 style="margin-top:14px;">Tratamiento de tus datos personales</h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-pregunta">Ver Aviso de Privacidad<span class="signo">+</span></button>
+        <div class="faq-respuesta">
+          <p>Para RubickNET el tratamiento controlado e informado de sus datos personales es muy importante para reiterar nuestro compromiso con su privacidad y el derecho a la autodeterminación informativa. El presente Aviso de Privacidad tiene como objeto informarle sobre el tratamiento que se le dará a sus datos personales cuando los mismos son recabados, utilizados, almacenados y/o transferidos por RubickNET.</p>
+
+          <h4>Responsable del tratamiento de sus datos personales</h4>
+          <p>RubickNET S.A.S. (en adelante "RubickNET"), será el responsable y, por ende, quien decidirá sobre el tratamiento que se le dé a sus datos personales.</p>
+
+          <h4>Datos personales que se recaban</h4>
+          <p>RubickNET podrá recabar y, en su caso, tratar los siguientes datos personales, dependiendo de la relación que con usted exista:</p>
+          <ul class="lista-check">
+            <li>Nombre completo</li>
+            <li>Domicilio(s)</li>
+            <li>Correo electrónico</li>
+            <li>Teléfono particular, del trabajo, celular</li>
+          </ul>
+          <p>RubickNET también podrá tratar los siguientes datos personales sensibles:</p>
+          <ul class="lista-check">
+            <li>Información respecto a los productos de RubickNET que usted adquiere</li>
+            <li>Registro de compras del producto</li>
+          </ul>
+          <p>Podrán tratarse otros datos personales, sensibles y no sensibles, que no se incluyan en las listas anteriores siempre y cuando dichos datos se consideren de la misma naturaleza y no sean excesivos respecto a las finalidades para las cuales se recaban.</p>
+
+          <h4>Finalidades del tratamiento de los datos personales</h4>
+          <p>RubickNET recaba, utiliza, almacena o transfiere sus datos personales, en la medida en que las leyes aplicables lo permiten, para llevar a cabo lo siguiente:</p>
+          <ul class="lista-check">
+            <li>Desarrollo de nuevos productos y servicios</li>
+            <li>Seguimiento a las ventas a fin de alcanzar la satisfacción del cliente</li>
+            <li>Creación de directorios</li>
+            <li>Envío de promociones sobre nuestros productos o servicios de acuerdo con lo que consideramos son los intereses del consumidor</li>
+            <li>Entrega de promociones</li>
+            <li>Hacerle llegar comunicaciones de todo tipo, provenientes de RubickNET</li>
+          </ul>
+          <p>RubickNET podrá hacer uso de sus datos personales para otras finalidades, siempre y cuando dichas finalidades sean compatibles y puedan considerarse análogas a las anteriores.</p>
+          <p>Sus datos personales serán tratados únicamente por el tiempo necesario a fin de cumplir con las finalidades descritas y/o de conformidad con lo que establezcan las disposiciones legales aplicables.</p>
+
+          <h4>Seguridad de los datos personales</h4>
+          <p>RubickNET implementará las medidas de seguridad, técnicas, administrativas y físicas, necesarias para proteger sus datos personales y evitar su daño, pérdida, alteración, destrucción o el uso, acceso o tratamiento no autorizado.</p>
+          <p>Únicamente el personal autorizado, que ha cumplido y observado los correspondientes requisitos de confidencialidad, podrá participar en el tratamiento de sus datos personales. El personal autorizado tiene prohibido permitir el acceso de personas no autorizadas y utilizar sus datos personales para fines distintos a los establecidos en el presente Aviso de Privacidad. La obligación de confidencialidad de las personas que participan en el tratamiento de sus datos personales subsiste aun después de terminada la relación con RubickNET.</p>
+
+          <h4>Comunicaciones y transferencias de datos personales</h4>
+          <p>Como parte de las operaciones propias del negocio y a fin de cumplir con las finalidades descritas, RubickNET podrá compartir con terceros, nacionales o extranjeros, algunos o todos sus datos personales. Dichos terceros podrán ser compañías afiliadas o subsidiarias de RubickNET; asesores profesionales externos y/u otros prestadores de servicios que actúen como encargados a nombre y por cuenta de RubickNET.</p>
+          <p>RubickNET se asegurará de que dichos terceros mantengan medidas de seguridad, administrativas, técnicas y físicas adecuadas para resguardar sus datos personales, así como que dichos terceros únicamente utilicen sus datos personales para las finalidades para las cuales fueron contratados y de conformidad con el presente Aviso de Privacidad.</p>
+          <p>RubickNET no cederá, venderá o transferirá sus datos personales a terceros no relacionados con RubickNET, sin su consentimiento previo. Sin embargo, RubickNET podrá transferir sus datos personales en los casos previstos en la Ley Federal de Protección de Datos Personales en Posesión de los Particulares.</p>
+
+          <h4>Derechos que le corresponden</h4>
+          <p>Usted, como titular de datos personales, podrá ejercitar ante el Comité de Protección de Datos de RubickNET los derechos de acceso, rectificación, cancelación y oposición respecto al tratamiento de sus datos personales. Asimismo, podrá revocar, en todo momento, el consentimiento que haya otorgado y que fuere necesario para el tratamiento de sus datos personales. A manera de referencia, a continuación se describen los derechos de acceso, rectificación, cancelación y oposición:</p>
+          <p>A través de su derecho de acceso usted podrá solicitar se le informe qué tipo de datos personales están siendo tratados por RubickNET, el origen de dichos datos y las comunicaciones que se hayan realizado con los mismos.</p>
+          <p>Por virtud del derecho de rectificación usted puede solicitar se corrija o complete los datos personales que sean incorrectos o estén incompletos y que obren en manos de RubickNET. Usted tendrá la obligación de informar a RubickNET cuando deba hacerse un cambio o corrección en sus datos personales y este hecho solo sea de su conocimiento.</p>
+          <p>Cuando sus datos personales hayan dejado de ser necesarios para los fines para los cuales se recabaron, usted podrá solicitar que los mismos sean cancelados si es que aún se conservaran en las bases de datos de RubickNET. El proceso de cancelación irá precedido de un periodo de bloqueo, mediante el cual únicamente se almacenarán sus datos por un tiempo equivalente al plazo de prescripción de las acciones que dieron origen al tratamiento de sus datos personales o el periodo que por ley se establezca. Existen casos en que los datos personales no pueden ser cancelados por disposición de ley.</p>
+          <p>Podrá oponerse al tratamiento de sus datos personales cuando exista una causa legítima para ello, incluso habiendo expresado anteriormente su consentimiento para dicho tratamiento.</p>
+
+          <h4>Cambios al Aviso de Privacidad</h4>
+          <p>RubickNET se reserva el derecho de enmendar o modificar el presente Aviso de Privacidad como estime conveniente, por ejemplo, para cumplir con cambios a la legislación sobre protección de datos o cumplir con disposiciones internas de RubickNET. RubickNET le informará y/o pondrá a su disposición el Aviso de Privacidad actualizado cuando se le hagan cambios significativos al mismo, así como cuando se requiera recabar su consentimiento. La versión actualizada del Aviso de Privacidad estará disponible en el sitio web www.rubicknet.com.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<a href="https://wa.me/5568115210" data-wa-msg="Hola, quiero más información sobre los servicios de Rubicknet." class="whatsapp-float" target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp"><svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path fill="white" d="M16.004 3C8.824 3 3 8.82 3 16c0 2.42.66 4.68 1.8 6.63L3 29l6.55-1.72A12.94 12.94 0 0 0 16.004 29C23.18 29 29 23.18 29 16S23.18 3 16.004 3zm0 23.4a10.5 10.5 0 0 1-5.36-1.47l-.38-.23-4.05 1.06 1.08-3.95-.25-.4a10.47 10.47 0 0 1-1.61-5.55c0-5.82 4.73-10.55 10.57-10.55 5.82 0 10.55 4.73 10.55 10.55S21.82 26.4 16.004 26.4zm5.79-7.9c-.32-.16-1.87-.92-2.16-1.02-.29-.11-.5-.16-.71.16-.21.32-.81 1.02-1 1.23-.18.21-.37.24-.68.08-.32-.16-1.34-.49-2.55-1.57-.94-.84-1.58-1.86-1.76-2.18-.18-.32-.02-.49.14-.65.14-.14.32-.37.48-.55.16-.18.21-.32.32-.53.11-.21.05-.4-.03-.55-.08-.16-.71-1.7-.97-2.34-.26-.61-.52-.53-.71-.54h-.61c-.21 0-.55.08-.84.4-.29.32-1.1 1.07-1.1 2.62s1.13 3.03 1.29 3.24c.16.21 2.22 3.38 5.37 4.74.75.32 1.34.52 1.79.66.75.24 1.44.2 1.98.13.6-.09 1.87-.76 2.14-1.5.26-.74.26-1.36.18-1.5-.08-.13-.29-.21-.6-.37z"/></svg></a>
+
+<script src="componentes/chat-widget.js?v=1.3"></script>
+<chat-widget></chat-widget>
+
+<script src="componentes/cta-section.js?v=1.3"></script>
+<cta-section></cta-section>
+<script src="js/cobertura.js?v=1.3"></script>
+<script src="js/main.js?v=1.3"></script>
+
+<!-- Leaflet — gratuito, sin API Key, sin tarjeta -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+
+/* La búsqueda por texto, por ubicación y la carga de data/cobertura.json
+   viven en js/cobertura.js (window.Rubicknet.cobertura) y se comparten con
+   TODO el sitio. Aquí solo se usa ese mismo resultado para pintar el mapa,
+   así que agregar una zona nueva solo requiere editar data/cobertura.json. */
+
+let mapaCobertura = null;
+let poligonosActivos = [];
+let poligonosFondo = [];
+let ZONAS_COBERTURA = [];
+
+/* Dibuja TODOS los polígonos de TODAS las zonas, en un tono tenue de fondo.
+   Se llama una sola vez al iniciar el mapa, para que siempre se vea la
+   cobertura completa aunque solo una zona esté "seleccionada". */
+function dibujarTodosLosPoligonos() {
+  poligonosFondo.forEach(function (p) { mapaCobertura.removeLayer(p); });
+  poligonosFondo = [];
+
+  ZONAS_COBERTURA.forEach(function (datos) {
+    (datos.poligonos || []).forEach(function (zona) {
+      const esActiva = zona.tipo === "activa";
+      const coords = zona.path.map(function (p) { return [p.lat, p.lng]; });
+      const poly = L.polygon(coords, {
+        color:       esActiva ? "#0033FF" : "#977DFF",
+        weight:      1.4,
+        opacity:     0.45,
+        fillColor:   esActiva ? "#0033FF" : "#977DFF",
+        fillOpacity: esActiva ? 0.07 : 0.05,
+        interactive: false
+      }).addTo(mapaCobertura);
+      poligonosFondo.push(poly);
+    });
+  });
+}
+
+function pintarZona(clave) {
+  const datos = ZONAS_COBERTURA.find(function (z) { return z.clave === clave; });
+  if (!datos || !mapaCobertura) return;
+
+  document.querySelectorAll(".ciudad-btn").forEach(function (b) {
+    b.classList.toggle("activo", b.getAttribute("data-ciudad") === clave);
+  });
+
+  mapaCobertura.setView([datos.centro.lat, datos.centro.lng], datos.zoom || 13);
+
+  // Solo se limpia y redibuja el resaltado de la zona seleccionada;
+  // el resto de zonas se quedan visibles de fondo (poligonosFondo).
+  poligonosActivos.forEach(function (p) { mapaCobertura.removeLayer(p); });
+  poligonosActivos = [];
+
+  let hayExpansion = false;
+  (datos.poligonos || []).forEach(function (zona) {
+    const esActiva = zona.tipo === "activa";
+    if (!esActiva) hayExpansion = true;
+    const coords = zona.path.map(function (p) { return [p.lat, p.lng]; });
+    const poly = L.polygon(coords, {
+      color:       esActiva ? "#0033FF" : "#977DFF",
+      weight:      2,
+      opacity:     0.9,
+      fillColor:   esActiva ? "#0033FF" : "#977DFF",
+      fillOpacity: esActiva ? 0.16 : 0.12
+    }).addTo(mapaCobertura);
+    poligonosActivos.push(poly);
+  });
+
+  document.getElementById("mapa-tag-label").textContent = datos.nombre + " · " + datos.estado;
+  document.getElementById("info-estado").textContent = datos.estado;
+  document.getElementById("info-titulo").textContent = datos.titulo;
+  document.getElementById("info-desc").textContent = datos.descripcion;
+  document.getElementById("leyenda-expansion").style.display = hayExpansion ? "inline-flex" : "none";
+
+  const chipsWrap = document.getElementById("info-chips");
+  chipsWrap.innerHTML = "";
+  (datos.zonas || []).forEach(function (zona) {
+    const chip = document.createElement("span");
+    chip.textContent = zona;
+    chipsWrap.appendChild(chip);
+  });
+
+  const btnCotizar = document.getElementById("btn-cotizar-zona");
+  if (btnCotizar && window.Rubicknet) {
+    btnCotizar.href = window.Rubicknet.armarLinkWhatsApp(
+      "Hola, quiero cotizar internet en " + datos.nombre + "."
+    );
+  }
+}
+
+function construirBotones() {
+  const nav = document.getElementById("ciudades-nav");
+  nav.innerHTML = "";
+  ZONAS_COBERTURA.forEach(function (zona, i) {
+    const btn = document.createElement("button");
+    btn.className = "ciudad-btn" + (i === 0 ? " activo" : "");
+    btn.setAttribute("data-ciudad", zona.clave);
+    btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-7.5-7-12a7 7 0 1 1 14 0c0 4.5-7 12-7 12z"/><circle cx="12" cy="9" r="2.4"/></svg> ' + zona.nombre;
+    btn.addEventListener("click", function () { pintarZona(zona.clave); });
+    nav.appendChild(btn);
+  });
+}
+
+async function cargarCobertura() {
+  try {
+    // Reutiliza la misma carga (y el mismo caché) que usa js/cobertura.js
+    // para el resto del sitio, en vez de volver a hacer fetch aquí.
+    ZONAS_COBERTURA = await window.Rubicknet.cobertura.cargar();
+    if (!ZONAS_COBERTURA.length) throw new Error("cobertura.json vacío o no disponible");
+  } catch (e) {
+    console.error("No se pudo cargar data/cobertura.json", e);
+    document.getElementById("cobertura-cargando").textContent =
+      "No se pudo cargar la información de cobertura.";
+    return;
+  }
+  construirBotones();
+  document.getElementById("mapa-panel-google").style.display = "grid";
+  inicializarMapa();
+}
+
+function inicializarMapa() {
+  if (!ZONAS_COBERTURA.length) return;
+  const primera = ZONAS_COBERTURA[0];
+  const divMapa = document.getElementById("mapa-google");
+  divMapa.style.width  = "100%";
+  divMapa.style.height = "min(480px, 75vh)";
+  /* Make parent .mapa-media match so no grey overflow */
+  const mapaMedia = divMapa.closest(".mapa-media");
+  if (mapaMedia) { mapaMedia.style.height = "min(480px, 75vh)"; mapaMedia.style.aspectRatio = "unset"; }
+
+  mapaCobertura = L.map("mapa-google", {
+    center: [primera.centro.lat, primera.centro.lng],
+    zoom:   primera.zoom || 13,
+    zoomControl: true
+  });
+
+  L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}", {
+    attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ',
+    maxNativeZoom: 16,
+    maxZoom: 19
+  }).addTo(mapaCobertura);
+  L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Reference/MapServer/tile/{z}/{y}/{x}", {
+    maxNativeZoom: 16,
+    maxZoom: 19
+  }).addTo(mapaCobertura);
+
+  /* Shrink attribution control */
+  mapaCobertura.attributionControl.setPrefix('');
+  document.querySelector('.leaflet-control-attribution') && (document.querySelector('.leaflet-control-attribution').style.fontSize = '10px');
+
+  mapaCobertura.whenReady(function() {
+    dibujarTodosLosPoligonos();
+    setTimeout(function() {
+      if (coloniaURL) {
+        const zonaEncontrada = window.Rubicknet.cobertura.buscarPorTexto(coloniaURL);
+        if (zonaEncontrada) {
+          window.Rubicknet.cobertura.guardarUltimaZona(zonaEncontrada);
+          pintarZona(zonaEncontrada.clave);
+          mostrarResultado(document.getElementById("resultado-buscador"),
+            "¡Buena noticia! Ya tenemos presencia en <strong>" + zonaEncontrada.nombre + "</strong> (" + zonaEncontrada.estado + ").", "si");
+        } else {
+          pintarZona(primera.clave);
+          mostrarResultado(document.getElementById("resultado-buscador"),
+            "Por ahora no encontramos esa colonia en nuestra cobertura confirmada. Explora el mapa o <a href=\"contacto.html\">contáctanos</a>.", "no");
+        }
+      } else {
+        pintarZona(primera.clave);
+      }
+    }, 100);
+  });
+}
+
+const paramsURL = new URLSearchParams(location.search);
+const coloniaURL = paramsURL.get("colonia");
+if (coloniaURL) {
+  const inputBuscador = document.querySelector("#buscador input[type=text]");
+  if (inputBuscador) inputBuscador.value = coloniaURL;
+}
+
+cargarCobertura();
+
+function mostrarResultado(elemento, texto, variante) {
+  if (!elemento) return;
+  elemento.innerHTML = texto;
+  elemento.className = "resultado-cobertura mostrar" + (variante ? " resultado-cobertura--" + variante : "");
+}
+
+/* ---------- Notificación flotante (toast) ----------
+   Se usa para los resultados de "Verificar mi dirección" en vez de
+   dejar el mensaje fijo en pantalla: aparece, se queda unos segundos
+   y se desvanece sola. variante: "si" | "expansion" | "no". */
+const ICONOS_TOAST = {
+  si: '<svg class="rn-toast-icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4l10 -10"/></svg>',
+  expansion: '<svg class="rn-toast-icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01"/><circle cx="12" cy="12" r="9"/></svg>',
+  no: '<svg class="rn-toast-icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.86l-8.18 14.18A1 1 0 0 0 3 19.5h18a1 1 0 0 0 .87 -1.46L13.7 3.86a1 1 0 0 0 -1.74 0z"/></svg>'
+};
+
+function mostrarToast(texto, variante, duracionMs, opciones) {
+  const wrap = document.getElementById("rubicknet-toast-wrap");
+  if (!wrap) return;
+
+  const toast = document.createElement("div");
+  toast.className = "rn-toast" + (variante ? " rn-toast--" + variante : "");
+
+  let ctaHTML = "";
+  if (opciones && opciones.ctaHref && opciones.ctaLabel) {
+    ctaHTML = '<a href="' + opciones.ctaHref + '" class="rn-toast-cta">' + opciones.ctaLabel + '</a>';
+  }
+
+  toast.innerHTML = (ICONOS_TOAST[variante] || "") +
+    '<div class="rn-toast-cuerpo"><span>' + texto + '</span>' + ctaHTML + '</div>';
+  wrap.appendChild(toast);
+
+  requestAnimationFrame(function () { toast.classList.add("mostrar"); });
+
+  const tiempoVida = duracionMs || (ctaHTML ? 7000 : 5000);
+  setTimeout(function () {
+    toast.classList.remove("mostrar");
+    toast.classList.add("ocultando");
+    setTimeout(function () { toast.remove(); }, 250);
+  }, tiempoVida);
+}
+
+/* ---------- Buscador del hero (colonia o código postal) ----------
+   El texto/geolocalización y el mensaje de resultado los resuelve
+   js/cobertura.js (mismo comportamiento que en el resto del sitio, y
+   ahí mismo aparece siempre el botón "Usar mi ubicación" junto al
+   buscador). Aquí solo escuchamos su evento para pintar el mapa. */
+const formBuscador = document.getElementById("buscador");
+if (formBuscador) {
+  formBuscador.addEventListener("rubicknet:cobertura-resultado", function (e) {
+    const detalle = e.detail || {};
+    if (detalle.encontrado && detalle.zona) {
+      const navCiudades = document.getElementById("ciudades-nav");
+      if (navCiudades) navCiudades.scrollIntoView({ behavior: "smooth", block: "start" });
+      setTimeout(function () { pintarZona(detalle.zona.clave); }, 350);
+    }
+  });
+}
+
+/* ---------- Verificar por ubicación, dentro del panel del mapa ----------
+   Este botón es aparte del "Usar mi ubicación" del buscador de arriba:
+   vuelve a pedir la ubicación pero la resuelve con la misma función
+   compartida (window.Rubicknet.cobertura.buscarPorCoordenadas), sin
+   duplicar la lógica de punto-en-polígono. */
+const btnUbicacion = document.getElementById("btn-verificar-ubicacion");
+if (btnUbicacion) {
+  btnUbicacion.addEventListener("click", function () {
+    const resultado = document.getElementById("resultado-ubicacion");
+
+    if (!navigator.geolocation) {
+      mostrarToast("Tu navegador no permite obtener tu ubicación. Usa el buscador de arriba con tu colonia.", "no");
+      return;
+    }
+
+    mostrarResultado(resultado, "Obteniendo tu ubicación…", null);
+    btnUbicacion.disabled = true;
+
+    navigator.geolocation.getCurrentPosition(function (pos) {
+      btnUbicacion.disabled = false;
+      mostrarResultado(resultado, "", null);
+      resultado.className = "resultado-cobertura";
+
+      if (!ZONAS_COBERTURA.length) {
+        mostrarToast("Aún estamos cargando la información de cobertura, intenta de nuevo en un momento.", "no");
+        return;
+      }
+
+      const encontrado = window.Rubicknet.cobertura.buscarPorCoordenadas(pos.coords.latitude, pos.coords.longitude);
+
+      if (encontrado && encontrado.tipo === "activa") {
+        window.Rubicknet.cobertura.guardarUltimaZona(encontrado.zona);
+        mostrarToast("¡Buenas noticias! Tu ubicación está dentro de la cobertura activa de " + encontrado.zona.nombre + ".", "si", null, { ctaHref: "#plan-recomendado", ctaLabel: "Ver planes" });
+        pintarZona(encontrado.zona.clave);
+      } else if (encontrado) {
+        window.Rubicknet.cobertura.guardarUltimaZona(encontrado.zona);
+        mostrarToast("Tu ubicación está en una zona en expansión de " + encontrado.zona.nombre + ". Pronto tendremos cobertura ahí.", "expansion");
+        pintarZona(encontrado.zona.clave);
+      } else {
+        mostrarToast("Por ahora no tenemos cobertura confirmada en tu ubicación exacta. Usa el buscador de arriba o contáctanos para más detalles.", "no");
+      }
+    }, function () {
+      btnUbicacion.disabled = false;
+      mostrarResultado(resultado, "", null);
+      resultado.className = "resultado-cobertura";
+      mostrarToast("No pudimos obtener tu ubicación. Revisa los permisos de ubicación en tu navegador o usa el buscador de arriba.", "no");
+    }, { enableHighAccuracy: true, timeout: 10000 });
+  });
+}
+</script>
+<div id="rubicknet-toast-wrap" aria-live="polite"></div>
+
+<script src="componentes/footer.js?v=1.3"></script>
+
+<mi-footer></mi-footer>
+</body>
+</html>

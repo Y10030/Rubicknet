@@ -1,0 +1,183 @@
+[
+  {
+    "clave": "hidalgo",
+    "nombre": "Hidalgo",
+    "titulo": "Tizayuca, Hidalgo",
+    "estado": "Cobertura activa",
+    "centro": {
+      "lat": 19.8367,
+      "lng": -98.9918
+    },
+    "zoom": 13,
+    "descripcion": "Servicio disponible en Tizayuca y alrededores, con instalación en pocos días en las zonas marcadas.",
+    "zonas": [
+      "Tizayuca",
+      "SADASI Los Héroes Tizayuca",
+      "Fuentes de Tizayuca"
+    ],
+    "poligonos": [
+      {
+        "tipo": "activa",
+        "path": [
+          {
+            "lat": 19.846,
+            "lng": -99.004
+          },
+          {
+            "lat": 19.843,
+            "lng": -98.982
+          },
+          {
+            "lat": 19.833,
+            "lng": -98.976
+          },
+          {
+            "lat": 19.826,
+            "lng": -98.987
+          },
+          {
+            "lat": 19.829,
+            "lng": -99.001
+          },
+          {
+            "lat": 19.839,
+            "lng": -99.007
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "clave": "ecatepec",
+    "nombre": "Ecatepec",
+    "titulo": "Jardines de Morelos",
+    "estado": "Cobertura activa",
+    "centro": {
+      "lat": 19.6018,
+      "lng": -99.0507
+    },
+    "zoom": 13,
+    "descripcion": "Cobertura sólida en zonas residenciales del municipio, con una zona en expansión.",
+    "zonas": [
+      "Ecatepec",
+      "Las Américas",
+      "Montes B"
+    ],
+    "poligonos": [
+      {
+        "tipo": "activa",
+        "path": [
+          {
+            "lat": 19.612,
+            "lng": -99.065
+          },
+          {
+            "lat": 19.608,
+            "lng": -99.04
+          },
+          {
+            "lat": 19.59,
+            "lng": -99.035
+          },
+          {
+            "lat": 19.58,
+            "lng": -99.055
+          },
+          {
+            "lat": 19.595,
+            "lng": -99.07
+          }
+        ]
+      },
+      {
+        "tipo": "expansion",
+        "path": [
+          {
+            "lat": 19.63,
+            "lng": -99.055
+          },
+          {
+            "lat": 19.635,
+            "lng": -99.035
+          },
+          {
+            "lat": 19.62,
+            "lng": -99.03
+          },
+          {
+            "lat": 19.615,
+            "lng": -99.05
+          }
+        ]
+      },
+      {
+        "tipo": "activa",
+        "path": [
+          {
+            "lat": 19.601214233876917,
+            "lng": -98.99941205978395
+          },
+          {
+            "lat": 19.60036523492654,
+            "lng": -98.98370504379274
+          },
+          {
+            "lat": 19.58829683695469,
+            "lng": -98.98595809936523
+          },
+          {
+            "lat": 19.59215815574307,
+            "lng": -99.0005922317505
+          },
+          {
+            "lat": 19.601214375471788,
+            "lng": -98.99939060211183
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "clave": "chalco",
+    "nombre": "Chalco",
+    "titulo": "Chalco de Díaz Covarrubias",
+    "estado": "Cobertura activa",
+    "centro": {
+      "lat": 19.2612,
+      "lng": -98.8958
+    },
+    "zoom": 13,
+    "descripcion": "Cobertura en zonas residenciales del municipio de Chalco.",
+    "zonas": [
+      "Chalco",
+      "Los Héroes Chalco"
+    ],
+    "poligonos": [
+      {
+        "tipo": "activa",
+        "path": [
+          {
+            "lat": 19.27,
+            "lng": -98.908
+          },
+          {
+            "lat": 19.268,
+            "lng": -98.885
+          },
+          {
+            "lat": 19.253,
+            "lng": -98.88
+          },
+          {
+            "lat": 19.248,
+            "lng": -98.898
+          },
+          {
+            "lat": 19.26,
+            "lng": -98.91
+          }
+        ]
+      }
+    ]
+  }
+]

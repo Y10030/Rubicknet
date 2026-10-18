@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /editor-cobertura.html
+
+Sitemap: https://rubicknet.com/sitemap.xml
