@@ -6,10 +6,11 @@
 <title>Internet | Rubicknet</title>
 <meta name="description" content="Consulta cobertura de internet residencial y empresarial de Rubicknet: planes, velocidades, SLA y enlaces de respaldo.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/styles.css?v=1.12">
-<link rel="icon" type="image/png" href="Logo-RN.png">
-<link rel="apple-touch-icon" href="Logo-RN.png">
+<link rel="stylesheet" href="css/styles.css?v=1.13">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="favicon-180.png">
 <link rel="canonical" href="https://rubicknet.com/internet.html">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta name="theme-color" content="#00033D">
@@ -19,7 +20,7 @@
 <meta property="og:title" content="Internet | Rubicknet">
 <meta property="og:description" content="Consulta cobertura de internet residencial y empresarial de Rubicknet: planes, velocidades, SLA y enlaces de respaldo.">
 <meta property="og:url" content="https://rubicknet.com/internet.html">
-<meta property="og:image" content="https://rubicknet.com/Logo-RN.png">
+<meta property="og:image" content="https://rubicknet.com/og-image.jpg">
 <meta name="twitter:card" content="summary">
 
 <style>
@@ -231,10 +232,10 @@
       <h2 style="margin-top:14px;">Instalación en torre y azotea, hecha por nuestro equipo</h2>
     </div>
     <div class="galeria-instalacion">
-      <figure><img src="img/torre-parabola.jpg" alt="Parábola de enlace montada en torre" style="object-position:center;" loading="lazy" decoding="async"><figcaption>Enlace montado en torre</figcaption></figure>
-      <figure><img src="img/torre-tecnicos.jpg" alt="Técnicos trabajando en torre" style="object-position:center;" loading="lazy" decoding="async"><figcaption>Trabajo en altura</figcaption></figure>
-      <figure><img src="img/antena-parabolica.jpg" alt="Parábola instalada en mástil con vista a un fraccionamiento" style="object-position:center;" loading="lazy" decoding="async"><figcaption>Antena en mástil</figcaption></figure>
-      <figure><img src="img/instalador-azotea.jpg" alt="Instalador armando un soporte de antena en azotea" style="object-position:center;" loading="lazy" decoding="async"><figcaption>Montaje en azotea</figcaption></figure>
+      <figure><img width="543" height="1200" src="img/torre-parabola.webp" alt="Parábola de enlace montada en torre" style="object-position:center;" loading="lazy" decoding="async"><figcaption>Enlace montado en torre</figcaption></figure>
+      <figure><img width="846" height="616" src="img/torre-tecnicos.webp" alt="Técnicos trabajando en torre" style="object-position:center;" loading="lazy" decoding="async"><figcaption>Trabajo en altura</figcaption></figure>
+      <figure><img width="539" height="539" src="img/antena-parabolica.webp" alt="Parábola instalada en mástil con vista a un fraccionamiento" style="object-position:center;" loading="lazy" decoding="async"><figcaption>Antena en mástil</figcaption></figure>
+      <figure><img width="740" height="610" src="img/instalador-azotea.webp" alt="Instalador armando un soporte de antena en azotea" style="object-position:center;" loading="lazy" decoding="async"><figcaption>Montaje en azotea</figcaption></figure>
     </div>
   </div>
 </section>
@@ -436,7 +437,8 @@ function dibujarTodosLosPoligonos() {
   ZONAS_COBERTURA.forEach(function (datos) {
     (datos.poligonos || []).forEach(function (zona) {
       const esActiva = zona.tipo === "activa";
-      const coords = zona.path.map(function (p) { return [p.lat, p.lng]; });
+      const coords = (zona.path || []).map(aLatLng).filter(Boolean);
+      if (coords.length < 3) return;
       const poly = L.polygon(coords, {
         color:       esActiva ? "#0033FF" : "#977DFF",
         weight:      1.4,
@@ -450,6 +452,29 @@ function dibujarTodosLosPoligonos() {
   });
 }
 
+/* Lee un punto {lat,lng} (o {lat,lon}) y devuelve [lat,lng] solo si es válido. */
+function aLatLng(p) {
+  if (!p) return null;
+  var lat = Number(p.lat);
+  var lng = Number(p.lng != null ? p.lng : p.lon);
+  if (p.lat == null || (p.lng == null && p.lon == null)) return null;
+  return (isFinite(lat) && isFinite(lng)) ? [lat, lng] : null;
+}
+
+/* Centro de la zona: usa "centro" del JSON; si falta o está mal escrito,
+   lo calcula a partir de los polígonos para que el mapa igual se mueva. */
+function centroDeZona(datos) {
+  var directo = aLatLng(datos.centro);
+  if (directo) return directo;
+  var puntos = [];
+  (datos.poligonos || []).forEach(function (z) {
+    (z.path || []).forEach(function (p) { var c = aLatLng(p); if (c) puntos.push(c); });
+  });
+  if (!puntos.length) return null;
+  var c = L.latLngBounds(puntos).getCenter();
+  return [c.lat, c.lng];
+}
+
 function pintarZona(clave) {
   const datos = ZONAS_COBERTURA.find(function (z) { return z.clave === clave; });
   if (!datos || !mapaCobertura) return;
@@ -458,27 +483,14 @@ function pintarZona(clave) {
     b.classList.toggle("activo", b.getAttribute("data-ciudad") === clave);
   });
 
-  mapaCobertura.setView([datos.centro.lat, datos.centro.lng], datos.zoom || 13);
-
-  // Solo se limpia y redibuja el resaltado de la zona seleccionada;
-  // el resto de zonas se quedan visibles de fondo (poligonosFondo).
-  poligonosActivos.forEach(function (p) { mapaCobertura.removeLayer(p); });
-  poligonosActivos = [];
-
-  let hayExpansion = false;
-  (datos.poligonos || []).forEach(function (zona) {
-    const esActiva = zona.tipo === "activa";
-    if (!esActiva) hayExpansion = true;
-    const coords = zona.path.map(function (p) { return [p.lat, p.lng]; });
-    const poly = L.polygon(coords, {
-      color:       esActiva ? "#0033FF" : "#977DFF",
-      weight:      2,
-      opacity:     0.9,
-      fillColor:   esActiva ? "#0033FF" : "#977DFF",
-      fillOpacity: esActiva ? 0.16 : 0.12
-    }).addTo(mapaCobertura);
-    poligonosActivos.push(poly);
+  /* Primero el texto y los datos: aunque algo falle en el mapa, el panel ya cambió. */
+  const poligonos = (datos.poligonos || []).filter(function (z) {
+    return Array.isArray(z.path) && z.path.some(function (p) { return aLatLng(p); });
   });
+  if (poligonos.length !== (datos.poligonos || []).length) {
+    console.warn("Zona '" + clave + "': hay polígonos sin coordenadas válidas en data/cobertura.json");
+  }
+  const hayExpansion = poligonos.some(function (z) { return z.tipo !== "activa"; });
 
   document.getElementById("mapa-tag-label").textContent = datos.nombre + " · " + datos.estado;
   document.getElementById("info-estado").textContent = datos.estado;
@@ -500,6 +512,30 @@ function pintarZona(clave) {
       "Hola, quiero cotizar internet en " + datos.nombre + "."
     );
   }
+
+  /* Mapa: mover y resaltar solo esta zona (el resto queda de fondo). */
+  poligonosActivos.forEach(function (p) { mapaCobertura.removeLayer(p); });
+  poligonosActivos = [];
+
+  const centro = centroDeZona(datos);
+  if (!centro) {
+    console.error("Zona '" + clave + "': no tiene 'centro' ni polígonos válidos en data/cobertura.json");
+    return;
+  }
+  mapaCobertura.setView(centro, datos.zoom || 13);
+
+  poligonos.forEach(function (zona) {
+    const esActiva = zona.tipo === "activa";
+    const coords = zona.path.map(aLatLng).filter(Boolean);
+    const poly = L.polygon(coords, {
+      color:       esActiva ? "#0033FF" : "#977DFF",
+      weight:      2,
+      opacity:     0.9,
+      fillColor:   esActiva ? "#0033FF" : "#977DFF",
+      fillOpacity: esActiva ? 0.16 : 0.12
+    }).addTo(mapaCobertura);
+    poligonosActivos.push(poly);
+  });
 }
 
 function construirBotones() {
