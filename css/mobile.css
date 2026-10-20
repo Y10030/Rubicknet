@@ -1,0 +1,93 @@
+/* Rubicknet - ajustes para celular (cargar DESPUES de styles.css) */
+@media (max-width: 768px) {
+  html { -webkit-text-size-adjust: 100%; }
+  body { font-size: 18px; line-height: 1.6; overflow-x: hidden; }
+  img, svg, video { max-width: 100%; }
+
+  .contenedor { padding-left: 20px !important; padding-right: 20px !important; width: 100% !important; max-width: 100% !important; box-sizing: border-box; }
+  .seccion { padding-top: 48px !important; padding-bottom: 48px !important; }
+  .seccion.compacta { padding-top: 32px !important; padding-bottom: 32px !important; }
+
+  /* Titulares grandes y legibles */
+  h1 { font-size: 2rem !important; line-height: 1.2 !important; }
+  h2 { font-size: 1.6rem !important; line-height: 1.25 !important; }
+  h3 { font-size: 1.3rem !important; line-height: 1.3 !important; }
+  h4 { font-size: 1.1rem !important; }
+  p, li, dd, dt, label, input, textarea, select { font-size: 1.05rem !important; line-height: 1.6; }
+  .eyebrow { font-size: .85rem !important; letter-spacing: .08em; }
+  .hero-sub, .gancho, .seccion-titulo p { font-size: 1.15rem !important; }
+
+  /* Todo en una columna */
+  .hero-inner, .split, .nosotros-hero, .bloque-incluye, .contacto-grid, .ficha-proyecto,
+  .planes-grid, .grid-servicios, .beneficios-grid, .cifras-grid, .grid-proyectos,
+  .equipo-grid, .porque-grid, .otras-grid, .mini-proyectos, .fila-2, .mapa-media {
+    display: grid !important; grid-template-columns: 1fr !important; gap: 20px !important;
+  }
+  .cifras-grid { grid-template-columns: 1fr 1fr !important; }
+  .cifra { text-align: center; }
+  .cifra strong, .cifra .num { font-size: 2rem !important; }
+
+  /* Tarjetas con aire */
+  .plan-card, .tarjeta-servicio, .equipo-card, .beneficio, .proyecto, .panel-lateral,
+  .contacto-info-card, .form-contacto, .mapa-info, .ficha-datos { padding: 22px !important; box-sizing: border-box; }
+  .plan-velocidad { font-size: 2.2rem !important; }
+  .plan-precio { font-size: 1.8rem !important; }
+
+  /* Botones grandes y faciles de tocar */
+  .btn, .btn-primario, .btn-secundario, .btn-ghost, .btn-secundario-purpura, .tab-btn, .filtro {
+    min-height: 52px; padding: 14px 22px !important; font-size: 1.05rem !important;
+    display: inline-flex; align-items: center; justify-content: center; text-align: center;
+  }
+  .btn-bloque, .hero-cta-row .btn { width: 100% !important; box-sizing: border-box; }
+  .hero-cta-row { display: flex !important; flex-direction: column; gap: 12px; }
+
+  /* Hero */
+  .hero, .solucion-hero { padding-top: 56px !important; padding-bottom: 48px !important; }
+  .hero-grande { min-height: auto !important; }
+  .icono-grande svg { width: 64px; height: 64px; }
+
+  /* Formularios */
+  input[type="text"], input[type="tel"], input[type="email"], textarea, select {
+    width: 100% !important; box-sizing: border-box; min-height: 52px; padding: 12px 14px !important; font-size: 16px !important;
+  }
+  .form-cobertura, .buscador-cobertura { flex-direction: column !important; display: flex !important; gap: 12px; }
+  .opciones-servicio { display: flex; flex-wrap: wrap; gap: 10px; }
+  .chip-check { padding: 12px 16px !important; font-size: 1rem !important; }
+
+  /* Listas y chips */
+  .incluye-item { gap: 12px; align-items: flex-start; }
+  .incluye-item svg { width: 26px; height: 26px; flex-shrink: 0; }
+  .zonas-chips, .marcas-fila, .equipo-lista-equipos, .filtros-proyectos, .tabs-nav { display: flex; flex-wrap: wrap; gap: 10px; }
+  .zonas-chips span, .equipo-lista-equipos span, .marcas-fila span { font-size: 1rem !important; padding: 10px 14px; }
+  .tabs-nav { overflow-x: auto; flex-wrap: nowrap; -webkit-overflow-scrolling: touch; padding-bottom: 6px; }
+  .tabs-nav .tab-btn { white-space: nowrap; flex-shrink: 0; }
+
+  /* Lista de soluciones */
+  .fila-solucion { display: grid !important; grid-template-columns: auto 1fr auto !important; gap: 14px !important; padding: 20px 0 !important; align-items: center; }
+  .fila-solucion .num { display: none; }
+  .fila-solucion .icono svg { width: 40px; height: 40px; }
+  .fila-solucion h3 { font-size: 1.2rem !important; margin: 0 0 4px; }
+
+  /* FAQ */
+  .faq-pregunta { font-size: 1.1rem !important; padding: 18px 0 !important; min-height: 56px; }
+  .faq-respuesta { font-size: 1.05rem !important; }
+
+  /* Imagenes */
+  .split-media img, .proyecto-media img, .ficha-galeria img { width: 100%; height: auto; }
+  .ficha-galeria { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 10px; }
+  .mapa-media { height: auto !important; }
+  .mapa-panel-google iframe { width: 100% !important; height: 360px !important; }
+
+  /* Tablas / codigo largos no rompen la pantalla */
+  table, pre { display: block; overflow-x: auto; }
+
+  /* Boton flotante de WhatsApp mas grande */
+  .whatsapp-float { width: 62px !important; height: 62px !important; right: 16px !important; bottom: 16px !important; }
+  .whatsapp-float svg { width: 34px; height: 34px; }
+}
+
+@media (max-width: 380px) {
+  h1 { font-size: 1.75rem !important; }
+  .cifras-grid { grid-template-columns: 1fr !important; }
+  .ficha-galeria { grid-template-columns: 1fr !important; }
+}
