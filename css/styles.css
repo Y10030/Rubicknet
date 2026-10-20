@@ -1152,10 +1152,10 @@ site-header { z-index: 5000; }
 .mini-proyecto span { z-index: 2; }
 
 .ficha-galeria { grid-template-columns: repeat(2, 1fr); }
-.ficha-galeria img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: 10px; }
+.ficha-galeria img { width: 100%; height: auto; aspect-ratio: 1/1; object-fit: cover; border-radius: 10px; display: block; }
 
 .galeria-instalacion { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 36px; }
 .galeria-instalacion figure { margin: 0; }
-.galeria-instalacion img { width: 100%; aspect-ratio: 3/4; object-fit: cover; border-radius: var(--radius-m); }
+.galeria-instalacion img { width: 100%; height: auto; aspect-ratio: 3/4; object-fit: cover; border-radius: var(--radius-m); display: block; }
 .galeria-instalacion figcaption { margin-top: 10px; font-size: 0.86rem; color: rgba(3,8,18,0.62); }
 @media (max-width: 900px) { .galeria-instalacion { grid-template-columns: repeat(2, 1fr); } }
