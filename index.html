@@ -1,337 +1,166 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Cristofer · Portafolio web</title>
-<link rel="icon" type="image/png" href="favicon-negro.png" media="(prefers-color-scheme: light)">
-<link rel="icon" type="image/png" href="favicon-blanco.png" media="(prefers-color-scheme: dark)">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
-<meta name="theme-color" content="#0a0a0a">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rubicknet | Internet, cableado, CCTV y soporte técnico en Edo. de México y CDMX</title>
+<meta name="description" content="Rubicknet: internet, cableado estructurado, redes, CCTV, soporte técnico, seguridad informática y equipo de cómputo para hogares y empresas en EdoMex y CDMX.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-@property --c1{syntax:"<color>";inherits:true;initial-value:#8a7a67}
-@property --c2{syntax:"<color>";inherits:true;initial-value:#d2bb9c}
-:root{
-  --c1:#8a7a67; --c2:#d2bb9c; transition:--c1 .6s,--c2 .6s;
-  --bg:#0a0a0a; --panel:#131313; --line:#242424; --text:#ededed; --dim:#8c8c8c;
-  --accent:var(--c2); --ok:#f0f0f0; --warn:#a8a8a8; --dev:#707070;
-  --sans:'Space Grotesk',system-ui,sans-serif; --mono:'JetBrains Mono',ui-monospace,monospace;
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css?v=1.14">
+<link rel="stylesheet" href="css/mobile.css?v=1.0">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="favicon-180.png">
+<link rel="canonical" href="https://rubicknet.com/">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="theme-color" content="#00033D">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rubicknet">
+<meta property="og:locale" content="es_MX">
+<meta property="og:title" content="Rubicknet | Internet, cableado, CCTV y soporte técnico en Edo. de México y CDMX">
+<meta property="og:description" content="Rubicknet: internet, cableado estructurado, redes, CCTV, soporte técnico, seguridad informática y equipo de cómputo para hogares y empresas en EdoMex y CDMX.">
+<meta property="og:url" content="https://rubicknet.com/">
+<meta property="og:image" content="https://rubicknet.com/og-image.jpg">
+<meta name="twitter:card" content="summary">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": ["LocalBusiness","ProfessionalService"],
+  "name": "Rubicknet",
+  "url": "https://rubicknet.com/",
+  "logo": "https://rubicknet.com/favicon-512.png",
+  "image": "https://rubicknet.com/og-image.jpg",
+  "email": "informes@rubicknet.com",
+  "telephone": "+52-55-6811-5210",
+  "description": "Internet, cableado estructurado, redes, CCTV, soporte técnico, seguridad informática y equipo de cómputo para hogares y empresas.",
+  "address": {"@type": "PostalAddress", "addressLocality": "Ecatepec de Morelos", "addressRegion": "Estado de México", "addressCountry": "MX"},
+  "areaServed": ["Ecatepec de Morelos","Estado de México","Ciudad de México"],
+  "openingHoursSpecification": [{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"09:00","closes":"21:00"}],
+  "sameAs": []
 }
-*{box-sizing:border-box;margin:0}
-html{scroll-behavior:smooth;scroll-padding-top:70px}
-body{overflow-x:clip;background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.6;
-  background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
-  background-size:56px 56px;background-position:-1px -1px}
-body::before{content:"";position:fixed;inset:0;background:radial-gradient(620px 380px at 10% 0%,color-mix(in srgb,var(--c1) 38%,transparent),transparent 72%),radial-gradient(620px 380px at 92% 6%,color-mix(in srgb,var(--c2) 24%,transparent),transparent 72%),radial-gradient(ellipse at 50% 0%,transparent 0%,var(--bg) 75%);pointer-events:none}
-main{position:relative;max-width:1240px;margin:0 auto;padding:0 24px 80px}
-a{color:inherit}
-:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+</script>
 
-header{position:sticky;top:0;z-index:50;display:flex;justify-content:space-between;align-items:center;padding:16px 0;font-family:var(--mono);font-size:13px;color:var(--dim)}
-header::after{content:"";position:absolute;z-index:-1;top:0;height:100%;left:50%;width:100vw;transform:translateX(-50%);background:rgba(10,10,10,.88);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
-header b{color:var(--text);font-weight:500}
-.pulse{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--ok);margin-right:8px;box-shadow:0 0 0 0 rgba(240,240,240,.5);animation:p 2s infinite}
-@keyframes p{70%{box-shadow:0 0 0 9px rgba(240,240,240,0)}100%{box-shadow:0 0 0 0 rgba(240,240,240,0)}}
 
-.hero{padding:8px 0 28px;max-width:900px}
-h1{font-size:clamp(30px,4.6vw,56px);line-height:1.05;letter-spacing:-.035em;font-weight:500}
-h1 span{background:linear-gradient(90deg,var(--c2),var(--dim));-webkit-background-clip:text;background-clip:text;color:transparent}
-.hero p{margin-top:14px;color:var(--dim);font-size:17px;max-width:62ch}
-.cursor{display:inline-block;width:.5em;height:.08em;background:var(--accent);margin-left:.1em;animation:b 1s steps(1) infinite}
-@keyframes b{50%{opacity:0}}
-
-.stage{display:grid;grid-template-columns:300px 1fr;gap:20px;align-items:start}
-.list{display:flex;flex-direction:column;gap:8px;position:sticky;top:84px}
-.item{all:unset;box-sizing:border-box;cursor:pointer;padding:16px;border:1px solid var(--line);border-radius:10px;background:rgba(19,19,19,.7);transition:border-color .2s,background .2s}
-.item:hover{border-color:#444}
-.item[aria-selected=true]{border-color:var(--accent);background:var(--panel)}
-.item:focus-visible{outline:2px solid var(--accent)}
-.item h3{font-size:17px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:8px}
-.item small{display:block;color:var(--dim);font-size:13px;margin-top:2px}
-.badge{font-family:var(--mono);font-size:11px;padding:2px 8px;border-radius:99px;border:1px solid currentColor;white-space:nowrap}
-.s-production{color:var(--ok)} .s-launched{color:var(--warn)} .s-dev{color:var(--dev)}
-
-.viewer{min-width:0}
-.frame{border:1px solid var(--line);border-radius:12px;background:var(--panel);overflow:hidden;box-shadow:0 30px 80px -30px rgba(255,255,255,.07)}
-.bar{display:flex;align-items:center;gap:12px;padding:10px 14px;border-bottom:1px solid var(--line)}
-.dots{display:flex;gap:6px}.dots i{width:10px;height:10px;border-radius:50%;background:#333}
-.url{flex:1;min-width:0;font-family:var(--mono);font-size:12.5px;color:var(--dim);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:5px 10px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.tools{display:flex;gap:4px}
-.tools button,.open{all:unset;cursor:pointer;font-family:var(--mono);font-size:12px;color:var(--dim);padding:5px 10px;border-radius:6px;border:1px solid transparent}
-.tools button:hover,.open:hover{color:var(--text);border-color:var(--line)}
-.tools button[aria-pressed=true]{color:var(--accent);border-color:var(--accent)}
-.tools button:focus-visible,.open:focus-visible{outline:2px solid var(--accent)}
-.screen{position:relative;height:560px;background:#050505;display:flex;justify-content:center;overflow:hidden}
-.wrap{position:relative;transform-origin:top left}
-.wrap iframe{border:0;background:#fff;display:block;width:100%;height:100%}
-.screen.mobile .wrap{border-left:1px solid var(--line);border-right:1px solid var(--line)}
-.shield{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;gap:10px;color:var(--dim);background:rgba(5,5,5,.92)}
-.shield.on{display:flex}
-.shield b{color:var(--text);font-weight:500;font-size:18px}
-.loader{position:absolute;left:0;top:0;height:2px;width:0;background:var(--accent)}
-.loader.go{animation:l 1.6s ease-out forwards}
-@keyframes l{to{width:100%}}
-
-.info{display:grid;grid-template-columns:1.3fr 1fr;gap:28px;margin-top:28px}
-.info h2{font-size:28px;font-weight:500;letter-spacing:-.02em;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-.info p{color:var(--dim);margin-top:10px;max-width:60ch}
-.stack{display:flex;flex-wrap:wrap;gap:6px;margin-top:16px}
-.stack span{font-family:var(--mono);font-size:12px;padding:3px 9px;border:1px solid var(--line);border-radius:6px;color:var(--dim)}
-.meta{display:grid;gap:0;border:1px solid var(--line);border-radius:10px;align-self:start}
-.meta div{display:flex;justify-content:space-between;padding:11px 14px;font-size:14px}
-.meta div+div{border-top:1px solid var(--line)}
-.meta dt{color:var(--dim)} .meta dd{font-family:var(--mono);font-size:13px}
-
-.shots{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:28px}
-.shot{aspect-ratio:16/10;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--panel);position:relative;cursor:zoom-in}
-.shot img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s}
-.shot:hover img{transform:scale(1.04)}
-.shot.ph{display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:12px;color:#444;background:repeating-linear-gradient(135deg,var(--panel) 0 12px,#0d0d0d 12px 24px);cursor:default}
-dialog{border:1px solid var(--line);background:var(--panel);padding:8px;border-radius:12px;max-width:92vw;max-height:92vh}
-dialog::backdrop{background:rgba(0,0,0,.85)}
-dialog img{max-width:100%;max-height:84vh;display:block;border-radius:6px}
-
-footer{margin-top:80px;padding-top:24px;border-top:1px solid var(--line);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;color:var(--dim);font-size:14px}
-footer a{text-decoration:none;font-family:var(--mono);font-size:13px}
-footer a:hover{color:var(--accent)}
-
-@media(max-width:900px){
-  .stage{grid-template-columns:1fr}
-  .list{position:static;flex-direction:row;overflow-x:auto;padding-bottom:4px}
-  .item{min-width:230px}
-  .info{grid-template-columns:1fr}
-  .screen{height:440px}
-  .tools{display:none}
-}
-@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
-
-/* ===== botones y color por proyecto ===== */
-.item{display:flex;gap:14px;align-items:center;--on:#fff;position:relative;overflow:hidden}
-.item h3{display:block;font-size:16px;line-height:1.25}
-.item .txt{min-width:0}
-.item .badge{margin-top:8px}
-.mark{flex:none;width:42px;height:42px;border-radius:11px;display:grid;place-items:center;font:500 13px var(--mono);font-style:normal;
-  color:var(--on);background:linear-gradient(135deg,var(--c1),var(--c2));box-shadow:0 8px 20px -10px var(--c1)}
-.item:hover{border-color:color-mix(in srgb,var(--c2) 55%,transparent);transform:translateY(-1px)}
-.item{transition:border-color .2s,background .2s,transform .2s,box-shadow .2s}
-.item[aria-selected=true]{border-color:var(--c2);background:linear-gradient(135deg,color-mix(in srgb,var(--c1) 26%,var(--panel)),var(--panel) 70%);box-shadow:0 14px 34px -16px var(--c1)}
-.item[aria-selected=true]::after{content:"";position:absolute;left:0;top:14px;bottom:14px;width:3px;border-radius:0 3px 3px 0;background:linear-gradient(var(--c1),var(--c2))}
-.frame{border-color:color-mix(in srgb,var(--c1) 40%,var(--line));box-shadow:0 30px 80px -30px color-mix(in srgb,var(--c1) 70%,transparent)}
-.loader{background:linear-gradient(90deg,var(--c1),var(--c2));height:3px}
-.tools button[aria-pressed=true]{color:var(--c2);border-color:var(--c2);background:color-mix(in srgb,var(--c1) 22%,transparent)}
-.open{display:inline-block;padding:6px 16px;border-radius:99px;color:var(--on);font-weight:500;
-  background:linear-gradient(135deg,var(--c1),var(--c2));border:0;transition:filter .2s,transform .2s,box-shadow .2s}
-.open:hover{color:var(--on);filter:brightness(1.12);transform:translateY(-1px);box-shadow:0 8px 20px -8px var(--c1);border-color:transparent}
-.stack span{border-color:color-mix(in srgb,var(--c1) 45%,var(--line));background:color-mix(in srgb,var(--c1) 12%,transparent);color:var(--text)}
-.meta{border-color:color-mix(in srgb,var(--c1) 30%,var(--line))}
-.meta dd{color:var(--c2)}
-.shot{transition:border-color .2s,box-shadow .2s}
-.shot:hover{border-color:var(--c2);box-shadow:0 14px 30px -16px var(--c1)}
-.shot.ph{cursor:default}
-footer a:hover{color:var(--c2)}
-.cta{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:6px;padding:14px 18px;border-radius:12px;text-decoration:none;
-  color:#39ff88;background:rgba(6,24,14,.85);border:1.5px solid #39ff88;font-weight:700;line-height:1.2;
-  text-shadow:0 0 10px rgba(57,255,136,.7);box-shadow:0 0 0 1px rgba(57,255,136,.25),0 0 18px rgba(57,255,136,.45),inset 0 0 14px rgba(57,255,136,.14);
-  animation:neon 2.4s ease-in-out infinite;transition:background .2s,color .2s,transform .2s}
-.cta svg{width:26px;height:26px;flex:none;fill:currentColor;filter:drop-shadow(0 0 6px rgba(57,255,136,.8))}
-.cta small{display:block;font:400 12px var(--mono);color:#8dffbd;margin-top:2px;text-shadow:none}
-.cta:hover{background:#39ff88;color:#04140b;text-shadow:none;transform:translateY(-2px);box-shadow:0 0 28px rgba(57,255,136,.8)}
-.cta:hover small{color:#0a3a1e}.cta:hover svg{filter:none}
-@keyframes neon{50%{box-shadow:0 0 0 1px rgba(57,255,136,.4),0 0 30px rgba(57,255,136,.75),inset 0 0 18px rgba(57,255,136,.22)}}
-.shot.err{display:flex;align-items:center;justify-content:center;text-align:center;padding:12px;font:12px var(--mono);color:#777;cursor:default}
-@media(max-width:900px){.item{min-width:250px}.cta{min-width:250px}}
-
-/* ===== estados resaltados ===== */
-.badge{display:inline-flex;align-items:center;gap:7px;padding:4px 12px 4px 10px;font-size:12px;font-weight:500;letter-spacing:.02em;border:1px solid currentColor}
-.badge::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor;box-shadow:0 0 9px currentColor}
-.s-production,.s-launched{color:#fff;background:rgba(255,255,255,.1);border-color:#fff;font-weight:700;
-  text-shadow:0 0 8px rgba(255,255,255,.95),0 0 16px rgba(255,255,255,.55);
-  box-shadow:0 0 0 1px rgba(255,255,255,.35),0 0 14px rgba(255,255,255,.55),0 0 30px rgba(255,255,255,.25),inset 0 0 12px rgba(255,255,255,.18)}
-.s-dev{color:#d9d9d9;background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.6);box-shadow:0 0 12px rgba(255,255,255,.25)}
-.s-production::before{animation:dot 1.8s ease-in-out infinite}
-@keyframes dot{50%{opacity:.35}}
-.meta dd .badge{font-size:11.5px;padding:2px 10px 2px 8px}
-</style>
 </head>
 <body>
-<main>
-  <header>
-    <span><span class="pulse"></span><b>Cristofer Yael</b> / portafolio</span>
-    <span id="count"></span>
-  </header>
 
-  <section class="hero">
-    <h1>Les presento las webs que he desarrollado. <span>Ya funcionan en el mundo real.</span><i class="cursor"></i></h1>
-    <p>Soy Cristofer y cada proyecto lo diseñé y programé yo. Elige uno y navégalo en vivo dentro del marco.</p>
-  </section>
+<script src="componentes/whatsapp.js?v=1.3"></script>
+<script src="componentes/site-header.js?v=1.3"></script>
+<site-header></site-header>
 
-  <section class="stage" id="proyectos">
-    <div class="list" id="list" role="tablist" aria-label="Proyectos"></div>
+<section class="hero">
+  <svg class="hero-nodos" viewBox="0 0 760 520" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg"><line x1="135" y1="419" x2="199" y2="464" stroke="white" stroke-opacity="0.18" stroke-width="1"/><line x1="135" y1="419" x2="63" y2="279" stroke="white" stroke-opacity="0.18" stroke-width="1"/><line x1="556" y1="148" x2="605" y2="229" stroke="white" stroke-opacity="0.18" stroke-width="1"/><line x1="556" y1="148" x2="555" y2="32" stroke="white" stroke-opacity="0.18" stroke-width="1"/><line x1="377" y1="237" x2="338" y2="258" stroke="white" stroke-opacity="0.18" stroke-width="1"/><line x1="377" y1="237" x2="343" y2="361" stroke="white" stroke-opacity="0.18" stroke-width="1"/><line x1="481" y1="392" x2="343" y2="361" stroke="white" stroke-opacity="0.18" stroke-width="1"/><line x1="108" y1="44" x2="65" y2="133" stroke="white" stroke-opacity="0.18" stroke-width="1"/><line x1="108" y1="44" x2="201" y2="137" stroke="white" stroke-opacity="0.18" stroke-width="1"/><line x1="605" y1="229" x2="674" y2="206" stroke="white" stroke-opacity="0.18" stroke-width="1"/><line x1="555" y1="32" x2="648" y2="45" stroke="white" stroke-opacity="0.18" stroke-width="1"/><line x1="343" y1="361" x2="338" y2="258" stroke="white" stroke-opacity="0.18" stroke-width="1"/><line x1="63" y1="279" x2="190" y2="224" stroke="white" stroke-opacity="0.18" stroke-width="1"/><line x1="63" y1="279" x2="65" y2="133" stroke="white" stroke-opacity="0.18" stroke-width="1"/><line x1="190" y1="224" x2="201" y2="137" stroke="white" stroke-opacity="0.18" stroke-width="1"/><line x1="65" y1="133" x2="201" y2="137" stroke="white" stroke-opacity="0.18" stroke-width="1"/><circle class="nodo" cx="135" cy="419" r="3.0" fill="white"/><circle class="nodo" cx="556" cy="148" r="3.7" fill="white"/><circle class="nodo" cx="377" cy="237" r="3.2" fill="white"/><circle class="nodo" cx="481" cy="392" r="2.5" fill="white"/><circle class="nodo" cx="108" cy="44" r="4.7" fill="white"/><circle class="nodo" cx="605" cy="229" r="4.0" fill="white"/><circle class="nodo" cx="555" cy="32" r="4.2" fill="white"/><circle class="nodo" cx="343" cy="361" r="2.9" fill="white"/><circle class="nodo" cx="199" cy="464" r="5.2" fill="white"/><circle class="nodo" cx="648" cy="45" r="4.8" fill="white"/><circle class="nodo" cx="63" cy="279" r="2.7" fill="white"/><circle class="nodo" cx="674" cy="206" r="3.3" fill="white"/><circle class="nodo" cx="190" cy="224" r="4.4" fill="white"/><circle class="nodo" cx="65" cy="133" r="4.4" fill="white"/><circle class="nodo" cx="338" cy="258" r="5.0" fill="white"/><circle class="nodo" cx="201" cy="137" r="3.6" fill="white"/></svg>
+  <div class="contenedor hero-inner">
+    <span class="eyebrow claro">Internet de alta calidad y soluciones tecnológicas para tu seguridad y tu negocio</span>
+    <h1>Conectividad y tecnología en las que tu hogar o tu <em>empresa</em> pueden confiar</h1>
+    <p class="hero-sub">Cobertura de internet en tu zona, instalación de cámaras, cableado estructurado y soporte técnico especializado &mdash; todo con un solo proveedor.</p>
 
-    <div class="viewer">
-      <div class="frame">
-        <div class="bar">
-          <div class="dots"><i></i><i></i><i></i></div>
-          <div class="url" id="url"></div>
-          <div class="tools">
-            <button id="bDesk" aria-pressed="true">escritorio</button>
-            <button id="bMob" aria-pressed="false">móvil</button>
-          </div>
-          <a class="open" id="open" target="_blank" rel="noopener">abrir ↗</a>
-        </div>
-        <div class="screen" id="screen">
-          <div class="loader" id="loader"></div>
-          <div class="wrap" id="wrap"><iframe id="frame" title="Vista previa en vivo" loading="lazy" referrerpolicy="no-referrer"></iframe></div>
-          <div class="shield" id="shield">
-            <b id="shTitle">Vista previa no disponible</b>
-            <span id="shText"></span>
-            <a class="open" id="shOpen" target="_blank" rel="noopener" style="margin-top:6px;padding:10px 22px;font-size:14px">abrir sitio en vivo ↗</a>
-          </div>
-        </div>
-      </div>
+    <form class="buscador-cobertura form-cobertura" action="#" method="get">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.3 -4.3"/></svg>
+      <input type="text" placeholder="Ingresa tu colonia" aria-label="Colonia">
+      <button type="submit" class="btn btn-primario">Consultar cobertura</button>
+    </form>
+    <p class="resultado-cobertura"></p>
 
-      <div class="info">
-        <div>
-          <h2><span id="name"></span><span class="badge" id="status"></span></h2>
-          <p id="desc"></p>
-          <div class="stack" id="stack"></div>
-        </div>
-        <dl class="meta" id="meta"></dl>
-      </div>
-      <div class="shots" id="shots"></div>
+    <div class="hero-cta-row">
+      <a href="soluciones.html" class="btn btn-ghost">¿Eres empresa? Cotiza tus servicios <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6l-6 6"/></svg></a>
     </div>
-  </section>
+  </div>
+</section>
 
-  <footer>
-    <span>Hecho a mano con HTML, CSS y JavaScript.</span>
-    <span><a href="mailto:yael31658@gmail.com">yael31658@gmail.com</a> &nbsp; <a href="https://github.com/Y10030" target="_blank" rel="noopener">github</a></span>
-  </footer>
-</main>
+<section class="cifras">
+  <div class="cifras-grid"><div class="cifra"><strong>+12</strong><span>años de experiencia</span></div><div class="cifra"><strong>+8000</strong><span>instalaciones realizadas</span></div><div class="cifra"><strong>12</strong><span>zonas con cobertura</span></div><div class="cifra"><strong>Lun–Sab 9–21h</strong><span>soporte técnico disponible</span></div></div>
+  <div class="contenedor" style="padding-top:0;padding-bottom:18px;">
+  </div>
+</section>
 
-<dialog id="lb"><img alt=""></dialog>
+<section class="seccion">
+  <div class="contenedor">
+    <div class="seccion-titulo">
+      <span class="eyebrow">Soluciones para tu negocio</span>
+      <h2 style="margin-top:14px;">Un solo proveedor para todo lo que tu negocio necesita en conectividad y seguridad.</h2>
+    </div>
+    <div class="grid-servicios">
+      <a href="soluciones-cableado.html" class="tarjeta-servicio" style="display:block;">
+        <div class="icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="2.2"/><circle cx="19" cy="12" r="2.2"/><path d="M7.2 12h2.3l1 -2h3l1 2h2.3"/></svg></div>
+        <h3>Cableado estructurado</h3>
+        <p>Instalación profesional y certificada de redes de datos.</p>
+        <span class="ver-mas">Ver más <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6l-6 6"/></svg></span>
+      </a>
+    
+      <a href="soluciones-redes.html" class="tarjeta-servicio" style="display:block;">
+        <div class="icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9a12 12 0 0 1 16 0"/><path d="M7 12.5a7.5 7.5 0 0 1 10 0"/><path d="M10 16a4 4 0 0 1 4 0"/><circle cx="12" cy="19" r="1.1" fill="currentColor" stroke="none"/></svg></div>
+        <h3>Redes cableadas e inalámbricas</h3>
+        <p>Conectividad estable en cada rincón de tu negocio.</p>
+        <span class="ver-mas">Ver más <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6l-6 6"/></svg></span>
+      </a>
+    
+      <a href="soluciones-cctv.html" class="tarjeta-servicio" style="display:block;">
+        <div class="icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="12" height="7" rx="1.5"/><circle cx="9" cy="11.5" r="1.6"/><path d="M15 10.5l5 -2.5v8l-5 -2.5"/><path d="M5 18h6"/></svg></div>
+        <h3>Vigilancia, Seguridad y CCTV</h3>
+        <p>Portones automáticos, interphone, cámaras análogas e IP, monitoreo local o remoto.</p>
+        <span class="ver-mas">Ver más <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6l-6 6"/></svg></span>
+      </a>
+    
+      <a href="soluciones-soporte.html" class="tarjeta-servicio" style="display:block;">
+        <div class="icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="10" height="14" rx="1.5"/><path d="M8 3v-1h4v1"/><path d="M8 19h4"/><path d="M9.5 8.5l1.5 1.5 3 -3"/></svg></div>
+        <h3>Soporte y mantenimiento</h3>
+        <p>Preventivo y correctivo, cuando lo necesites.</p>
+        <span class="ver-mas">Ver más <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6l-6 6"/></svg></span>
+      </a>
+    
+      <a href="soluciones-seguridad.html" class="tarjeta-servicio" style="display:block;">
+        <div class="icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 5 -3 8.5 -7 10c-4 -1.5 -7 -5 -7 -10v-5z"/><path d="M9.5 12l1.8 1.8l3.2 -3.6"/></svg></div>
+        <h3>Seguridad informática</h3>
+        <p>Antivirus y firewall para proteger tu información.</p>
+        <span class="ver-mas">Ver más <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6l-6 6"/></svg></span>
+      </a>
 
-<script>
-/* ====== EDITA AQUÍ TUS PROYECTOS ======
-   status: "production" (en producción) | "launched" (recién lanzada) | "dev" (en desarrollo)
-   images: rutas a tus capturas (ej. "img-CL/Imagen1.png"). Si lo dejas vacío se muestra un marcador.
-   embed: false si el sitio bloquea iframes (X-Frame-Options); se mostrará un aviso con botón para abrirlo. */
-const PROJECTS = [
-  { name:"Corrugados y Empaques Leysa", kind:"Tienda en línea y panel admin", status:"production",
-    url:"https://corrugadosleysa.pages.dev", mark:"CL", c1:"#8a7a67", c2:"#d2bb9c", on:"#17120c", year:"2026", role:"Diseño y desarrollo",
-    desc:"Catálogo de cajas y empaques de cartón corrugado con panel de administración para gestionar productos y pedidos.",
-    stack:["Node.js","Express","MySQL","JavaScript"], images:["img-CL/Imagen1.png","img-CL/Imagen6.png","img-CL/Imagen2.png","img-CL/Imagen4.png","img-CL/Imagen3.png","img-CL/Imagen5.png"], embed:true },
-  { name:"RubickNet", kind:"Sitio para proveedor de internet", status:"launched",
-  url:"https://rubicknet.com",          // a donde va el botón "abrir"
-  // src:"p-0001/index.html",      // (opcional) copia local; si no existe en el servidor el marco queda en blanco
-  mark:"RN", c1:"#0033ff", c2:"#977dff", on:"#ffffff", year:"2026", role:"Diseño y desarrollo",
-  desc:"Sitio para un proveedor de internet: consulta de cobertura por colonia, planes para hogar y empresa, soluciones de cableado, CCTV y soporte, con asistente integrado a WhatsApp.", stack:["HTML","CSS","JavaScript","Mapas"], images:["img-R/Imagen7.png","img-R/Imagen8.png","img-R/Imagen9.png","img-R/Imagen13.png","img-R/Imagen10.png","img-R/Imagen12.png","img-R/Imagen11.png"], preview:"img-R/Imagen7.png", embed:true /* requiere el .htaccess nuevo de RubickNet; si lo quitas o sigue bloqueado, pon false */ }
-];
+      <a href="soluciones-equipo.html" class="tarjeta-servicio" style="display:block;">
+        <div class="icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8"/><path d="M12 16v4"/></svg></div>
+        <h3>Equipo y cómputo para empresas</h3>
+        <p>Cotización, renta y compra de computadoras en volumen.</p>
+        <span class="ver-mas">Ver más <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6l-6 6"/></svg></span>
+      </a>
+    </div>
+  </div>
+</section>
 
-//y10030
+<section class="seccion fondo-mist">
+  <div class="contenedor split">
+    <div>
+      <span class="eyebrow">Internet</span>
+      <h2 style="margin-top:14px;">&#191;Buscas internet para tu hogar o tu negocio?</h2>
+      <p>Conoce si ya tenemos cobertura en tu zona y elige el plan que se ajuste a lo que necesitas.</p>
+      <a href="internet.html#plan-recomendado" class="btn btn-primario">Ver planes de internet <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6l-6 6"/></svg></a>
+    </div>
+    <div class="split-media"><img width="900" height="1200" src="img/antena-azotea.webp" alt="Antena Ubiquiti instalada en azotea de un fraccionamiento" style="object-position:50% 30%;" loading="lazy" decoding="async"></div>
+  </div>
+</section>
 
-/*
-,
-  { name:"Tu próximo proyecto", kind:"Plantilla", status:"dev",
-    url:"https://example.com", year:"2026", role:"Desarrollo",
-    desc:"Duplica este bloque para agregar más proyectos. Cambia nombre, URL, estado y capturas.",
-    stack:["Tu stack"], images:[], embed:true }*/
+<section class="seccion">
+  <div class="contenedor split">
+    <div class="split-media" style="order:2;"><img width="846" height="616" src="img/torre-tecnicos.webp" alt="Técnicos de Rubicknet trabajando en una torre de antenas" style="object-position:center;" loading="lazy" decoding="async"></div>
+    <div style="order:1;">
+      <span class="eyebrow">Proyectos</span>
+      <h2 style="margin-top:14px;">Trabajo que ya hicimos, resultados que puedes ver</h2>
+      <p>Cableado, cámaras y redes instaladas en empresas como la tuya. Conoce los detalles de cada proyecto.</p>
+      <div class="mini-proyectos"><div class="mini-proyecto"><img width="765" height="1200" src="img/rack-terminado.webp" alt="Rack terminado" style="object-position:50% 30%;" loading="lazy" decoding="async"><span>Cableado &middot; Nave industrial</span></div><div class="mini-proyecto"><img width="1200" height="900" src="img/camaras-poste.webp" alt="Cámaras en poste" style="object-position:center;" loading="lazy" decoding="async"><span>CCTV &middot; Condominio</span></div><div class="mini-proyecto"><img width="900" height="1200" src="img/gabinete-exterior.webp" alt="Gabinete exterior de red" style="object-position:50% 40%;" loading="lazy" decoding="async"><span>Redes &middot; Gabinete exterior</span></div></div>
+      <a href="proyectos.html" class="btn btn-secundario" style="margin-top:26px;">Ver portafolio completo <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6l-6 6"/></svg></a>
+    </div>
+  </div>
+</section>
 
+<a href="https://wa.me/5568115210" data-wa-msg="Hola, quiero más información sobre los servicios de Rubicknet." class="whatsapp-float" target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp"><svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path fill="white" d="M16.004 3C8.824 3 3 8.82 3 16c0 2.42.66 4.68 1.8 6.63L3 29l6.55-1.72A12.94 12.94 0 0 0 16.004 29C23.18 29 29 23.18 29 16S23.18 3 16.004 3zm0 23.4a10.5 10.5 0 0 1-5.36-1.47l-.38-.23-4.05 1.06 1.08-3.95-.25-.4a10.47 10.47 0 0 1-1.61-5.55c0-5.82 4.73-10.55 10.57-10.55 5.82 0 10.55 4.73 10.55 10.55S21.82 26.4 16.004 26.4zm5.79-7.9c-.32-.16-1.87-.92-2.16-1.02-.29-.11-.5-.16-.71.16-.21.32-.81 1.02-1 1.23-.18.21-.37.24-.68.08-.32-.16-1.34-.49-2.55-1.57-.94-.84-1.58-1.86-1.76-2.18-.18-.32-.02-.49.14-.65.14-.14.32-.37.48-.55.16-.18.21-.32.32-.53.11-.21.05-.4-.03-.55-.08-.16-.71-1.7-.97-2.34-.26-.61-.52-.53-.71-.54h-.61c-.21 0-.55.08-.84.4-.29.32-1.1 1.07-1.1 2.62s1.13 3.03 1.29 3.24c.16.21 2.22 3.38 5.37 4.74.75.32 1.34.52 1.79.66.75.24 1.44.2 1.98.13.6-.09 1.87-.76 2.14-1.5.26-.74.26-1.36.18-1.5-.08-.13-.29-.21-.6-.37z"/></svg></a>
 
-/* ====== FIN ====== */
+<script src="componentes/chat-widget.js?v=1.3"></script>
+<chat-widget></chat-widget>
+<script src="componentes/cta-section.js?v=1.3"></script>
+<script src="js/cobertura.js?v=1.3"></script>
+<script src="js/main.js?v=1.3"></script>
+<script src="componentes/footer.js?v=1.3"></script>
 
-const LABEL={production:"en producción",launched:"lanzada",dev:"en desarrollo"};
-const $=id=>document.getElementById(id);
-let cur=0, mode="desk";
-
-$("count").textContent=PROJECTS.length+" proyectos";
-
-PROJECTS.forEach((p,i)=>{
-  const b=document.createElement("button");
-  b.className="item"; b.setAttribute("role","tab");
-  b.style.cssText=`--c1:${p.c1};--c2:${p.c2};--on:${p.on}`;
-  b.innerHTML=`<i class="mark">${p.mark}</i><span class="txt"><h3>${p.name}</h3><small>${p.kind}</small><span class="badge s-${p.status}">${LABEL[p.status]}</span></span>`;
-  b.onclick=()=>select(i);
-  $("list").appendChild(b);
-});
-const cta=document.createElement("a");
-cta.className="cta"; cta.target="_blank"; cta.rel="noopener";
-cta.href="https://wa.me/525626140437?text=%C2%A1Hola%20Cristofer%21%20Vi%20tu%20portafolio%20de%20webs%20y%20quiero%20cotizar%20mi%20p%C3%A1gina%20web.%20%C2%BFMe%20puedes%20ayudar%3F";
-cta.innerHTML=`<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16.04 3C9.4 3 4 8.4 4 15.03c0 2.12.55 4.19 1.6 6.01L4 29l8.1-1.57a12 12 0 0 0 3.94.66C22.67 28.09 28 22.7 28 16.06 28 9.4 22.68 3 16.04 3Zm0 21.9c-1.2 0-2.38-.32-3.4-.93l-.5-.3-4.8.93.95-4.68-.32-.5a9.9 9.9 0 0 1-1.52-5.3c0-5.48 4.46-9.94 9.96-9.94 5.5 0 9.96 4.46 9.96 9.94 0 5.5-4.46 10.78-9.33 10.78Zm5.45-7.4c-.3-.15-1.77-.87-2.04-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48a9 9 0 0 1-1.66-2.07c-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.5h-.57c-.2 0-.52.08-.8.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.22 3.08c.15.2 2.1 3.2 5.08 4.49.7.3 1.26.48 1.7.62.72.23 1.37.2 1.88.12.57-.08 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.12-.27-.2-.57-.35Z"/></svg><span>Cotiza ahora tu web<small>Escríbeme por WhatsApp</small></span>`;
-$("list").appendChild(cta);
-
-function fit(){
-  const sc=$("screen"), w=$("wrap"), W=sc.clientWidth, H=sc.clientHeight;
-  w.style.position="absolute"; w.style.top="0"; w.style.transformOrigin="top left";
-  if(mode==="mob"){
-    const mw=Math.min(390,W);
-    w.style.width=mw+"px"; w.style.height=H+"px"; w.style.left=((W-mw)/2)+"px"; w.style.transform="none";
-  }else{
-    const base=1280, s=W/base;           /* escala para que el sitio llene todo el ancho */
-    w.style.width=base+"px"; w.style.height=(H/s)+"px"; w.style.left="0"; w.style.transform=`scale(${s})`;
-  }
-  sc.classList.toggle("mobile",mode==="mob");
-}
-
-function select(i){
-  cur=i; const p=PROJECTS[i];
-  const r=document.documentElement.style; r.setProperty("--c1",p.c1); r.setProperty("--c2",p.c2); r.setProperty("--on",p.on);
-  document.querySelectorAll(".item").forEach((e,k)=>e.setAttribute("aria-selected",k===i));
-  $("url").textContent=p.url; $("open").href=p.url; $("shOpen").href=p.url;
-  $("name").textContent=p.name; $("desc").textContent=p.desc;
-  const st=$("status"); st.textContent=LABEL[p.status]; st.className="badge s-"+p.status;
-  $("stack").innerHTML=p.stack.map(s=>`<span>${s}</span>`).join("");
-  $("meta").innerHTML=[["Tipo",p.kind],["Año",p.year],["Rol",p.role],["Estado",`<span class="badge s-${p.status}">${LABEL[p.status]}</span>`]]
-    .map(([k,v])=>`<div><dt>${k}</dt><dd>${v}</dd></div>`).join("");
-  const shots=$("shots"); shots.innerHTML="";
-  const imgs=p.images.length?p.images:[null,null,null];
-  imgs.forEach((src,k)=>{
-    const d=document.createElement("div");
-    if(src){d.className="shot";
-      const im=new Image(); im.alt=`Captura ${k+1} de ${p.name}`; im.decoding="async";
-      const tries=[src.replace(/\.png$/i,".PNG"),src.replace(/\.png$/i,".jpg"),src.replace(/\.png$/i,".jpeg"),src.replace(/\.png$/i,".webp")];
-      im.onerror=()=>{ const n=tries.shift(); if(n){im.src=n;} else {d.className="shot err";d.textContent="No se encontró "+src;d.onclick=null;} };
-      im.src=src; d.appendChild(im);
-      d.onclick=()=>{$("lb").querySelector("img").src=im.currentSrc||im.src;$("lb").showModal()};}
-    else{d.className="shot ph";d.textContent="captura "+(k+1);}
-    shots.appendChild(d);
-  });
-  load(p);
-}
-
-function load(p){
-  const sh=$("shield"), fr=$("frame"), ld=$("loader");
-  sh.classList.remove("on"); sh.removeAttribute("style"); $("shOpen").style.pointerEvents="";
-  ld.classList.remove("go"); void ld.offsetWidth; ld.classList.add("go");
-  if(p.embed===false){
-    $("shTitle").textContent=p.name+" se ve mejor en su propia pestaña";
-    $("shText").textContent="Este sitio no permite mostrarse dentro de otra página. Ábrelo para navegarlo en vivo.";
-    if(p.preview) sh.style.background=`linear-gradient(rgba(5,5,5,.72),rgba(5,5,5,.9)),url("${p.preview}") center top/cover`;
-    sh.classList.add("on"); fr.removeAttribute("src"); return;
-  }
- fr.src=p.src||p.url;
-  clearTimeout(load.t);
-  load.t=setTimeout(()=>{ /* aviso suave por si el sitio tarda o bloquea el iframe */
-    $("shTitle").textContent="¿No carga la vista previa?";
-    $("shText").textContent="Si el sitio bloquea iframes, usa «abrir» o pon embed:false en el proyecto.";
-    sh.classList.add("on"); sh.style.background="rgba(5,5,5,.0)"; sh.style.pointerEvents="none";
-    sh.style.justifyContent="flex-end"; sh.style.paddingBottom="14px";
-    $("shOpen").style.pointerEvents="auto";
-  },6000);
-}
-$("frame").addEventListener("load",()=>{
-  clearTimeout(load.t);
-  const p=PROJECTS[cur]; if(p.embed!==false){ $("shield").classList.remove("on"); }
-});
-
-function setMode(m){
-  mode=m; $("bDesk").setAttribute("aria-pressed",m==="desk"); $("bMob").setAttribute("aria-pressed",m==="mob"); fit();
-}
-$("bDesk").onclick=()=>setMode("desk"); $("bMob").onclick=()=>setMode("mob");
-$("lb").addEventListener("click",()=>$("lb").close());
-new ResizeObserver(fit).observe($("screen"));
-select(0); fit();
-</script>
+<mi-footer></mi-footer>
 </body>
 </html>
