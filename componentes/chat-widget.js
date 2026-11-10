@@ -388,6 +388,27 @@ class ChatWidget extends HTMLElement {
         facebook.innerHTML = '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="white" d="M22 12.06C22 6.53 17.52 2.04 12 2.04S2 6.53 2 12.06c0 5 3.66 9.13 8.44 9.9v-7H7.9v-2.9h2.54V9.84c0-2.5 1.49-3.9 3.77-3.9 1.09 0 2.24.2 2.24.2v2.47h-1.27c-1.24 0-1.63.77-1.63 1.56v1.87h2.78l-.44 2.9h-2.34v7c4.78-.77 8.44-4.9 8.44-9.9z"/></svg>';
       }
 
+      /* Botón que despliega WhatsApp / Facebook / chat en celular (en escritorio se oculta por CSS) */
+      var toggle = document.createElement('button');
+      toggle.type = 'button';
+      toggle.className = 'rbk-fab-toggle';
+      toggle.setAttribute('aria-label', 'Contactar a Rubicknet');
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.innerHTML =
+        '<svg class="ico-abrir" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 1 1 3.5 6.6L4 20l1.2-3.4A8 8 0 0 1 4 12z"/><path d="M8.5 12h.01M12 12h.01M15.5 12h.01"/></svg>' +
+        '<svg class="ico-cerrar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+      toggle.addEventListener('click', function () {
+        var abierto = stack.classList.toggle('fab-abierto');
+        toggle.setAttribute('aria-expanded', String(abierto));
+      });
+      document.addEventListener('click', function (e) {
+        if (!stack.contains(e.target)) {
+          stack.classList.remove('fab-abierto');
+          toggle.setAttribute('aria-expanded', 'false');
+        }
+      });
+
+      stack.appendChild(toggle);   /* primero = queda abajo (column-reverse) */
       if (whatsapp) stack.appendChild(whatsapp);
       stack.appendChild(facebook);
       stack.appendChild(elementoChat);
