@@ -74,6 +74,7 @@ class SiteHeader extends HTMLElement {
       <a href="proyectos.html">Proyectos</a>
       <a href="nosotros.html">Nosotros</a>
       <a href="contacto.html">Contacto</a>
+      <a href="contratar.html" class="nav-contratar">Contratar</a>
 
     </nav>
 
