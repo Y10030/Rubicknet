@@ -5,6 +5,15 @@
   var TIPOS = IMAGENES.concat(['application/pdf']);
   var WA_CAMARAS = '525611120232'; // (56) 1112 0232
 
+  /* Estilos del botón: deshabilitado y animación de "Enviando…" */
+  var estilo = document.createElement('style');
+  estilo.textContent =
+    '.btn:disabled{opacity:.5;cursor:not-allowed;}' +
+    '.btn.enviando{opacity:1;cursor:progress;display:inline-flex;align-items:center;justify-content:center;gap:10px;}' +
+    '.spinner-btn{width:18px;height:18px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;display:inline-block;animation:rbk-giro .7s linear infinite;}' +
+    '@keyframes rbk-giro{to{transform:rotate(360deg);}}';
+  document.head.appendChild(estilo);
+
   /* ---------- Borrador: guarda lo escrito para que no se pierda al recargar ----------
      sessionStorage = se conserva al recargar y se borra al cerrar la pestaña.
      (Cambia a window.localStorage si quieres que dure aunque cierren el navegador.)
@@ -91,6 +100,17 @@
     var mapaEl = document.getElementById('mapa-ubicacion');
     var mapa = null, marcador = null;
 
+    /* El botón solo se activa si están marcadas las dos casillas de confirmación */
+    var chkPagare = formInternet.elements['acepto_pagare'];
+    var chkPriv = formInternet.elements['acepto_privacidad'];
+    var textoBtn = btnI.textContent;
+    var enviando = false;
+    function actualizarBoton() {
+      btnI.disabled = enviando || !(chkPagare.checked && chkPriv.checked);
+    }
+    formInternet.addEventListener('change', actualizarBoton);
+    actualizarBoton();
+
     var campoLink = document.getElementById('ubicacion_link_ro');   // solo lectura
 
     function enlaceMaps(lat, lng) {
@@ -163,6 +183,7 @@
 
     formInternet.addEventListener('submit', function (e) {
       e.preventDefault();
+      if (enviando || !(chkPagare.checked && chkPriv.checked)) return;
       var errorArchivos = revisarArchivos(formInternet);
       if (errorArchivos) return mostrar(avisoI, errorArchivos, true);
 
@@ -171,9 +192,11 @@
         return mostrar(avisoI, 'Marca tu ubicación en el mapa para continuar.', true);
       }
 
+      enviando = true;
       btnI.disabled = true;
-      var textoBtn = btnI.textContent;
-      btnI.textContent = 'Enviando…';
+      btnI.classList.add('enviando');
+      btnI.setAttribute('aria-busy', 'true');
+      btnI.innerHTML = '<span class="spinner-btn" aria-hidden="true"></span> Enviando…';
 
       fetch(formInternet.action, { method: 'POST', body: new FormData(formInternet) })
         .then(function (r) { return r.json(); })
@@ -191,7 +214,13 @@
         .catch(function () {
           mostrar(avisoI, 'No pudimos enviar tu solicitud en este momento. Inténtalo de nuevo o escríbenos por WhatsApp al (55) 68 11 52 10.', true);
         })
-        .then(function () { btnI.disabled = false; btnI.textContent = textoBtn; });
+        .then(function () {
+          enviando = false;
+          btnI.classList.remove('enviando');
+          btnI.removeAttribute('aria-busy');
+          btnI.textContent = textoBtn;
+          actualizarBoton(); /* tras reset() las casillas quedan sin marcar: el botón vuelve a bloquearse */
+        });
     });
   }
 
