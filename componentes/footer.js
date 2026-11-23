@@ -28,7 +28,9 @@ class MiFooter extends HTMLElement {
         <a href="soluciones.html">Soluciones</a>
         <a href="proyectos.html">Proyectos</a>
         <a href="nosotros.html">Nosotros</a>
+        <a href="contratar.html">Contratar</a>
         <a href="contacto.html">Contacto</a>
+        <a href="aviso-privacidad.html">Aviso de privacidad</a>
       </div>
       <div>
         <h4>Contacto</h4>
