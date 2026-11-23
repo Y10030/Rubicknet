@@ -16,6 +16,7 @@
 <link rel="canonical" href="https://rubicknet.com/contratar.html">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta name="theme-color" content="#00033D">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Rubicknet">
 <meta property="og:locale" content="es_MX">
@@ -61,7 +62,33 @@
 
       <div class="form-bloque">
         <h3>2. Dirección de instalación</h3>
-        <div class="campo"><label for="direccion">Dirección completa</label><textarea id="direccion" name="direccion" rows="3" required maxlength="400" placeholder="Calle, número, colonia, municipio, C.P. y referencias"></textarea></div>
+        <p class="ayuda">Escribe tu domicilio como lo conoces; con esto nuestro técnico te ubica más rápido.</p>
+        <div class="campo">
+          <label>Tipo de domicilio</label>
+          <div class="opciones-servicio" role="radiogroup" aria-label="Tipo de domicilio">
+            <label class="chip-check"><input type="radio" name="tipo_inmueble" value="Casa" required> Casa</label>
+            <label class="chip-check"><input type="radio" name="tipo_inmueble" value="Departamento"> Departamento</label>
+            <label class="chip-check"><input type="radio" name="tipo_inmueble" value="Negocio"> Negocio</label>
+          </div>
+        </div>
+        <div class="fila-2">
+          <div class="campo"><label for="calle">Calle</label><input id="calle" name="calle" type="text" autocomplete="address-line1" required maxlength="100"></div>
+          <div class="campo"><label for="num_ext">Número exterior</label><input id="num_ext" name="num_ext" type="text" required maxlength="20"></div>
+        </div>
+        <div class="fila-2">
+          <div class="campo"><label for="edificio">Edificio (opcional)</label><input id="edificio" name="edificio" type="text" maxlength="60"></div>
+          <div class="campo"><label for="num_int">Número interior o departamento (opcional)</label><input id="num_int" name="num_int" type="text" maxlength="20"></div>
+        </div>
+        <div class="fila-2">
+          <div class="campo"><label for="colonia">Colonia</label><input id="colonia" name="colonia" type="text" required maxlength="100"></div>
+          <div class="campo"><label for="cp">Código postal (opcional)</label><input id="cp" name="cp" type="text" inputmode="numeric" autocomplete="postal-code" maxlength="5" pattern="[0-9]{5}" title="5 dígitos"></div>
+        </div>
+        <div class="fila-2">
+          <div class="campo"><label for="municipio">Municipio o alcaldía</label><input id="municipio" name="municipio" type="text" required maxlength="100"></div>
+          <div class="campo"><label for="entre_calles">Entre qué calles (opcional)</label><input id="entre_calles" name="entre_calles" type="text" maxlength="150"></div>
+        </div>
+        <div class="campo"><label for="color_casa">Color de la casa o fachada (opcional)</label><input id="color_casa" name="color_casa" type="text" maxlength="60" placeholder="Por ejemplo: blanca con portón negro"></div>
+        <div class="campo"><label for="detalles">Referencias y detalles (opcional)</label><textarea id="detalles" name="detalles" rows="3" maxlength="300" placeholder="Tienda o punto de referencia cercano, cómo llegar, piso, etc."></textarea></div>
         <div class="campo">
           <label for="mapa-ubicacion">Ubicación del domicilio</label>
           <p class="ayuda">Toca el mapa para colocar el pin en tu domicilio. Puedes arrastrarlo para ajustarlo.</p>
@@ -72,6 +99,10 @@
           </div>
           <input type="hidden" name="lat" id="lat"><input type="hidden" name="lng" id="lng">
           <input id="ubicacion_link" name="ubicacion_link" type="url" maxlength="300" placeholder="Pega aquí el enlace de Google Maps de tu domicilio" aria-label="Enlace de Google Maps" hidden>
+        </div>
+        <div class="campo" id="campo-link-auto">
+          <label for="ubicacion_link_ro">Enlace de Google Maps (automático)</label>
+          <input id="ubicacion_link_ro" type="text" readonly aria-readonly="true" placeholder="Se llena solo cuando marcas tu ubicación en el mapa" style="cursor:default;">
         </div>
         <div class="campo">
           <label>¿Cuentas con acceso a azotea?</label>
